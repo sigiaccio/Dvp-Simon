@@ -1,0 +1,21 @@
+program HelloWorld;
+//{$APPTYPE CONSOLE}
+
+uses
+  Vcl.Forms,
+  UMain in 'UMain.pas' {FHelloWorld},
+  Upopupmodal in 'Upopupmodal.pas' {popupmodal},
+  lib.log in '..\..\EPFC-Apps\XE2\Lib\lib.log.pas',
+  lib.windows in '..\..\EPFC-Apps\XE2\Lib\lib.windows.pas',
+  checkType in '..\..\EPFC-Apps\XE2\Lib\checkType.pas';
+
+{$R *.res}
+
+  begin
+  Application.MainFormOnTaskbar := True;
+  Application.CreateForm(TFHelloWorld, FHelloWorld);
+  Application.CreateForm(Tpopupmodal, popupmodal);
+  //Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
+
