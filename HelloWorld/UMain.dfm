@@ -71,7 +71,14 @@ object FHelloWorld: TFHelloWorld
     Caption = 'Lieu de naissance'
   end
   object lbl_ville: TLabel
-    Left = 312
+    Left = 526
+    Top = 120
+    Width = 18
+    Height = 13
+    Caption = 'Ville'
+  end
+  object lbl_cp: TLabel
+    Left = 315
     Top = 120
     Width = 18
     Height = 13
@@ -220,13 +227,22 @@ object FHelloWorld: TFHelloWorld
     TabOrder = 11
   end
   object dbedt_ville: TDBEdit
-    Left = 394
+    Left = 616
     Top = 117
     Width = 121
     Height = 21
     DataField = 'NOM_2'
     DataSource = ds2
     TabOrder = 12
+  end
+  object dbedt_cp: TDBEdit
+    Left = 394
+    Top = 117
+    Width = 121
+    Height = 21
+    DataField = 'CP'
+    DataSource = ds2
+    TabOrder = 13
   end
   object ibqry_etudiant: TIBOQuery
     DeleteSQL.Strings = (

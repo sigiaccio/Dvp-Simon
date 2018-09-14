@@ -62,6 +62,8 @@ type
     strngfld_etudiantMODIFIED_BY: TStringField;
     lbl_ville: TLabel;
     dbedt_ville: TDBEdit;
+    lbl_cp: TLabel;
+    dbedt_cp: TDBEdit;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
