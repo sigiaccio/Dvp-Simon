@@ -66,6 +66,10 @@ type
     dbedt_cp: TDBEdit;
     lbl_rue: TLabel;
     dbedt_rue: TDBEdit;
+    lblnum: TLabel;
+    dbedt_numero: TDBEdit;
+    lbl_bte: TLabel;
+    dbedt_boite: TDBEdit;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);

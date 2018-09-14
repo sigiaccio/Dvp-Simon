@@ -91,6 +91,20 @@ object FHelloWorld: TFHelloWorld
     Height = 13
     Caption = 'Rue'
   end
+  object lblnum: TLabel
+    Left = 526
+    Top = 147
+    Width = 37
+    Height = 13
+    Caption = 'Num'#233'ro'
+  end
+  object lbl_bte: TLabel
+    Left = 638
+    Top = 147
+    Width = 24
+    Height = 13
+    Caption = 'Bo'#238'te'
+  end
   object edt_name: TEdit
     Left = 94
     Top = 39
@@ -259,6 +273,24 @@ object FHelloWorld: TFHelloWorld
     DataField = 'ADR_RUE'
     DataSource = ds2
     TabOrder = 14
+  end
+  object dbedt_numero: TDBEdit
+    Left = 584
+    Top = 144
+    Width = 41
+    Height = 21
+    DataField = 'ADR_NO'
+    DataSource = ds2
+    TabOrder = 15
+  end
+  object dbedt_boite: TDBEdit
+    Left = 680
+    Top = 144
+    Width = 57
+    Height = 21
+    DataField = 'ADR_BOITE'
+    DataSource = ds2
+    TabOrder = 16
   end
   object ibqry_etudiant: TIBOQuery
     DeleteSQL.Strings = (
