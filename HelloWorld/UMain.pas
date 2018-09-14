@@ -64,6 +64,8 @@ type
     dbedt_ville: TDBEdit;
     lbl_cp: TLabel;
     dbedt_cp: TDBEdit;
+    lbl_rue: TLabel;
+    dbedt_rue: TDBEdit;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);

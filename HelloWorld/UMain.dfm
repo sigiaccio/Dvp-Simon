@@ -80,9 +80,16 @@ object FHelloWorld: TFHelloWorld
   object lbl_cp: TLabel
     Left = 315
     Top = 120
-    Width = 18
+    Width = 57
     Height = 13
-    Caption = 'Ville'
+    Caption = 'Code postal'
+  end
+  object lbl_rue: TLabel
+    Left = 314
+    Top = 147
+    Width = 19
+    Height = 13
+    Caption = 'Rue'
   end
   object edt_name: TEdit
     Left = 94
@@ -243,6 +250,15 @@ object FHelloWorld: TFHelloWorld
     DataField = 'CP'
     DataSource = ds2
     TabOrder = 13
+  end
+  object dbedt_rue: TDBEdit
+    Left = 394
+    Top = 144
+    Width = 121
+    Height = 21
+    DataField = 'ADR_RUE'
+    DataSource = ds2
+    TabOrder = 14
   end
   object ibqry_etudiant: TIBOQuery
     DeleteSQL.Strings = (
