@@ -10,7 +10,7 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
-  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids;
+  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb;
   //checkType in '..\Lib\checkType.pas';
 
 type
@@ -18,29 +18,18 @@ type
     edt_name: TEdit;
     StaticText1: TStaticText;
     edt_firstname: TEdit;
-    Button1: TButton;
-    Label1: TLabel;
-    Label2: TLabel;
+    btn_submit: TButton;
+    lbl_firstname: TLabel;
+    lbl_name: TLabel;
     edt_error: TEdit;
     lbl_errors_name: TLabel;
     ibqry_etudiant: TIBOQuery;
     ds2: TDataSource;
     dbnvgr_personne: TDBNavigator;
-    wdbgrd1: TwwDBGrid;
     ibdtbs_connexion: TIBODatabase;
-    lblNom: TLabel;
-    lbl_prenom: TLabel;
-    dbedt_nom: TDBEdit;
-    dbedt_prenom: TDBEdit;
-    dbedtMatricule: TDBEdit;
-    lblDate_naissance: TLabel;
-    dbedtSEXE: TDBEdit;
-    Label3: TLabel;
-    lbl_lieu: TLabel;
     strngfld_etudiantMAT_ETUD: TStringField;
     strngfld_etudiantNOM: TStringField;
     strngfld_etudiantPRENOM: TStringField;
-    dbedt_lieu_naissance: TDBEdit;
     strngfld_etudiantSEXE: TStringField;
     dtfld_etudiantDATE_NAISS: TDateField;
     strngfld_etudiantNOM_1: TStringField;
@@ -60,16 +49,15 @@ type
     dtmfld_etudiantDATE_MODIFIED: TDateTimeField;
     strngfld_etudiantUSERNAME: TStringField;
     strngfld_etudiantMODIFIED_BY: TStringField;
-    lbl_ville: TLabel;
-    dbedt_ville: TDBEdit;
-    lbl_cp: TLabel;
-    dbedt_cp: TDBEdit;
-    lbl_rue: TLabel;
-    dbedt_rue: TDBEdit;
-    lblnum: TLabel;
-    dbedt_numero: TDBEdit;
-    lbl_bte: TLabel;
-    dbedt_boite: TDBEdit;
+    wdbgrd1: TwwDBGrid;
+    lbl_mat_etud: TLabel;
+    dbedt_MAT_ETUD: TDBEdit;
+    lbl_nom: TLabel;
+    dbedt_NOM: TDBEdit;
+    lbl_prenom: TLabel;
+    dbedt_PRENOM: TDBEdit;
+    lbl_sexe: TLabel;
+    cbb_SEXE: TwwDBComboBox;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);

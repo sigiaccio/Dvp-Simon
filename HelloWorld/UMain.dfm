@@ -2,8 +2,8 @@ object FHelloWorld: TFHelloWorld
   Left = 0
   Top = 0
   Caption = 'FHelloWorld'
-  ClientHeight = 700
-  ClientWidth = 1009
+  ClientHeight = 590
+  ClientWidth = 1506
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -13,14 +13,14 @@ object FHelloWorld: TFHelloWorld
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Label1: TLabel
+  object lbl_firstname: TLabel
     Left = 32
     Top = 84
     Width = 47
     Height = 13
     Caption = 'Firstname'
   end
-  object Label2: TLabel
+  object lbl_name: TLabel
     Left = 32
     Top = 39
     Width = 27
@@ -35,75 +35,64 @@ object FHelloWorld: TFHelloWorld
     Caption = 'Errors'
     Visible = False
   end
-  object lblNom: TLabel
-    Left = 312
-    Top = 39
-    Width = 21
+  object lbl_mat_etud: TLabel
+    Left = 830
+    Top = 29
+    Width = 104
     Height = 13
+    Caption = 'Matricule '#233'tudiant'
+    FocusControl = dbedt_MAT_ETUD
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_nom: TLabel
+    Left = 360
+    Top = 32
+    Width = 25
+    Height = 14
     Caption = 'Nom'
+    Color = clSkyBlue
+    FocusControl = dbedt_NOM
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'NOM'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
   end
   object lbl_prenom: TLabel
-    Left = 526
-    Top = 39
-    Width = 36
+    Left = 575
+    Top = 32
+    Width = 44
     Height = 13
     Caption = 'Pr'#233'nom'
+    Color = clSkyBlue
+    FocusControl = dbedt_PRENOM
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
   end
-  object lblDate_naissance: TLabel
-    Left = 312
-    Top = 66
-    Width = 76
-    Height = 13
-    Caption = 'Date_naissance'
-  end
-  object Label3: TLabel
-    Left = 312
-    Top = 93
-    Width = 24
+  object lbl_sexe: TLabel
+    Left = 784
+    Top = 29
+    Width = 28
     Height = 13
     Caption = 'Sexe'
-  end
-  object lbl_lieu: TLabel
-    Left = 526
-    Top = 63
-    Width = 84
-    Height = 13
-    Caption = 'Lieu de naissance'
-  end
-  object lbl_ville: TLabel
-    Left = 526
-    Top = 120
-    Width = 18
-    Height = 13
-    Caption = 'Ville'
-  end
-  object lbl_cp: TLabel
-    Left = 315
-    Top = 120
-    Width = 57
-    Height = 13
-    Caption = 'Code postal'
-  end
-  object lbl_rue: TLabel
-    Left = 314
-    Top = 147
-    Width = 19
-    Height = 13
-    Caption = 'Rue'
-  end
-  object lblnum: TLabel
-    Left = 526
-    Top = 147
-    Width = 37
-    Height = 13
-    Caption = 'Num'#233'ro'
-  end
-  object lbl_bte: TLabel
-    Left = 638
-    Top = 147
-    Width = 24
-    Height = 13
-    Caption = 'Bo'#238'te'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object edt_name: TEdit
     Left = 94
@@ -131,7 +120,7 @@ object FHelloWorld: TFHelloWorld
     Text = 'Firstname'
     TextHint = 'Firstname'
   end
-  object Button1: TButton
+  object btn_submit: TButton
     Left = 94
     Top = 164
     Width = 75
@@ -167,13 +156,32 @@ object FHelloWorld: TFHelloWorld
   end
   object wdbgrd1: TwwDBGrid
     Left = 32
-    Top = 352
-    Width = 721
+    Top = 331
+    Width = 932
     Height = 225
     Selected.Strings = (
       'MAT_ETUD'#9'10'#9'MAT_ETUD'#9#9
       'NOM'#9'50'#9'ETD.NOM'#9'F'
-      'PRENOM'#9'50'#9'PRENOM'#9#9)
+      'PRENOM'#9'50'#9'PRENOM'#9#9
+      'SEXE'#9'1'#9'SEXE'#9'F'
+      'DATE_NAISS'#9'10'#9'DATE_NAISS'#9'F'
+      'NOM_1'#9'40'#9'NOM_1'#9'F'
+      'ID_PAYS_NATIONALITE'#9'10'#9'ID_PAYS_NATIONALITE'#9'F'
+      'ADR_RUE'#9'50'#9'ADR_RUE'#9'F'
+      'ADR_NO'#9'7'#9'ADR_NO'#9'F'
+      'ADR_BOITE'#9'7'#9'ADR_BOITE'#9'F'
+      'NOM_2'#9'40'#9'NOM_2'#9'F'
+      'CP'#9'4'#9'CP'#9'F'
+      'GSM'#9'30'#9'GSM'#9'F'
+      'TEL'#9'10'#9'TEL'#9'F'
+      'NO_COMPTE'#9'16'#9'NO_COMPTE'#9'F'
+      'ALLOC_FAM'#9'1'#9'ALLOC_FAM'#9'F'
+      'NO_NATIONAL'#9'11'#9'NO_NATIONAL'#9'F'
+      'EMAIL'#9'100'#9'EMAIL'#9'F'
+      'DATE_CREATED'#9'18'#9'DATE_CREATED'#9'F'
+      'DATE_MODIFIED'#9'18'#9'DATE_MODIFIED'#9'F'
+      'USERNAME'#9'30'#9'USERNAME'#9'F'
+      'MODIFIED_BY'#9'30'#9'MODIFIED_BY'#9'F')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -201,98 +209,56 @@ object FHelloWorld: TFHelloWorld
     TitleMenuAttributes.MenuEnabled = True
     OnTitleButtonClick = wdbgrd1TitleButtonClick
   end
-  object dbedt_nom: TDBEdit
-    Left = 394
-    Top = 36
-    Width = 121
+  object dbedt_MAT_ETUD: TDBEdit
+    Left = 830
+    Top = 48
+    Width = 134
+    Height = 21
+    DataField = 'MAT_ETUD'
+    DataSource = ds2
+    Enabled = False
+    TabOrder = 7
+  end
+  object dbedt_NOM: TDBEdit
+    Left = 360
+    Top = 48
+    Width = 209
     Height = 21
     DataField = 'NOM'
     DataSource = ds2
-    TabOrder = 7
-    OnExit = dbedt_nomExit
+    TabOrder = 8
   end
-  object dbedt_prenom: TDBEdit
-    Left = 616
-    Top = 36
-    Width = 121
+  object dbedt_PRENOM: TDBEdit
+    Left = 575
+    Top = 48
+    Width = 192
     Height = 21
     DataField = 'PRENOM'
     DataSource = ds2
-    TabOrder = 8
-  end
-  object dbedtMatricule: TDBEdit
-    Left = 394
-    Top = 63
-    Width = 121
-    Height = 21
-    DataField = 'DATE_NAISS'
-    DataSource = ds2
     TabOrder = 9
   end
-  object dbedtSEXE: TDBEdit
-    Left = 394
-    Top = 90
-    Width = 121
+  object cbb_SEXE: TwwDBComboBox
+    Left = 784
+    Top = 48
+    Width = 40
     Height = 21
+    ShowButton = True
+    Style = csDropDown
+    MapList = False
+    AllowClearKey = False
     DataField = 'SEXE'
     DataSource = ds2
+    DropDownCount = 8
+    ItemHeight = 0
+    Items.Strings = (
+      'M'
+      'F')
+    Sorted = False
     TabOrder = 10
-  end
-  object dbedt_lieu_naissance: TDBEdit
-    Left = 616
-    Top = 63
-    Width = 121
-    Height = 21
-    DataField = 'NOM_1'
-    DataSource = ds2
-    TabOrder = 11
-  end
-  object dbedt_ville: TDBEdit
-    Left = 616
-    Top = 117
-    Width = 121
-    Height = 21
-    DataField = 'NOM_2'
-    DataSource = ds2
-    TabOrder = 12
-  end
-  object dbedt_cp: TDBEdit
-    Left = 394
-    Top = 117
-    Width = 121
-    Height = 21
-    DataField = 'CP'
-    DataSource = ds2
-    TabOrder = 13
-  end
-  object dbedt_rue: TDBEdit
-    Left = 394
-    Top = 144
-    Width = 121
-    Height = 21
-    DataField = 'ADR_RUE'
-    DataSource = ds2
-    TabOrder = 14
-  end
-  object dbedt_numero: TDBEdit
-    Left = 584
-    Top = 144
-    Width = 41
-    Height = 21
-    DataField = 'ADR_NO'
-    DataSource = ds2
-    TabOrder = 15
-  end
-  object dbedt_boite: TDBEdit
-    Left = 680
-    Top = 144
-    Width = 57
-    Height = 21
-    DataField = 'ADR_BOITE'
-    DataSource = ds2
-    TabOrder = 16
+    UnboundDataType = wwDefault
   end
   object ibqry_etudiant: TIBOQuery
+    Active = True
     DeleteSQL.Strings = (
       'DELETE FROM ETUDIANTS ETD'
       'WHERE'
@@ -389,8 +355,8 @@ object FHelloWorld: TFHelloWorld
       'FROM ETUDIANTS etd'
       'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS'
       'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE')
-    Left = 872
-    Top = 48
+    Left = 568
+    Top = 256
     object strngfld_etudiantMAT_ETUD: TStringField
       FieldName = 'MAT_ETUD'
       Required = True
@@ -486,8 +452,8 @@ object FHelloWorld: TFHelloWorld
   end
   object ds2: TDataSource
     DataSet = ibqry_etudiant
-    Left = 936
-    Top = 48
+    Left = 632
+    Top = 256
   end
   object ibdtbs_connexion: TIBODatabase
     CacheStatementHandles = False
@@ -501,8 +467,8 @@ object FHelloWorld: TFHelloWorld
       'BUFFERS=<default>'
       'SQL DIALECT=3')
     Isolation = tiCommitted
-    Left = 792
-    Top = 48
+    Left = 488
+    Top = 256
     SavedPassword = '.JuMbLe.01.4B3A132E012A154B'
   end
 end
