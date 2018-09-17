@@ -10,7 +10,7 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
-  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids;
+  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, lib.validation.field;
   //checkType in '..\Lib\checkType.pas';
 
 type
@@ -294,8 +294,8 @@ begin
   listOrderBy.add('NOM');
   listOrderBy.add('CP');
   listOrderBy.add('GSM');
-    listOrderBy.add('TEL');
-      listOrderBy.add('NO_COMPTE');
+  listOrderBy.add('TEL');
+  listOrderBy.add('NO_COMPTE');
   listOrderBy.add('ALLOC_FAM');
   listOrderBy.add('EMAIL');
   listOrderBy.add('DATE_CREATED');
@@ -336,7 +336,10 @@ end;
 procedure TFHelloWorld.dbedt_nomExit(Sender: TObject);
 begin
 
-//if dbedt_nom.Text  then
+
+
+    f_check_text();
+
 
 
 end;
