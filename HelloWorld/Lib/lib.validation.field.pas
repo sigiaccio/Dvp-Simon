@@ -38,15 +38,10 @@ var
 begin
 
   // regex for text
-//  v_regex_text := Tregex.Create('\b[^\D\W -'']+\b');
-    v_regex_text := Tregex.Create('^[a-zA-Z ''-]+$');
-
-//    v_regex_text := Tregex.Create('[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\ -.]');
-
-
+  v_regex_text := Tregex.Create('^[a-zA-Z ''-]+$');
   v_valide_text := v_regex_text.Match(text).Success;
 
-  OutputDebugString(Pchar('REGEX '+ BoolToStr(v_valide_text)));
+  //OutputDebugString(Pchar('REGEX ' + BoolToStr(v_valide_text)));
 
   // check if the variable can be null - text_empty is True: example : 'prenom' can be null
   if text_empty = False or v_valide_text = True then
