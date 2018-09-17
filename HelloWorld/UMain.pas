@@ -10,8 +10,8 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
-  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb;
-  //checkType in '..\Lib\checkType.pas';
+  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb, lib.validation.field;
+//  checkType in '..\..\EPFC-Apps\XE2\Lib\checkType.pas';
 
 type
   TFHelloWorld = class(TForm)
@@ -61,7 +61,12 @@ type
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
-    procedure dbedt_nomExit(Sender: TObject);
+    procedure dbedt_NOMExit(Sender: TObject);
+    procedure dbedt_NOMEnter(Sender: TObject);
+    procedure dbedt_PRENOMExit(Sender: TObject);
+    procedure dbedt_NOMChange(Sender: TObject);
+    procedure dbedt_PRENOMChange(Sender: TObject);
+    procedure dbedt_PRENOMEnter(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -94,8 +99,9 @@ end;
 
 procedure TFHelloWorld.Submit(Sender: TObject);
 var
-  name, firstname, text, value1, username_windows: string;
-  var1, index, cpt, cpt1, Result: integer;
+  name, text, value1, username_windows: string;
+  index, cpt,
+   cpt1, Result: integer;
   myFile: TextFile;
   bool: Boolean;
   tab1: TStringList;
@@ -325,11 +331,71 @@ begin
 
 end;
 
-procedure TFHelloWorld.dbedt_nomExit(Sender: TObject);
+procedure TFHelloWorld.dbedt_NOMChange(Sender: TObject);
+begin
+     dbedt_NOM.Font.Color := clWindowText;
+end;
+
+procedure TFHelloWorld.dbedt_NOMEnter(Sender: TObject);
+begin
+//dbedt_NOM.Color := clWindowText ;
+dbedt_NOM.Font.Color := clWindowText;
+
+
+end;
+
+procedure TFHelloWorld.dbedt_NOMExit(Sender: TObject);
+var
+  return, nom : String;
+  size : integer;
+
+  begin
+
+//    OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
+
+    nom := strngfld_etudiantNOM.AsString;
+    size := strngfld_etudiantNOM.Size;
+
+    return := lib.validation.field.f_check_text(nom, size);
+
+    OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
+
+    if return <> 'OK' then
+    begin
+      dbedt_NOM.Font.Color := clRed;
+    end;
+
+     edt_error.Text := return;
+     edt_error.Font.Color := clRed;
+
+end;
+
+procedure TFHelloWorld.dbedt_PRENOMChange(Sender: TObject);
+begin
+dbedt_PRENOM.Font.Color := clWindowText;
+end;
+
+procedure TFHelloWorld.dbedt_PRENOMEnter(Sender: TObject);
+begin
+dbedt_PRENOM.Font.Color := clWindowText;
+end;
+
+procedure TFHelloWorld.dbedt_PRENOMExit(Sender: TObject);
+var prenom, return : string;
+var size : Integer;
+
 begin
 
-//if dbedt_nom.Text  then
+    prenom := strngfld_etudiantPRENOM.AsString;
+    size := strngfld_etudiantPRENOM.Size;
 
+        return := lib.validation.field.f_check_text(prenom, size);
+
+    if return <> 'OK' then
+    begin
+      dbedt_PRENOM.Font.Color := clRed;
+    end;
+     edt_error.Text := return;
 
 end;
 

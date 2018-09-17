@@ -7,7 +7,7 @@ uses
   Upopupmodal in 'Upopupmodal.pas' {popupmodal},
   lib.log in '..\..\EPFC-Apps\XE2\Lib\lib.log.pas',
   lib.windows in '..\..\EPFC-Apps\XE2\Lib\lib.windows.pas',
-  checkType in '..\..\EPFC-Apps\XE2\Lib\checkType.pas';
+  lib.validation.field in 'Lib\lib.validation.field.pas';
 
 {$R *.res}
 

@@ -6,7 +6,7 @@ object FHelloWorld: TFHelloWorld
   ClientWidth = 1506
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clWindowText
+  Font.Color = clHighlightText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
@@ -130,8 +130,8 @@ object FHelloWorld: TFHelloWorld
     OnClick = Submit
   end
   object edt_error: TEdit
-    Left = 16
-    Top = 208
+    Left = 360
+    Top = 144
     Width = 217
     Height = 21
     Font.Charset = DEFAULT_CHARSET
@@ -217,25 +217,51 @@ object FHelloWorld: TFHelloWorld
     DataField = 'MAT_ETUD'
     DataSource = ds2
     Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 7
   end
   object dbedt_NOM: TDBEdit
     Left = 360
-    Top = 48
+    Top = 52
     Width = 209
     Height = 21
+    CharCase = ecUpperCase
     DataField = 'NOM'
     DataSource = ds2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    MaxLength = 49
+    ParentFont = False
     TabOrder = 8
+    OnChange = dbedt_NOMChange
+    OnEnter = dbedt_NOMEnter
+    OnExit = dbedt_NOMExit
   end
   object dbedt_PRENOM: TDBEdit
     Left = 575
-    Top = 48
+    Top = 51
     Width = 192
     Height = 21
     DataField = 'PRENOM'
     DataSource = ds2
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
     TabOrder = 9
+    OnChange = dbedt_PRENOMChange
+    OnEnter = dbedt_PRENOMEnter
+    OnExit = dbedt_PRENOMExit
   end
   object cbb_SEXE: TwwDBComboBox
     Left = 784
@@ -249,10 +275,17 @@ object FHelloWorld: TFHelloWorld
     DataField = 'SEXE'
     DataSource = ds2
     DropDownCount = 8
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
     ItemHeight = 0
     Items.Strings = (
       'M'
       'F')
+    ItemIndex = 0
+    ParentFont = False
     Sorted = False
     TabOrder = 10
     UnboundDataType = wwDefault

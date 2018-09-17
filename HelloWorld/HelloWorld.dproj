@@ -92,7 +92,7 @@
 			</DCCReference>
 			<DCCReference Include="..\..\EPFC-Apps\XE2\Lib\lib.log.pas"/>
 			<DCCReference Include="..\..\EPFC-Apps\XE2\Lib\lib.windows.pas"/>
-			<DCCReference Include="..\..\EPFC-Apps\XE2\Lib\checkType.pas"/>
+			<DCCReference Include="Lib\lib.validation.field.pas"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
