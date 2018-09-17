@@ -227,7 +227,7 @@ object FHelloWorld: TFHelloWorld
   end
   object dbedt_NOM: TDBEdit
     Left = 360
-    Top = 52
+    Top = 51
     Width = 209
     Height = 21
     CharCase = ecUpperCase

@@ -10,13 +10,7 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
-<<<<<<< HEAD
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb, lib.validation.field;
-//  checkType in '..\..\EPFC-Apps\XE2\Lib\checkType.pas';
-=======
-  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, lib.validation.field;
-  //checkType in '..\Lib\checkType.pas';
->>>>>>> master
 
 type
   TFHelloWorld = class(TForm)
@@ -359,11 +353,11 @@ var
 //    OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
 
     nom := strngfld_etudiantNOM.AsString;
-    size := strngfld_etudiantNOM.Size;
+//    size := strngfld_etudiantNOM.Size;
 
-    return := lib.validation.field.f_check_text(nom, size);
+    return := lib.validation.field.f_check_text(nom, False );
 
-    OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
+//    OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
 
     if return <> 'OK' then
     begin
@@ -385,23 +379,17 @@ begin
 dbedt_PRENOM.Font.Color := clWindowText;
 end;
 
-<<<<<<< HEAD
+
 procedure TFHelloWorld.dbedt_PRENOMExit(Sender: TObject);
 var prenom, return : string;
 var size : Integer;
 
 begin
-=======
-
-
-    f_check_text();
-
->>>>>>> master
 
     prenom := strngfld_etudiantPRENOM.AsString;
     size := strngfld_etudiantPRENOM.Size;
 
-        return := lib.validation.field.f_check_text(prenom, size);
+        //return := lib.validation.field.f_check_text(prenom, size);
 
     if return <> 'OK' then
     begin

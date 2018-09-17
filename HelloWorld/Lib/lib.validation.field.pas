@@ -18,7 +18,7 @@ function f_mobile_phone(param_mobile_phone_number: string;
 function f_email(param_email: string; param_original_length: Integer): string;
 function f_compte_bancaire(param_NoCompte: String; param_iban: Boolean)
   : Boolean;
-function f_check_text(text: String; original_length: Integer): string;
+function f_check_text(text: String; text_empty: Boolean): String;
 
 const
   LongNoIBIS = 9;
@@ -30,65 +30,52 @@ const
 
 implementation
 
-<<<<<<< HEAD
-function f_check_text(text: String; original_length: Integer): string;
+function f_check_text(text: String; text_empty: Boolean): String;
 var
-  size: Integer;
+  v_regex_text: Tregex;
+  v_valide_text: Boolean;
 
 begin
 
-  // verify if null
-  // verify lenght
-  // verify if string
-  // verify if special caracter
-  //
-=======
-function f_check_text(text: String; text_empty: Boolean; text_regex: String) : string;
-var
-  v_size: Integer;
-  v_regex_email: Tregex;
-  v_valide_email: Boolean;
+  // regex for text
+//  v_regex_text := Tregex.Create('\b[^\D\W -'']+\b');
+    v_regex_text := Tregex.Create('^[a-zA-Z ''-]+$');
+
+//    v_regex_text := Tregex.Create('[ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz\ -.]');
 
 
-begin
+  v_valide_text := v_regex_text.Match(text).Success;
 
-  // check if variable can be null
-  if text_empty := True then
+  OutputDebugString(Pchar('REGEX '+ BoolToStr(v_valide_text)));
+
+  // check if the variable can be null - text_empty is True: example : 'prenom' can be null
+  if text_empty = False or v_valide_text = True then
   begin
-       Exit;
-  else
-
-
-  end;
-
-
-
-   {
-
-  v_regex_email := Tregex.Create
-    ('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]*[a-zA-Z0-9]+$');
-  v_valide_email := v_regex_email.Match(param_email).Success;
-
-  // Même longueur que caractère pré-encodé ou validé
-  if (Length(param_email) <= param_original_length) or v_valide_email = True
-    }
->>>>>>> master
-
-  if Length(text) = 0 then
-  begin
-        Result := 'Le nom ne peut pas être vide';
-//        OutputDebugString(Pchar('NOM VIDE '+ IntToStr(Length(text)) + ' ' + inttostr(original_length)));
+    Result := 'Le champ ne peut pas être vide et ne peut pas contenir de caractères spéciaux';
   end
   else
   begin
-      Result := 'OK';
-      OutputDebugString(Pchar('f_check_text : ' + text + ' lenght ' +
-    inttostr(original_length)));
-
+    Result := 'OK';
 
   end;
 
 end;
+
+{
+  begin
+  {
+  // check if variable can be null
+}
+
+{
+
+  v_regex_email := Tregex.Create
+  ('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]*[a-zA-Z0-9]+$');
+  v_valide_email := v_regex_email.Match(param_email).Success;
+
+  // Même longueur que caractère pré-encodé ou validé
+  if (Length(param_email) <= param_original_length) or v_valide_email = True
+}
 
 function f_compte_bancaire(param_NoCompte: String; param_iban: Boolean)
   : Boolean;
