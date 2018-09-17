@@ -10,8 +10,13 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
+<<<<<<< HEAD
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb, lib.validation.field;
 //  checkType in '..\..\EPFC-Apps\XE2\Lib\checkType.pas';
+=======
+  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, lib.validation.field;
+  //checkType in '..\Lib\checkType.pas';
+>>>>>>> master
 
 type
   TFHelloWorld = class(TForm)
@@ -292,8 +297,8 @@ begin
   listOrderBy.add('NOM');
   listOrderBy.add('CP');
   listOrderBy.add('GSM');
-    listOrderBy.add('TEL');
-      listOrderBy.add('NO_COMPTE');
+  listOrderBy.add('TEL');
+  listOrderBy.add('NO_COMPTE');
   listOrderBy.add('ALLOC_FAM');
   listOrderBy.add('EMAIL');
   listOrderBy.add('DATE_CREATED');
@@ -380,11 +385,18 @@ begin
 dbedt_PRENOM.Font.Color := clWindowText;
 end;
 
+<<<<<<< HEAD
 procedure TFHelloWorld.dbedt_PRENOMExit(Sender: TObject);
 var prenom, return : string;
 var size : Integer;
 
 begin
+=======
+
+
+    f_check_text();
+
+>>>>>>> master
 
     prenom := strngfld_etudiantPRENOM.AsString;
     size := strngfld_etudiantPRENOM.Size;
