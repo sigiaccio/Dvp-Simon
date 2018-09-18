@@ -6,7 +6,7 @@ object FHelloWorld: TFHelloWorld
   ClientWidth = 1506
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
-  Font.Color = clHighlightText
+  Font.Color = clBlack
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
@@ -94,6 +94,50 @@ object FHelloWorld: TFHelloWorld
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object lbl_DATE_NAISS: TLabel
+    Left = 360
+    Top = 84
+    Width = 103
+    Height = 13
+    Caption = 'Date de naissance'
+    Color = clMenuHighlight
+    FocusControl = dbedt_DATE_NAISS
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbl_1: TLabel
+    Left = 512
+    Top = 84
+    Width = 99
+    Height = 13
+    Caption = 'Ville de naissance'
+    FocusControl = dbedt_NOM_1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
+  object lbl_PAYS: TLabel
+    Left = 785
+    Top = 84
+    Width = 27
+    Height = 13
+    Caption = 'Pays'
+    FocusControl = dbedt_ID_PAYS_NATIONALITE
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clHighlight
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+  end
   object edt_name: TEdit
     Left = 94
     Top = 39
@@ -131,8 +175,8 @@ object FHelloWorld: TFHelloWorld
   end
   object edt_error: TEdit
     Left = 360
-    Top = 144
-    Width = 217
+    Top = 224
+    Width = 604
     Height = 21
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMenuHighlight
@@ -165,12 +209,9 @@ object FHelloWorld: TFHelloWorld
       'PRENOM'#9'50'#9'PRENOM'#9#9
       'SEXE'#9'1'#9'SEXE'#9'F'
       'DATE_NAISS'#9'10'#9'DATE_NAISS'#9'F'
-      'NOM_1'#9'40'#9'NOM_1'#9'F'
-      'ID_PAYS_NATIONALITE'#9'10'#9'ID_PAYS_NATIONALITE'#9'F'
       'ADR_RUE'#9'50'#9'ADR_RUE'#9'F'
       'ADR_NO'#9'7'#9'ADR_NO'#9'F'
       'ADR_BOITE'#9'7'#9'ADR_BOITE'#9'F'
-      'NOM_2'#9'40'#9'NOM_2'#9'F'
       'CP'#9'4'#9'CP'#9'F'
       'GSM'#9'30'#9'GSM'#9'F'
       'TEL'#9'10'#9'TEL'#9'F'
@@ -242,7 +283,6 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
     TabOrder = 8
     OnChange = dbedt_NOMChange
-    OnEnter = dbedt_NOMEnter
     OnExit = dbedt_NOMExit
   end
   object dbedt_PRENOM: TDBEdit
@@ -260,7 +300,6 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
     TabOrder = 9
     OnChange = dbedt_PRENOMChange
-    OnEnter = dbedt_PRENOMEnter
     OnExit = dbedt_PRENOMExit
   end
   object cbb_SEXE: TwwDBComboBox
@@ -290,91 +329,52 @@ object FHelloWorld: TFHelloWorld
     TabOrder = 10
     UnboundDataType = wwDefault
   end
+  object dbedt_DATE_NAISS: TDBEdit
+    Left = 360
+    Top = 103
+    Width = 134
+    Height = 21
+    DataField = 'DATE_NAISS'
+    DataSource = ds2
+    TabOrder = 11
+    OnExit = dbedt_DATE_NAISSExit
+  end
+  object dbedt_NOM_1: TDBEdit
+    Left = 512
+    Top = 103
+    Width = 255
+    Height = 21
+    DataField = 'VILLE_NAISSANCE'
+    DataSource = ds2
+    TabOrder = 12
+  end
+  object dbedt_ID_PAYS_NATIONALITE: TDBEdit
+    Left = 785
+    Top = 103
+    Width = 134
+    Height = 21
+    DataField = 'PAYS'
+    DataSource = ds2
+    TabOrder = 13
+  end
   object ibqry_etudiant: TIBOQuery
-    Active = True
-    DeleteSQL.Strings = (
-      'DELETE FROM ETUDIANTS ETD'
-      'WHERE'
-      '   MAT_ETUD = :OLD_MAT_ETUD')
     EditSQL.Strings = (
-      'UPDATE ETUDIANTS ETD SET'
-      '   ETD.MAT_ETUD = :MAT_ETUD, /*PK*/'
-      '   ETD.NOM = :NOM,'
-      '   ETD.PRENOM = :PRENOM,'
-      '   ETD.SEXE = :SEXE,'
-      '   ETD.DATE_NAISS = :DATE_NAISS,'
-      '   ETD.ID_PAYS_NATIONALITE = :ID_PAYS_NATIONALITE,'
-      '   ETD.ADR_RUE = :ADR_RUE,'
-      '   ETD.ADR_NO = :ADR_NO,'
-      '   ETD.ADR_BOITE = :ADR_BOITE,'
-      '   ETD.GSM = :GSM,'
-      '   ETD.TEL = :TEL,'
-      '   ETD.NO_COMPTE = :NO_COMPTE,'
-      '   ETD.ALLOC_FAM = :ALLOC_FAM,'
-      '   ETD.NO_NATIONAL = :NO_NATIONAL,'
-      '   ETD.EMAIL = :EMAIL,'
-      '   ETD.DATE_CREATED = :DATE_CREATED,'
-      '   ETD.DATE_MODIFIED = :DATE_MODIFIED,'
-      '   ETD.USERNAME = :USERNAME,'
-      '   ETD.MODIFIED_BY = :MODIFIED_BY'
-      'WHERE'
-      '   MAT_ETUD = :OLD_MAT_ETUD')
+      '')
     IB_Connection = ibdtbs_connexion
-    InsertSQL.Strings = (
-      'INSERT INTO ETUDIANTS('
-      '   MAT_ETUD, /*PK*/'
-      '   NOM,'
-      '   PRENOM,'
-      '   SEXE,'
-      '   DATE_NAISS,'
-      '   ID_PAYS_NATIONALITE,'
-      '   ADR_RUE,'
-      '   ADR_NO,'
-      '   ADR_BOITE,'
-      '   GSM,'
-      '   TEL,'
-      '   NO_COMPTE,'
-      '   ALLOC_FAM,'
-      '   NO_NATIONAL,'
-      '   EMAIL,'
-      '   DATE_CREATED,'
-      '   DATE_MODIFIED,'
-      '   USERNAME,'
-      '   MODIFIED_BY)'
-      'VALUES ('
-      '   :MAT_ETUD,'
-      '   :NOM,'
-      '   :PRENOM,'
-      '   :SEXE,'
-      '   :DATE_NAISS,'
-      '   :ID_PAYS_NATIONALITE,'
-      '   :ADR_RUE,'
-      '   :ADR_NO,'
-      '   :ADR_BOITE,'
-      '   :GSM,'
-      '   :TEL,'
-      '   :NO_COMPTE,'
-      '   :ALLOC_FAM,'
-      '   :NO_NATIONAL,'
-      '   :EMAIL,'
-      '   :DATE_CREATED,'
-      '   :DATE_MODIFIED,'
-      '   :USERNAME,'
-      '   :MODIFIED_BY)')
     RecordCountAccurate = True
     SQL.Strings = (
-      'SELECT MAT_ETUD'
+      'SELECT etd.MAT_ETUD'
       '     , etd.NOM'
       '     , etd.PRENOM'
       '     , etd.SEXE'
       '     , etd.DATE_NAISS'
-      '     , v.nom '
-      '     , etd.ID_PAYS_NATIONALITE'
+      '     , v.nom as ville_naissance'
+      '     , p.nom as pays'
       '     , etd.ADR_RUE'
       '     , etd.ADR_NO'
       '     , etd.ADR_BOITE'
-      '     , l.NOM '
-      '     , l.CP '
+      '     , l.NOM as localite'
+      '     , l.CP'
       '     , etd.GSM'
       '     , etd.TEL'
       '     , etd.NO_COMPTE'
@@ -387,7 +387,8 @@ object FHelloWorld: TFHelloWorld
       '     , etd.MODIFIED_BY'
       'FROM ETUDIANTS etd'
       'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS'
-      'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE')
+      'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE'
+      'inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE')
     Left = 568
     Top = 256
     object strngfld_etudiantMAT_ETUD: TStringField
@@ -412,14 +413,15 @@ object FHelloWorld: TFHelloWorld
       FieldName = 'DATE_NAISS'
       Required = True
     end
-    object strngfld_etudiantNOM_1: TStringField
-      FieldName = 'NOM_1'
+    object strngfld_etudiantVILLE_NAISSANCE: TStringField
+      FieldName = 'VILLE_NAISSANCE'
       Required = True
       Size = 40
     end
-    object intgrfld_etudiantID_PAYS_NATIONALITE: TIntegerField
-      FieldName = 'ID_PAYS_NATIONALITE'
+    object strngfld_etudiantPAYS: TStringField
+      FieldName = 'PAYS'
       Required = True
+      Size = 50
     end
     object strngfld_etudiantADR_RUE: TStringField
       FieldName = 'ADR_RUE'
@@ -433,8 +435,8 @@ object FHelloWorld: TFHelloWorld
       FieldName = 'ADR_BOITE'
       Size = 7
     end
-    object strngfld_etudiantNOM_2: TStringField
-      FieldName = 'NOM_2'
+    object strngfld_etudiantLOCALITE: TStringField
+      FieldName = 'LOCALITE'
       Required = True
       Size = 40
     end

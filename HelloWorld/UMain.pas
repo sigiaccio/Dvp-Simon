@@ -10,7 +10,8 @@ uses
   Vcl.ExtCtrls, Vcl.ComCtrls, Upopupmodal, lib.Windows, Inifiles, Data.DB,
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
-  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit, Wwdotdot, Wwdbcomb, lib.validation.field;
+  IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
+  Wwdotdot, Wwdbcomb, lib.validation.field;
 
 type
   TFHelloWorld = class(TForm)
@@ -26,17 +27,32 @@ type
     ds2: TDataSource;
     dbnvgr_personne: TDBNavigator;
     ibdtbs_connexion: TIBODatabase;
+    wdbgrd1: TwwDBGrid;
+    lbl_mat_etud: TLabel;
+    dbedt_MAT_ETUD: TDBEdit;
+    lbl_nom: TLabel;
+    dbedt_NOM: TDBEdit;
+    lbl_prenom: TLabel;
+    dbedt_PRENOM: TDBEdit;
+    lbl_sexe: TLabel;
+    cbb_SEXE: TwwDBComboBox;
+    lbl_DATE_NAISS: TLabel;
+    dbedt_DATE_NAISS: TDBEdit;
+    lbl_1: TLabel;
+    dbedt_NOM_1: TDBEdit;
+    lbl_PAYS: TLabel;
+    dbedt_ID_PAYS_NATIONALITE: TDBEdit;
     strngfld_etudiantMAT_ETUD: TStringField;
     strngfld_etudiantNOM: TStringField;
     strngfld_etudiantPRENOM: TStringField;
     strngfld_etudiantSEXE: TStringField;
     dtfld_etudiantDATE_NAISS: TDateField;
-    strngfld_etudiantNOM_1: TStringField;
-    intgrfld_etudiantID_PAYS_NATIONALITE: TIntegerField;
+    strngfld_etudiantVILLE_NAISSANCE: TStringField;
+    strngfld_etudiantPAYS: TStringField;
     strngfld_etudiantADR_RUE: TStringField;
     strngfld_etudiantADR_NO: TStringField;
     strngfld_etudiantADR_BOITE: TStringField;
-    strngfld_etudiantNOM_2: TStringField;
+    strngfld_etudiantLOCALITE: TStringField;
     strngfld_etudiantCP: TStringField;
     strngfld_etudiantGSM: TStringField;
     strngfld_etudiantTEL: TStringField;
@@ -48,27 +64,19 @@ type
     dtmfld_etudiantDATE_MODIFIED: TDateTimeField;
     strngfld_etudiantUSERNAME: TStringField;
     strngfld_etudiantMODIFIED_BY: TStringField;
-    wdbgrd1: TwwDBGrid;
-    lbl_mat_etud: TLabel;
-    dbedt_MAT_ETUD: TDBEdit;
-    lbl_nom: TLabel;
-    dbedt_NOM: TDBEdit;
-    lbl_prenom: TLabel;
-    dbedt_PRENOM: TDBEdit;
-    lbl_sexe: TLabel;
-    cbb_SEXE: TwwDBComboBox;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
     procedure dbedt_NOMExit(Sender: TObject);
-    procedure dbedt_NOMEnter(Sender: TObject);
     procedure dbedt_PRENOMExit(Sender: TObject);
     procedure dbedt_NOMChange(Sender: TObject);
     procedure dbedt_PRENOMChange(Sender: TObject);
-    procedure dbedt_PRENOMEnter(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure dbedt_DATE_NAISSExit(Sender: TObject);
 
   private
     { Déclarations privées }
+    direction: string;
   public
     { Déclarations publiques }
   end;
@@ -99,8 +107,7 @@ end;
 procedure TFHelloWorld.Submit(Sender: TObject);
 var
   name, text, value1, username_windows: string;
-  index, cpt,
-   cpt1, Result: integer;
+  index, cpt, cpt1, Result: integer;
   myFile: TextFile;
   bool: Boolean;
   tab1: TStringList;
@@ -274,7 +281,7 @@ var
   iCount, cpt: integer;
 begin
 
-  direction := 'ASC';
+  //direction := 'ASC';
 
   listOrderBy := TStringList.Create;
   listOrderBy.add('MAT_ETUD');
@@ -283,12 +290,12 @@ begin
 
   listOrderBy.add('SEXE');
   listOrderBy.add('DATE_NAISS');
-  listOrderBy.add('NOM');
-  listOrderBy.add('ID_PAYS_NATIONALITE');
+  listOrderBy.add('VILLE_NAISSANCE');
+  listOrderBy.add('PAYS');
   listOrderBy.add('ADR_RUE');
   listOrderBy.add('ADR_NO');
   listOrderBy.add('ADR_BOITE');
-  listOrderBy.add('NOM');
+  listOrderBy.add('localite');
   listOrderBy.add('CP');
   listOrderBy.add('GSM');
   listOrderBy.add('TEL');
@@ -300,14 +307,14 @@ begin
   listOrderBy.add('USERNAME');
 
   listOrderBy.add('MODIFIED_BY');
-{
-  SELECT etd.MAT_ETUD, etd.NOM, etd.PRENOM, etd.SEXE, etd.DATE_NAISS, v.NOM,
+  {
+    SELECT etd.MAT_ETUD, etd.NOM, etd.PRENOM, etd.SEXE, etd.DATE_NAISS, v.NOM,
     etd.ID_PAYS_NATIONALITE, etd.ADR_RUE, etd.ADR_NO, etd.ADR_BOITE, l.NOM,
     l.CP, etd.GSM, etd.TEL, etd.NO_COMPTE, etd.ALLOC_FAM, etd.NO_NATIONAL,
     etd.EMAIL, etd.DATE_CREATED, etd.DATE_MODIFIED, etd.USERNAME,
     etd.MODIFIED_BY
-}
-    listOrderBy.Sort(); // needed to use find
+  }
+  listOrderBy.Sort(); // needed to use find
 
   if listOrderBy.Find(AFieldName, index) then
   begin
@@ -324,78 +331,91 @@ begin
 
   OutputDebugString(Pchar('COUNT personn : ' + IntToStr(iCount)));
 
-  searchSetQuery('etd.'+Ordering, direction);
+  searchSetQuery('etd.' + Ordering, direction);
 
   // wdbgrd1.Sort('Nom', True);
 
 end;
 
-procedure TFHelloWorld.dbedt_NOMChange(Sender: TObject);
+procedure TFHelloWorld.dbedt_DATE_NAISSExit(Sender: TObject);
+var
+  return, date_naiss: String;
 begin
-     dbedt_NOM.Font.Color := clWindowText;
+
+//  date_naiss := strngfld_etudiantVILLE_NAISSANCE
+
+  date_naiss := dbedt_DATE_NAISS.Field.Text;
+
+  return := lib.validation.field.f_check_date(date_naiss, False);
+
+  if return <> 'OK' then
+  begin
+    dbedt_DATE_NAISS.Font.Color := clRed;
+  end;
+
+  edt_error.text := return;
+  edt_error.Font.Color := clRed;
 end;
 
-procedure TFHelloWorld.dbedt_NOMEnter(Sender: TObject);
+procedure TFHelloWorld.dbedt_NOMChange(Sender: TObject);
 begin
-//dbedt_NOM.Color := clWindowText ;
-dbedt_NOM.Font.Color := clWindowText;
-
-
+  dbedt_NOM.Font.Color := clWindowText;
+  edt_error.text := '';
+  edt_error.Font.Color := clWindowText;
 end;
 
 procedure TFHelloWorld.dbedt_NOMExit(Sender: TObject);
 var
-  return, nom : String;
-  size : integer;
+  return, nom: String;
+  size: integer;
 
+begin
+  // OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
+
+  nom := strngfld_etudiantNOM.AsString;
+  // size := strngfld_etudiantNOM.Size;
+  return := lib.validation.field.f_check_text(nom, False);
+
+  // OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
+
+  if return <> 'OK' then
   begin
+    dbedt_NOM.Font.Color := clRed;
+  end;
 
-//    OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
-
-    nom := strngfld_etudiantNOM.AsString;
-//    size := strngfld_etudiantNOM.Size;
-
-    return := lib.validation.field.f_check_text(nom, False );
-
-//    OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
-
-    if return <> 'OK' then
-    begin
-      dbedt_NOM.Font.Color := clRed;
-    end;
-
-     edt_error.Text := return;
-     edt_error.Font.Color := clRed;
+  edt_error.text := return;
+  edt_error.Font.Color := clRed;
 
 end;
 
 procedure TFHelloWorld.dbedt_PRENOMChange(Sender: TObject);
 begin
-dbedt_PRENOM.Font.Color := clWindowText;
+  dbedt_PRENOM.Font.Color := clWindowText;
+  edt_error.text := '';
+  edt_error.Font.Color := clWindowText;
 end;
-
-procedure TFHelloWorld.dbedt_PRENOMEnter(Sender: TObject);
-begin
-dbedt_PRENOM.Font.Color := clWindowText;
-end;
-
 
 procedure TFHelloWorld.dbedt_PRENOMExit(Sender: TObject);
-var prenom, return : string;
-var size : Integer;
+var
+  return, prenom: String;
+  size: integer;
 
 begin
+  // OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
 
-    prenom := strngfld_etudiantPRENOM.AsString;
-    size := strngfld_etudiantPRENOM.Size;
+  prenom := strngfld_etudiantPRENOM.AsString;
+  // size := strngfld_etudiantNOM.Size;
+  return := lib.validation.field.f_check_text(prenom, False);
 
-        //return := lib.validation.field.f_check_text(prenom, size);
+  // OutputDebugString(Pchar('NOM '+ nom +'SIZE'+ IntToStr(size)));
 
-    if return <> 'OK' then
-    begin
-      dbedt_PRENOM.Font.Color := clRed;
-    end;
-     edt_error.Text := return;
+  if return <> 'OK' then
+  begin
+    dbedt_PRENOM.Font.Color := clRed;
+  end;
+
+  edt_error.text := return;
+  edt_error.Font.Color := clRed;
 
 end;
 
@@ -407,35 +427,21 @@ begin
     Ordering + direction));
 
   ibqry_etudiant.SQL.text := '';
-ibqry_etudiant.SQL.add('SELECT MAT_ETUD' +
-     ', etd.NOM' +
-     ', etd.PRENOM' +
-     ', etd.SEXE'   +
-     ', etd.DATE_NAISS'+
-     ', v.nom         ' +
-     ', etd.ID_PAYS_NATIONALITE' +
-     ', etd.ADR_RUE ' +
-     ', etd.ADR_NO' +
-     ', etd.ADR_BOITE' +
-     ', l.NOM ' +
-     ', l.CP' +
-     ', etd.GSM' +
-     ', etd.TEL' +
-     ', etd.NO_COMPTE' +
-     ', etd.ALLOC_FAM ' +
-     ', etd.NO_NATIONAL '+
-    ', etd.EMAIL        '+
-    ', etd.DATE_CREATED  '+
-     ', etd.DATE_MODIFIED '+
-     ', etd.USERNAME       '+
-     ', etd.MODIFIED_BY     '+
-'FROM ETUDIANTS etd       '+
-'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS '+
-'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE');
+  ibqry_etudiant.SQL.add('SELECT MAT_ETUD' + ', etd.NOM' + ', etd.PRENOM' +
+    ', etd.SEXE' + ', etd.DATE_NAISS' + ', v.nom as ville_naissance ' +
+    ', p.nom as pays' + ', etd.ADR_RUE ' + ', etd.ADR_NO' +
+    ', etd.ADR_BOITE' + ', l.NOM as localite ' + ', l.CP' + ', etd.GSM' + ', etd.TEL' +
+    ', etd.NO_COMPTE' + ', etd.ALLOC_FAM ' + ', etd.NO_NATIONAL ' +
+    ', etd.EMAIL        ' + ', etd.DATE_CREATED  ' + ', etd.DATE_MODIFIED ' +
+    ', etd.USERNAME       ' + ', etd.MODIFIED_BY     ' +
+    'FROM ETUDIANTS etd       ' +
+    'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS ' +
+    'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE' +
+    ' inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE');
 
   ibqry_etudiant.SQL.add(' ORDER BY ' + Ordering + ' ' + direction + ' ');
 
-//  OutputDebugString(PChar(ibqry_etudiant.SQL.Text));
+  // OutputDebugString(PChar(ibqry_etudiant.SQL.Text));
 
   ibqry_etudiant.Open;
   iCount := ibqry_etudiant.RecordCount;
@@ -445,4 +451,13 @@ ibqry_etudiant.SQL.add('SELECT MAT_ETUD' +
   // lbl_personne.Caption := IntToStr(iCount) + ' personnes';
 end;
 
+procedure TFHelloWorld.FormShow(Sender: TObject);
+begin
+  // default sql ordering
+  ordering := 'NOM';
+  direction := 'ASC';
+end;
+
+
 end.
+

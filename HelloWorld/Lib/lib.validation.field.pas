@@ -19,6 +19,7 @@ function f_email(param_email: string; param_original_length: Integer): string;
 function f_compte_bancaire(param_NoCompte: String; param_iban: Boolean)
   : Boolean;
 function f_check_text(text: String; text_empty: Boolean): String;
+function f_check_date(text: String; text_empty: Boolean): String;
 
 const
   LongNoIBIS = 9;
@@ -55,6 +56,33 @@ begin
   end;
 
 end;
+
+function f_check_date(text: String; text_empty: Boolean): String;
+var
+  v_regex_text: Tregex;
+  v_valide_text: Boolean;
+
+begin
+
+  // regex for text
+  v_regex_text := Tregex.Create('(0[1-9]|[12][0-9]|3[01])[-](0[1-9]|1[012])[-]()\d\d');
+  v_valide_text := v_regex_text.Match(text).Success;
+
+  // check if the variable can be null - text_empty is True: example : 'prenom' can be null
+  if text_empty = False or v_valide_text = True then
+  begin
+    Result := 'Le champ date ne peut pas être vide et ne peut pas contenir de caractères spéciaux - exemple 01/01/2019';
+  end
+  else
+  begin
+    Result := 'OK';
+
+  end;
+
+end;
+
+
+
 
 {
   begin
