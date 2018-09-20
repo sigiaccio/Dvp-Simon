@@ -337,6 +337,7 @@ object FHelloWorld: TFHelloWorld
     DataField = 'DATE_NAISS'
     DataSource = ds2
     TabOrder = 11
+    OnChange = dbedt_DATE_NAISSChange
     OnExit = dbedt_DATE_NAISSExit
   end
   object dbedt_NOM_1: TDBEdit

@@ -73,6 +73,7 @@ type
     procedure dbedt_PRENOMChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure dbedt_DATE_NAISSExit(Sender: TObject);
+    procedure dbedt_DATE_NAISSChange(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -334,6 +335,15 @@ begin
   searchSetQuery('etd.' + Ordering, direction);
 
   // wdbgrd1.Sort('Nom', True);
+
+end;
+
+procedure TFHelloWorld.dbedt_DATE_NAISSChange(Sender: TObject);
+begin
+
+  dbedt_DATE_NAISS.Font.Color := clWindowText;
+  edt_error.text := '';
+  edt_error.Font.Color := clWindowText;
 
 end;
 
