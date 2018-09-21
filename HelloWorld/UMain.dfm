@@ -3,7 +3,7 @@ object FHelloWorld: TFHelloWorld
   Top = 0
   Caption = 'FHelloWorld'
   ClientHeight = 590
-  ClientWidth = 1506
+  ClientWidth = 1824
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clBlack
@@ -249,6 +249,7 @@ object FHelloWorld: TFHelloWorld
     TitleMenuAttributes.Options = [sfoSortAscending, sfoSortDescending, sfoGrouping, sfoSelectColumns, sfoCreateIndexes, sfoAutoTitleButtonSort]
     TitleMenuAttributes.MenuEnabled = True
     OnTitleButtonClick = wdbgrd1TitleButtonClick
+    OnDblClick = wdbgrd1DblClick
   end
   object dbedt_MAT_ETUD: TDBEdit
     Left = 830
@@ -265,6 +266,7 @@ object FHelloWorld: TFHelloWorld
     Font.Style = []
     ParentFont = False
     TabOrder = 7
+    OnChange = dbedt_MAT_ETUDChange
   end
   object dbedt_NOM: TDBEdit
     Left = 360
@@ -358,6 +360,26 @@ object FHelloWorld: TFHelloWorld
     DataSource = ds2
     TabOrder = 13
   end
+  object wdbgrd_alloc: TwwDBGrid
+    Left = 1000
+    Top = 312
+    Width = 801
+    Height = 244
+    IniAttributes.Delimiter = ';;'
+    TitleColor = clBtnFace
+    FixedCols = 0
+    ShowHorzScrollBar = True
+    DataSource = ds_alloc
+    TabOrder = 14
+    TitleAlignment = taLeftJustify
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    TitleLines = 1
+    TitleButtons = False
+  end
   object ibqry_etudiant: TIBOQuery
     EditSQL.Strings = (
       '')
@@ -393,96 +415,140 @@ object FHelloWorld: TFHelloWorld
     Left = 568
     Top = 256
     object strngfld_etudiantMAT_ETUD: TStringField
+      DisplayWidth = 10
       FieldName = 'MAT_ETUD'
       Required = True
+      Visible = False
       Size = 10
     end
     object strngfld_etudiantNOM: TStringField
+      DisplayWidth = 50
       FieldName = 'NOM'
       Required = True
+      Visible = False
       Size = 50
     end
     object strngfld_etudiantPRENOM: TStringField
+      DisplayWidth = 50
       FieldName = 'PRENOM'
+      Visible = False
       Size = 50
     end
     object strngfld_etudiantSEXE: TStringField
+      DisplayWidth = 1
       FieldName = 'SEXE'
+      Visible = False
       Size = 1
     end
     object dtfld_etudiantDATE_NAISS: TDateField
+      DisplayWidth = 10
       FieldName = 'DATE_NAISS'
       Required = True
+      Visible = False
     end
     object strngfld_etudiantVILLE_NAISSANCE: TStringField
+      DisplayWidth = 40
       FieldName = 'VILLE_NAISSANCE'
       Required = True
+      Visible = False
       Size = 40
     end
     object strngfld_etudiantPAYS: TStringField
+      DisplayWidth = 50
       FieldName = 'PAYS'
       Required = True
+      Visible = False
       Size = 50
     end
     object strngfld_etudiantADR_RUE: TStringField
+      DisplayWidth = 50
       FieldName = 'ADR_RUE'
+      Visible = False
       Size = 50
     end
     object strngfld_etudiantADR_NO: TStringField
+      DisplayWidth = 7
       FieldName = 'ADR_NO'
+      Visible = False
       Size = 7
     end
     object strngfld_etudiantADR_BOITE: TStringField
+      DisplayWidth = 7
       FieldName = 'ADR_BOITE'
+      Visible = False
       Size = 7
     end
     object strngfld_etudiantLOCALITE: TStringField
+      DisplayWidth = 40
       FieldName = 'LOCALITE'
       Required = True
+      Visible = False
       Size = 40
     end
     object strngfld_etudiantCP: TStringField
+      DisplayWidth = 4
       FieldName = 'CP'
       Required = True
+      Visible = False
       Size = 4
     end
     object strngfld_etudiantGSM: TStringField
+      DisplayWidth = 30
       FieldName = 'GSM'
+      Visible = False
       Size = 30
     end
     object strngfld_etudiantTEL: TStringField
+      DisplayWidth = 10
       FieldName = 'TEL'
+      Visible = False
       Size = 10
     end
     object strngfld_etudiantNO_COMPTE: TStringField
+      DisplayWidth = 16
       FieldName = 'NO_COMPTE'
+      Visible = False
       Size = 16
     end
     object strngfld_etudiantALLOC_FAM: TStringField
+      DisplayWidth = 1
       FieldName = 'ALLOC_FAM'
+      Visible = False
       Size = 1
     end
     object strngfld_etudiantNO_NATIONAL: TStringField
+      DisplayWidth = 11
       FieldName = 'NO_NATIONAL'
+      Visible = False
       Size = 11
     end
     object strngfld_etudiantEMAIL: TStringField
+      DisplayWidth = 100
       FieldName = 'EMAIL'
+      Visible = False
       Size = 100
     end
     object dtmfld_etudiantDATE_CREATED: TDateTimeField
+      DisplayWidth = 18
       FieldName = 'DATE_CREATED'
+      Visible = False
     end
     object dtmfld_etudiantDATE_MODIFIED: TDateTimeField
+      DisplayWidth = 18
       FieldName = 'DATE_MODIFIED'
+      Visible = False
     end
     object strngfld_etudiantUSERNAME: TStringField
+      DisplayWidth = 30
       FieldName = 'USERNAME'
+      Visible = False
       Size = 30
     end
     object strngfld_etudiantMODIFIED_BY: TStringField
+      DisplayWidth = 30
       FieldName = 'MODIFIED_BY'
       Required = True
+      Visible = False
       Size = 30
     end
   end
@@ -506,5 +572,91 @@ object FHelloWorld: TFHelloWorld
     Left = 488
     Top = 256
     SavedPassword = '.JuMbLe.01.4B3A132E012A154B'
+  end
+  object ds_alloc: TDataSource
+    DataSet = ibqry_alloc
+    Left = 1104
+    Top = 248
+  end
+  object ibqry_alloc: TIBOQuery
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'PmatEtud'
+        ParamType = ptInput
+      end>
+    IB_Connection = ibdtbs_connexion
+    RecordCountAccurate = True
+    SQL.Strings = (
+      'select UF.DENOM_CRT,'
+      '       NIVEAUX.SEC_SUP,'
+      '       ORG.DATE_DEB,'
+      '       ORG.DATE_FIN,'
+      '       UF.NB_PERIODES_STAGE,'
+      '       UF.NB_PERIODES,'
+      '-- Debug Zone Start'
+      '/*'
+      '       ORG.NB_SEM_JJ,'
+      '       ORG.NB_SEM_SD,'
+      '       uf.NB_PERIODES,'
+      '       uf.NB_PERIODES_STAGE,'
+      '*/'
+      '-- Debug Zone End'
+      
+        '-- Le case permet de calculer les p'#233'riodes semaines de la classe' +
+        ' en fonction des p'#233'riodes de l'#39'UE'
+      '-- ou des p'#233'riodes de stage de l'#39'UE'
+      '       case'
+      
+        '       WHEN UF.ID_TYPE_UF = 2 then cast(UF.NB_PERIODES_STAGE as ' +
+        'decimal(4,2))/(ORG.NB_SEM_JJ + ORG.NB_SEM_SD)'
+      
+        '            else  cast(UF.NB_PERIODES as decimal(4,2))/(ORG.NB_S' +
+        'EM_JJ + ORG.NB_SEM_SD)'
+      '       end as PERIODES_SEMAINE'
+      'from'
+      '  INSCRIPTIONS'
+      
+        '  inner join CLASSES on (INSCRIPTIONS.NO_CLASSE = CLASSES.NO_CLA' +
+        'SSE)'
+      '  inner join UF on (CLASSES.ID_UF = UF.ID_UF)'
+      '  inner join NIVEAUX on (NIVEAUX.NIVEAU = UF.NIVEAU)'
+      '  inner join ORG on (CLASSES.ID_ORG = Org.ID_ORG)'
+      'where'
+      '  INSCRIPTIONS.MAT_ETUD = :PmatEtud and'
+      '  INSCRIPTIONS.CODE_MOTIF_TRANSF is null'
+      'order by'
+      '  ORG.DATE_DEB,'
+      '  ORG.DATE_FIN')
+    Left = 1040
+    Top = 240
+    object strngfld_allocDENOM_CRT: TStringField
+      FieldName = 'DENOM_CRT'
+    end
+    object strngfld_allocSEC_SUP: TStringField
+      FieldName = 'SEC_SUP'
+      Required = True
+      Size = 3
+    end
+    object dtfld_allocDATE_DEB: TDateField
+      FieldName = 'DATE_DEB'
+      Required = True
+    end
+    object dtfld_allocDATE_FIN: TDateField
+      FieldName = 'DATE_FIN'
+      Required = True
+    end
+    object smlntfld_allocNB_PERIODES_STAGE: TSmallintField
+      FieldName = 'NB_PERIODES_STAGE'
+    end
+    object smlntfld_allocNB_PERIODES: TSmallintField
+      FieldName = 'NB_PERIODES'
+    end
+    object ibcdfld_allocPERIODES_SEMAINE: TIBOBCDField
+      FieldName = 'PERIODES_SEMAINE'
+      ReadOnly = True
+      Precision = 18
+      Size = 2
+    end
   end
 end

@@ -45,24 +45,24 @@ object popupmodal: Tpopupmodal
     Width = 1337
     Height = 161
     Selected.Strings = (
-      'ID_HORAIRE'#9'3'#9'ID horaire'#9#9
-      'NO_CLASSE'#9'5'#9'Num'#233'ro classe'#9#9
-      '"Cours denom"'#9'150'#9'"Cours denom"'#9'F'#9
-      '"Sections denom"'#9'25'#9'"Sections denom"'#9#9
-      'DATE_DEB'#9'10'#9'DATE_DEB'#9#9
-      'DATE_FIN'#9'10'#9'DATE_FIN'#9#9
-      'DENOM'#9'25'#9'DENOM'#9#9
-      'DENOM_FREQ_SEM'#9'2'#9'DENOM_FREQ_SEM'#9#9
-      'HEURE_DEB'#9'10'#9'HEURE_DEB'#9#9
-      'HEURE_FIN'#9'10'#9'HEURE_FIN'#9#9
-      'ID_JOUR'#9'10'#9'ID_JOUR'#9#9
-      'ID_ORG'#9'3'#9'ID_ORG'#9#9
-      'NOM'#9'10'#9'NOM'#9#9
-      'NOM_1'#9'10'#9'NOM_1'#9#9
-      'NUMER_FREQ_SEM'#9'5'#9'NUMER_FREQ_SEM'#9#9
-      'PRENOM'#9'5'#9'PRENOM'#9#9
-      'PRENOM_1'#9'5'#9'PRENOM_1'#9#9
-      'USERNAME'#9'30'#9'USERNAME'#9#9)
+      'ID_HORAIRE'#9'3'#9'ID horaire'
+      'NO_CLASSE'#9'5'#9'Num'#233'ro classe'
+      '"Cours denom"'#9'150'#9'"Cours denom"'
+      '"Sections denom"'#9'25'#9'"Sections denom"'
+      'DATE_DEB'#9'10'#9'DATE_DEB'
+      'DATE_FIN'#9'10'#9'DATE_FIN'
+      'DENOM'#9'25'#9'DENOM'
+      'DENOM_FREQ_SEM'#9'2'#9'DENOM_FREQ_SEM'
+      'HEURE_DEB'#9'10'#9'HEURE_DEB'
+      'HEURE_FIN'#9'10'#9'HEURE_FIN'
+      'ID_JOUR'#9'10'#9'ID_JOUR'
+      'ID_ORG'#9'3'#9'ID_ORG'
+      'NOM'#9'10'#9'NOM'
+      'NOM_1'#9'10'#9'NOM_1'
+      'NUMER_FREQ_SEM'#9'5'#9'NUMER_FREQ_SEM'
+      'PRENOM'#9'5'#9'PRENOM'
+      'PRENOM_1'#9'5'#9'PRENOM_1'
+      'USERNAME'#9'30'#9'USERNAME')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0

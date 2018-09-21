@@ -64,6 +64,16 @@ type
     dtmfld_etudiantDATE_MODIFIED: TDateTimeField;
     strngfld_etudiantUSERNAME: TStringField;
     strngfld_etudiantMODIFIED_BY: TStringField;
+    wdbgrd_alloc: TwwDBGrid;
+    ds_alloc: TDataSource;
+    ibqry_alloc: TIBOQuery;
+    strngfld_allocDENOM_CRT: TStringField;
+    strngfld_allocSEC_SUP: TStringField;
+    dtfld_allocDATE_DEB: TDateField;
+    dtfld_allocDATE_FIN: TDateField;
+    smlntfld_allocNB_PERIODES_STAGE: TSmallintField;
+    smlntfld_allocNB_PERIODES: TSmallintField;
+    ibcdfld_allocPERIODES_SEMAINE: TIBOBCDField;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -74,6 +84,8 @@ type
     procedure FormShow(Sender: TObject);
     procedure dbedt_DATE_NAISSExit(Sender: TObject);
     procedure dbedt_DATE_NAISSChange(Sender: TObject);
+    procedure wdbgrd1DblClick(Sender: TObject);
+    procedure dbedt_MAT_ETUDChange(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -116,6 +128,7 @@ var
   init_file: TIniFile;
 
 begin
+
   //
   // name := 'Text';
   // var1 := 12;
@@ -272,6 +285,18 @@ begin
   // DB
   ibqry_etudiant.Active := True;
 
+   ibqry_alloc.Active := True;
+
+//      ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
+
+
+end;
+
+procedure TFHelloWorld.wdbgrd1DblClick(Sender: TObject);
+begin
+  // ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.Text;
+//    ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
+   //ibqry_alloc.RefreshRows;
 end;
 
 procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject;
@@ -365,6 +390,22 @@ begin
 
   edt_error.text := return;
   edt_error.Font.Color := clRed;
+end;
+
+procedure TFHelloWorld.dbedt_MAT_ETUDChange(Sender: TObject);
+begin
+
+    if dbedt_MAT_ETUD.Text <> '' then
+    begin
+    OutputDebugString(Pchar(' MAT ETUD ' + dbedt_MAT_ETUD.Text));
+
+//      ibqry_alloc.ParamByName('PMatEtud').AsString := ibqry_etudiant.FieldByName('MAT_ETUD').AsString;
+      ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.Text;
+       ibqry_alloc.Refresh;
+
+       ibqry_alloc.Active := True;
+    end;
+
 end;
 
 procedure TFHelloWorld.dbedt_NOMChange(Sender: TObject);
