@@ -11,7 +11,8 @@ uses
   IBODataset, Data.DBXFirebird, Data.FMTBcd, Vcl.Grids, Wwdbigrd, Wwdbgrid,
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
-  Wwdotdot, Wwdbcomb, lib.validation.field;
+  Wwdotdot, Wwdbcomb, lib.validation.field,
+  System.DateUtils;
 
 type
   TFHelloWorld = class(TForm)
@@ -74,6 +75,8 @@ type
     smlntfld_allocNB_PERIODES_STAGE: TSmallintField;
     smlntfld_allocNB_PERIODES: TSmallintField;
     ibcdfld_allocPERIODES_SEMAINE: TIBOBCDField;
+    btnAF: TButton;
+    strngfld_allocMAT_ETUD: TStringField;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -86,6 +89,10 @@ type
     procedure dbedt_DATE_NAISSChange(Sender: TObject);
     procedure wdbgrd1DblClick(Sender: TObject);
     procedure dbedt_MAT_ETUDChange(Sender: TObject);
+    // calculate the number of weeks for secondary and higher education for family allowances (AF)
+    procedure CalcWeekAF(matEtud: String; startDate: TStringList;
+      endDate: TStringList; period: TStringList);
+    procedure btnAFClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -206,13 +213,13 @@ begin
     begin
       OutputDebugString(Pchar('Test :' + IntToStr(cpt)));
     end;
-
-    while cpt <= 15 do
-    begin
+    {
+      while cpt <= 15 do
+      begin
       // ShowMessage(IntToStr(cpt));
       inc(cpt);
-    end;
-
+      end;
+    }
     // T string
 
     tab1 := TStringList.Create;
@@ -285,18 +292,106 @@ begin
   // DB
   ibqry_etudiant.Active := True;
 
-   ibqry_alloc.Active := True;
+  ibqry_alloc.Active := True;
 
-//      ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
-
+  // ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
 
 end;
 
 procedure TFHelloWorld.wdbgrd1DblClick(Sender: TObject);
 begin
   // ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.Text;
-//    ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
-   //ibqry_alloc.RefreshRows;
+  // ibqry_alloc.ParamByName('PMatEtud').AsString := '2017005044';
+  // ibqry_alloc.RefreshRows;
+end;
+
+procedure TFHelloWorld.btnAFClick(Sender: TObject);
+var
+  debug, nb_diffDate, nb_colonne, nb_ligne: integer;
+  matEtud: String;
+  startDate, endDate, period: TStringList;
+  sepDate: TDateTime;
+  annee, mois, jour: Word;
+  day : String;
+
+  // 4 colonnes et 36 lignes
+  // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
+  // LIGNES : semaine 1 --> 36
+  // tabAF: array [1 .. 4] of array [1 .. 36] of String;
+  tabAF: array of array of string;
+
+begin
+
+  // CALCULER ALLOCATIONS FAMILIALES
+
+  debug := 1;
+  DecodeDate(Now, annee, mois, jour);
+  sepDate := EncodeDateTime(annee, 09, 03, 00, 00, 00, 00);
+
+  // 1ère dimension
+  SetLength(tabAF, 4);
+  // 2ème dimension
+  SetLength(tabAF[0], 36);
+  SetLength(tabAF[1], 36);
+  SetLength(tabAF[2], 36);
+  SetLength(tabAF[3], 36);
+
+  day := FormatSettings.LongDayNames[DayOfWeek(sepDate)];
+
+  // initialiser le tableau avec périodes
+  for nb_colonne := 0 to 4 - 1 do
+    for nb_ligne := 0 to 36 - 1 do
+    begin
+      // 1er septembre xxx - 7 jours plus tard
+      tabAF[nb_colonne, nb_ligne] :=
+        (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
+
+      OutputDebugString(Pchar('Colonne ' + IntToStr(nb_colonne) + ' Ligne ' +
+        IntToStr(nb_ligne)));
+      OutputDebugString(Pchar('Tab ' + tabAF[nb_colonne, nb_ligne]));
+
+      sepDate := IncDay(sepDate,7);
+
+    end;
+
+  matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
+  if debug = 1 then
+  begin
+    OutputDebugString(Pchar('AF : Matricule Etudiant ' + matEtud));
+  end;
+
+  startDate := TStringList.Create;
+  endDate := TStringList.Create;
+  period := TStringList.Create;
+
+  ibqry_alloc.First;
+  {
+    while not ibqry_alloc.Eof do
+    begin
+    startDate.add(ibqry_alloc.FieldByName('date_deb').AsString);
+    endDate.add(ibqry_alloc.FieldByName('date_fin').AsString);
+
+    if debug = 1 then
+    begin
+    OutputDebugString(Pchar('AF : start date ' + startDate[0]));
+    OutputDebugString(Pchar('AF : start fin ' + endDate[0]));
+    OutputDebugString(Pchar('AF : période/semaine ' + period[0]));
+    end;
+
+    period.add(ibqry_alloc.FieldByName('periodes_semaine').AsString);
+    nb_diffDate := DaysBetween(StrToDateTime(startDate[0]),StrToDateTime(endDate[0]));
+
+    ibqry_alloc.Next;
+    end;
+  }
+  Self.CalcWeekAF(matEtud, startDate, endDate, period);
+
+end;
+
+procedure TFHelloWorld.CalcWeekAF(matEtud: String; startDate: TStringList;
+  endDate, period: TStringList);
+begin
+  OutputDebugString(Pchar('---CalcWeekAF---'));
 end;
 
 procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject;
@@ -304,10 +399,11 @@ procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject;
 var
   listOrderBy: TStringList;
   index: integer; // not used but needed
-  iCount, cpt: integer;
+  iCount: integer;
+
 begin
 
-  //direction := 'ASC';
+  // direction := 'ASC';
 
   listOrderBy := TStringList.Create;
   listOrderBy.add('MAT_ETUD');
@@ -377,9 +473,9 @@ var
   return, date_naiss: String;
 begin
 
-//  date_naiss := strngfld_etudiantVILLE_NAISSANCE
+  // date_naiss := strngfld_etudiantVILLE_NAISSANCE
 
-  date_naiss := dbedt_DATE_NAISS.Field.Text;
+  date_naiss := dbedt_DATE_NAISS.field.text;
 
   return := lib.validation.field.f_check_date(date_naiss, False);
 
@@ -395,16 +491,15 @@ end;
 procedure TFHelloWorld.dbedt_MAT_ETUDChange(Sender: TObject);
 begin
 
-    if dbedt_MAT_ETUD.Text <> '' then
-    begin
-    OutputDebugString(Pchar(' MAT ETUD ' + dbedt_MAT_ETUD.Text));
+  if dbedt_MAT_ETUD.text <> '' then
+  begin
+    // OutputDebugString(Pchar('MAT ETUD ' + dbedt_MAT_ETUD.text));
 
-//      ibqry_alloc.ParamByName('PMatEtud').AsString := ibqry_etudiant.FieldByName('MAT_ETUD').AsString;
-      ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.Text;
-       ibqry_alloc.Refresh;
+    // ibqry_alloc.ParamByName('PMatEtud').AsString := ibqry_etudiant.FieldByName('MAT_ETUD').AsString;
+    ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.text;
+    ibqry_alloc.Refresh;
 
-       ibqry_alloc.Active := True;
-    end;
+  end;
 
 end;
 
@@ -418,7 +513,6 @@ end;
 procedure TFHelloWorld.dbedt_NOMExit(Sender: TObject);
 var
   return, nom: String;
-  size: integer;
 
 begin
   // OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
@@ -449,7 +543,6 @@ end;
 procedure TFHelloWorld.dbedt_PRENOMExit(Sender: TObject);
 var
   return, prenom: String;
-  size: integer;
 
 begin
   // OutputDebugString(Pchar(strngfld_etudiantNOM.AsString));
@@ -480,8 +573,8 @@ begin
   ibqry_etudiant.SQL.text := '';
   ibqry_etudiant.SQL.add('SELECT MAT_ETUD' + ', etd.NOM' + ', etd.PRENOM' +
     ', etd.SEXE' + ', etd.DATE_NAISS' + ', v.nom as ville_naissance ' +
-    ', p.nom as pays' + ', etd.ADR_RUE ' + ', etd.ADR_NO' +
-    ', etd.ADR_BOITE' + ', l.NOM as localite ' + ', l.CP' + ', etd.GSM' + ', etd.TEL' +
+    ', p.nom as pays' + ', etd.ADR_RUE ' + ', etd.ADR_NO' + ', etd.ADR_BOITE' +
+    ', l.NOM as localite ' + ', l.CP' + ', etd.GSM' + ', etd.TEL' +
     ', etd.NO_COMPTE' + ', etd.ALLOC_FAM ' + ', etd.NO_NATIONAL ' +
     ', etd.EMAIL        ' + ', etd.DATE_CREATED  ' + ', etd.DATE_MODIFIED ' +
     ', etd.USERNAME       ' + ', etd.MODIFIED_BY     ' +
@@ -505,10 +598,8 @@ end;
 procedure TFHelloWorld.FormShow(Sender: TObject);
 begin
   // default sql ordering
-  ordering := 'NOM';
+  Ordering := 'NOM';
   direction := 'ASC';
 end;
 
-
 end.
-

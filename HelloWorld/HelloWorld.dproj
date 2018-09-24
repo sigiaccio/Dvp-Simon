@@ -40,6 +40,7 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
+			<DCC_OutputDRCFile>true</DCC_OutputDRCFile>
 			<DCC_UsePackage>bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;FMXTee;bindengine;DBXOracleDriver;CustomIPTransport;dsnap;DBXInformixDriver;IndyCore;FmxTeeUI;DBXFirebirdDriver;inet;inetdbxpress;DBXSybaseASADriver;IPIndyImpl;dbexpress;DataSnapIndy10ServerTransport;$(DCC_UsePackage)</DCC_UsePackage>
 			<Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
 			<DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
@@ -93,6 +94,10 @@
 			<DCCReference Include="..\..\EPFC-Apps\XE2\Lib\lib.log.pas"/>
 			<DCCReference Include="..\..\EPFC-Apps\XE2\Lib\lib.windows.pas"/>
 			<DCCReference Include="Lib\lib.validation.field.pas"/>
+			<DCCReference Include="CalcWeekAF.pas">
+				<Form>Form1</Form>
+				<FormType>dfm</FormType>
+			</DCCReference>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -140,6 +145,18 @@
 					<Source>
 						<Source Name="MainSource">HelloWorld.dpr</Source>
 					</Source>
+					<Resource_DLL_Projects>
+						<Resource_DLL_Projects Name="Item0">Anglais (Royaume-Uni)*$00000809*ENG*ENG</Resource_DLL_Projects>
+					</Resource_DLL_Projects>
+					<RDP_Source_Files>
+						<RDP_Source_Files Name="Item0">UMain.dfm</RDP_Source_Files>
+						<RDP_Source_Files Name="Item1">Upopupmodal.dfm</RDP_Source_Files>
+						<RDP_Source_Files Name="Item2">CalcWeekAF.dfm</RDP_Source_Files>
+						<RDP_Source_Files Name="Item3">Win32\Debug\HelloWorld.drc</RDP_Source_Files>
+					</RDP_Source_Files>
+					<Language>
+						<Language Name="ProjectLang">$0000080C</Language>
+					</Language>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>

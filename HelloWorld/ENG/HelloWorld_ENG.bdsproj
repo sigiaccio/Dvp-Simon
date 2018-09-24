@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">W32ResourceDLL.Personality</Option>
+      <Option Name="ProjectType">ResourceDLL</Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{6AAE2F4C-9787-478D-B279-F5E583CAE0B0}</Option>
+    </Option>
+  </PersonalityInfo>
+  <W32ResourceDLL.Personality>
+    <Source>
+      <Source Name="MainSource">HelloWorld.dpr</Source>
+    </Source>
+    <Options>
+      <Options Name="BaseLang">2060</Options>
+      <Options Name="TargetName">..\Win32\Debug\HelloWorld.ENG</Options>
+      <Options Name="BRCC_IncludePath"></Options>
+      <Options Name="Company"></Options>
+      <Options Name="Configuration"></Options>
+      <Options Name="Copyright"></Options>
+      <Options Name="Description"></Options>
+      <Options Name="Trademark"></Options>
+      <Options Name="Product"></Options>
+      <Options Name="ProductVersion"></Options>
+      <Options Name="Title"></Options>
+      <Options Name="FileVersion"></Options>
+      <Options Name="Evidence"></Options>
+      <Options Name="KeyFile"></Options>
+      <Options Name="KeyName"></Options>
+    </Options>
+    <FileList>
+      <File FileName="CalcWeekAF.dfm" ContainerId="W32Form" ModuleName="CalcWeekAF.dfm"/>
+      <File FileName="UMain.dfm" ContainerId="W32Form" ModuleName="UMain.dfm"/>
+      <File FileName="Upopupmodal.dfm" ContainerId="W32Form" ModuleName="Upopupmodal.dfm"/>
+      <File FileName="vcl\DBLOGDLG.dfm" ContainerId="W32Form" ModuleName="DBLOGDLG.dfm"/>
+      <File FileName="vcl\DBPWDLG.dfm" ContainerId="W32Form" ModuleName="DBPWDLG.dfm"/>
+      <File FileName="Win32\Debug\HelloWorld_DRC.rc" ContainerId="W32RC" ModuleName="HelloWorld_DRC.rc"/>
+    </FileList>
+  </W32ResourceDLL.Personality>
+</BorlandProject>

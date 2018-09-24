@@ -366,14 +366,13 @@ object FHelloWorld: TFHelloWorld
     Width = 801
     Height = 244
     Selected.Strings = (
-      'MAT_ETUD'#9'10'#9'MAT_ETUD'
-      'DENOM_CRT'#9'20'#9'DENOM_CRT'
-      'SEC_SUP'#9'3'#9'SEC_SUP'
-      'DATE_DEB'#9'10'#9'DATE_DEB'
-      'DATE_FIN'#9'10'#9'DATE_FIN'
-      'NB_PERIODES_STAGE'#9'10'#9'NB_PERIODES_STAGE'
-      'NB_PERIODES'#9'10'#9'NB_PERIODES'
-      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE')
+      'DENOM_CRT'#9'20'#9'DENOM_CRT'#9#9
+      'SEC_SUP'#9'3'#9'SEC_SUP'#9#9
+      'DATE_DEB'#9'10'#9'DATE_DEB'#9#9
+      'DATE_FIN'#9'10'#9'DATE_FIN'#9#9
+      'NB_PERIODES_STAGE'#9'10'#9'NB_PERIODES_STAGE'#9#9
+      'NB_PERIODES'#9'10'#9'NB_PERIODES'#9#9
+      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE'#9#9)
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -388,15 +387,6 @@ object FHelloWorld: TFHelloWorld
     TitleFont.Style = []
     TitleLines = 1
     TitleButtons = False
-  end
-  object btnAF: TButton
-    Left = 120
-    Top = 208
-    Width = 75
-    Height = 25
-    Caption = 'btnAF'
-    TabOrder = 15
-    OnClick = btnAFClick
   end
   object ibqry_etudiant: TIBOQuery
     EditSQL.Strings = (
@@ -599,16 +589,14 @@ object FHelloWorld: TFHelloWorld
   object ibqry_alloc: TIBOQuery
     Params = <
       item
-        DataType = ftString
+        DataType = ftUnknown
         Name = 'PmatEtud'
         ParamType = ptInput
       end>
-    Active = True
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
-      'select inscriptions.mat_etud,'
-      '       UF.DENOM_CRT,'
+      'select UF.DENOM_CRT,'
       '       NIVEAUX.SEC_SUP,'
       '       ORG.DATE_DEB,'
       '       ORG.DATE_FIN,'
@@ -650,12 +638,6 @@ object FHelloWorld: TFHelloWorld
       '  ORG.DATE_FIN')
     Left = 1040
     Top = 240
-    object strngfld_allocMAT_ETUD: TStringField
-      DisplayWidth = 10
-      FieldName = 'MAT_ETUD'
-      Required = True
-      Size = 10
-    end
     object strngfld_allocDENOM_CRT: TStringField
       DisplayWidth = 20
       FieldName = 'DENOM_CRT'
