@@ -363,8 +363,11 @@ begin
     // retrieve the week's number
     start_date := ibqry_alloc.FieldByName('date_deb').AsDateTime;
     end_date := ibqry_alloc.FieldByName('date_fin').AsDateTime;
-    id_week := WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
-      .AsString));
+    // function : search week of the year with a date
+//    id_week := WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+
+
     //OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
     niveau := ibqry_alloc.FieldByName('SEC_SUP').AsString;
@@ -417,6 +420,9 @@ begin
   begin// initialize tab with index week 1 --> 52
    for nb_ligne := 0 to 52 do
    begin
+
+
+
 
       OutputDebugString(Pchar('TAB AF '+ IntToStr(nb_colonne) +'/'+ IntToStr(nb_ligne) +' : '+ FloatToStr(tabAF[nb_ligne,nb_colonne])));
 
