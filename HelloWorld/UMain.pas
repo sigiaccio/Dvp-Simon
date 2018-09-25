@@ -305,54 +305,62 @@ begin
   // ibqry_alloc.RefreshRows;
 end;
 
+// know the day of the week
+function WeekOfYear(ADate: TDateTime): word;
+var
+  day: word;
+  month: word;
+  year: word;
+  FirstOfYear: TDateTime;
+begin
+  DecodeDate(ADate, year, month, day);
+  FirstOfYear := EncodeDate(year, 1, 1);
+  Result := Trunc(ADate - FirstOfYear) div 7 + 1;
+end;
+
 procedure TFHelloWorld.btnAFClick(Sender: TObject);
 var
-  debug, nb_diffDate, nb_colonne, nb_ligne: integer;
+  debug, nb_diffDate, nb_colonne, nb_ligne, id_week: integer;
   matEtud: String;
   startDate, endDate, period: TStringList;
   sepDate: TDateTime;
-  annee, mois, jour: Word;
-  day : String;
-
+  annee, mois, jour: word;
+  day: String;
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
-  // LIGNES : semaine 1 --> 36
-  // tabAF: array [1 .. 4] of array [1 .. 36] of String;
-  tabAF: array of array of string;
+  // LIGNES : semaine 1 --> 52 (52 semaines = 1 année)
+  tabAF: array [1 .. 4] of array [1 .. 52] of integer;
 
+  // ShowMessage(IntToStr(WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString))));
 begin
+  debug := 1;
 
   // CALCULER ALLOCATIONS FAMILIALES
+  nb_colonne := 0;
+  nb_ligne := 0;
+  id_week := 0;
 
-  debug := 1;
-  DecodeDate(Now, annee, mois, jour);
-  sepDate := EncodeDateTime(annee, 09, 03, 00, 00, 00, 00);
+//  for nb_colonne := 0 to High(tabAF) do
+//  begin
 
-  // 1ère dimension
-  SetLength(tabAF, 4);
-  // 2ème dimension
-  SetLength(tabAF[0], 36);
-  SetLength(tabAF[1], 36);
-  SetLength(tabAF[2], 36);
-  SetLength(tabAF[3], 36);
-
-  day := FormatSettings.LongDayNames[DayOfWeek(sepDate)];
-
-  // initialiser le tableau avec périodes
-  for nb_colonne := 0 to 4 - 1 do
-    for nb_ligne := 0 to 36 - 1 do
+//    for nb_ligne := 0 to High(tabAF[nb_colonne]) do
+    for nb_ligne := 0 to 52 do
     begin
-      // 1er septembre xxx - 7 jours plus tard
-      tabAF[nb_colonne, nb_ligne] :=
-        (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
+      tabAF[nb_colonne,nb_ligne] := id_week;
+      inc(id_week);
+      OutputDebugString
+        (Pchar('TabAF = ' + IntToStr(tabAF[nb_colonne,nb_ligne])));
 
       OutputDebugString(Pchar('Colonne ' + IntToStr(nb_colonne) + ' Ligne ' +
-        IntToStr(nb_ligne)));
-      OutputDebugString(Pchar('Tab ' + tabAF[nb_colonne, nb_ligne]));
+        IntToStr(nb_ligne) + ' id_week ' + IntToStr(id_week)));
 
-      sepDate := IncDay(sepDate,7);
+//    end;
+  end;
 
-    end;
+  // DecodeDate(Now, annee, mois, jour);
+  // sepDate := EncodeDateTime(annee, 09, 03, 00, 00, 00, 00);
+  // tabAF[nb_colonne, nb_ligne] := (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
+  // tabAF[0, nb_ligne] := nb_ligne;
 
   matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
   if debug = 1 then
@@ -385,6 +393,39 @@ begin
     end;
   }
   Self.CalcWeekAF(matEtud, startDate, endDate, period);
+
+
+
+
+
+  // ARRAY
+  {
+    // 1ère dimension
+    SetLength(tabAF, 4);
+    // 2ème dimension
+    SetLength(tabAF[0], 44);
+    SetLength(tabAF[1], 36);
+    SetLength(tabAF[2], 36);
+    SetLength(tabAF[3], 36);
+
+    day := FormatSettings.LongDayNames[DayOfWeek(sepDate)];
+
+
+
+    // initialiser le tableau avec périodes
+    for nb_colonne := 0 to 4 - 1 do
+    for nb_ligne := 0 to 44 - 1 do
+    begin
+    // 1er septembre xxx - 7 jours plus tard
+    tabAF[nb_colonne, nb_ligne] :=
+    (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
+
+    OutputDebugString(Pchar('Colonne ' + IntToStr(nb_colonne) + ' Ligne ' +
+    IntToStr(nb_ligne)));
+    OutputDebugString(Pchar('Tab ' + tabAF[nb_colonne, nb_ligne]));
+
+    sepDate := IncDay(sepDate,7);
+  }
 
 end;
 
