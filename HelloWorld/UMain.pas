@@ -320,14 +320,15 @@ end;
 
 procedure TFHelloWorld.btnAFClick(Sender: TObject);
 var
-  debug, nb_diffDate, nb_colonne, nb_ligne, nb_niveau: integer;
+  debug, nb_diffDate, nb_colonne, nb_ligne, nb_niveau, nb_compPeriod: integer;
   matEtud, day, niveau: String;
   startDate2, endDate2, period: TStringList;
   sepDate: TDateTime;
   annee, mois, jour: word;
   id_week: integer;
-  start_date, end_date: TDateTime;
-  nb_period: double;
+  start_date, end_date, start_date_tmp, end_date_tmp: TDateTime;
+  date_deb, date_fin: string;
+  nb_period, nb_period_previous: double;
 
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
@@ -355,8 +356,10 @@ begin
   // insert in the table in the right column
 
   // WeekOfTheYear(); delphi
-
   nb_ligne := 0;
+
+  //
+  start_date_tmp := ibqry_alloc.FieldByName('date_deb').AsDateTime;
 
   while nb_ligne < ibqry_alloc.RecordCount do
   begin
@@ -364,11 +367,11 @@ begin
     start_date := ibqry_alloc.FieldByName('date_deb').AsDateTime;
     end_date := ibqry_alloc.FieldByName('date_fin').AsDateTime;
     // function : search week of the year with a date
-//    id_week := WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
-    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+    // id_week := WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
+      .AsString));
 
-
-    //OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
+    // OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
     niveau := ibqry_alloc.FieldByName('SEC_SUP').AsString;
 
@@ -391,9 +394,9 @@ begin
 
     while IncDay(start_date, 7) <= end_date do
     begin
-//      OutputDebugString(Pchar('TAB AF [' + IntToStr(id_week) + ',' + IntToStr(nb_niveau) + '] PERIODES_SEMAINE ' + ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString));
-//      OutputDebugString(Pchar('End date <= start date +6 ' + DateTimeToStr(end_date) + ' --- ' + DateTimeToStr(IncDay(start_date, 7))));
-      OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
+      // OutputDebugString(Pchar('TAB AF [' + IntToStr(id_week) + ',' + IntToStr(nb_niveau) + '] PERIODES_SEMAINE ' + ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString));
+      // OutputDebugString(Pchar('End date <= start date +6 ' + DateTimeToStr(end_date) + ' --- ' + DateTimeToStr(IncDay(start_date, 7))));
+      //OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
       tabAF[id_week, nb_niveau] := tabAF[id_week, nb_niveau] + nb_period;
 
@@ -415,18 +418,66 @@ begin
 
   end;
 
-
   for nb_colonne := 0 to 3 do
-  begin// initialize tab with index week 1 --> 52
-   for nb_ligne := 0 to 52 do
-   begin
+  begin // initialize tab with index week 1 --> 52
+    // start_date := EncodeDateTime(CurrentYear, 1, 1, 1, 1, 1, 000);
+    // start_date := EncodeDateTime(2019, 1, 1, 1, 1, 1, 000);
+    // date_deb := FormatDateTime('d mmmm yyyy',EncodeDateWeek(CurrentYear, 1));
+    // find first day of the year
+    date_deb := FormatDateTime('d/m/yyyy', EncodeDateWeek(CurrentYear, 1));
+    start_date := StrToDateTime(date_deb);
+
+    // id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+
+    // ShowMessage(FormatDateTime('dddd d mmmm yyyy',EncodeDateWeek(CurrentYear, 1)));
+    // ShowMessage(FormatDateTime('d mmmm yyyy',EncodeDateWeek(CurrentYear, 1)));
+
+    nb_compPeriod := 0;
+
+    for nb_ligne := 0 to 52 do
+    begin
+      end_date := IncDay(start_date, 6);
+
+      nb_period_previous := nb_period;
+      nb_period := tabAF[nb_ligne, nb_colonne];
+      if nb_ligne = 0 then
+        nb_period_previous := nb_period;
+
+      OutputDebugString(Pchar('AF nombre période précédente ' + FloatToStr(nb_period_previous)));
+      OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
+
+      if nb_period_previous = nb_period then
+      begin
+
+         //if nb_compPeriod = 0 then
+           // start_date_tmp := start_date;
+
+      nb_compPeriod :=1;
+
+         end_date_tmp := end_date;
+      end
+      else if nb_period_previous <> nb_period then
+           begin
+
+                 OutputDebugString(Pchar('-----------AF start_date - date fin ' +
+        DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date)));
+
+           end;
+
+
+      // debug
+//      if nb_ligne = 5 then
+//       Break;
 
 
 
+      OutputDebugString(Pchar('AF start_date - date fin ' +DateTimeToStr(start_date) + ' ' + DateTimeToStr(end_date)));
 
-      OutputDebugString(Pchar('TAB AF '+ IntToStr(nb_colonne) +'/'+ IntToStr(nb_ligne) +' : '+ FloatToStr(tabAF[nb_ligne,nb_colonne])));
+      OutputDebugString(Pchar('TAB AF ' + IntToStr(nb_colonne) + '/' +IntToStr(nb_ligne) + ' : ' + FloatToStr(tabAF[nb_ligne, nb_colonne])));
 
-   end;
+      start_date := IncDay(start_date, 7);
+
+    end;
   end;
 
 

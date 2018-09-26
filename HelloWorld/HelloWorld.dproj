@@ -145,6 +145,9 @@
 					<Source>
 						<Source Name="MainSource">HelloWorld.dpr</Source>
 					</Source>
+					<Language>
+						<Language Name="ProjectLang">$0000080C</Language>
+					</Language>
 					<Resource_DLL_Projects>
 						<Resource_DLL_Projects Name="Item0">Anglais (Royaume-Uni)*$00000809*ENG*ENG</Resource_DLL_Projects>
 					</Resource_DLL_Projects>
@@ -154,9 +157,6 @@
 						<RDP_Source_Files Name="Item2">CalcWeekAF.dfm</RDP_Source_Files>
 						<RDP_Source_Files Name="Item3">Win32\Debug\HelloWorld.drc</RDP_Source_Files>
 					</RDP_Source_Files>
-					<Language>
-						<Language Name="ProjectLang">$0000080C</Language>
-					</Language>
 				</Delphi.Personality>
 				<Deployment/>
 				<Platforms>

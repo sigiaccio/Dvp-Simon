@@ -11,7 +11,6 @@ uses
   CalcWeekAF in 'CalcWeekAF.pas' {Form1};
 
 {$R *.res}
-
   begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFHelloWorld, FHelloWorld);
