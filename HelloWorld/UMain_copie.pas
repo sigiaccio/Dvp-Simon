@@ -320,7 +320,8 @@ end;
 
 procedure TFHelloWorld.btnAFClick(Sender: TObject);
 var
-  debug, nb_diffDate, nb_colonne, nb_ligne, nb_niveau, nb_compPeriod: integer;
+  debug, nb_diffDate, nb_colonne, nb_ligne, nb_init, nb_niveau,
+    nb_compPeriod: integer;
   matEtud, day, niveau: String;
   startDate2, endDate2, period: TStringList;
   sepDate: TDateTime;
@@ -333,7 +334,7 @@ var
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
   // LIGNES : semaine 1 --> 52 (52 semaines = 1 année)
-  tabAF: array [0 .. 52] of array [0 .. 3] of double;
+  tabAF: array [0 .. 51] of array [0 .. 3] of double;
 
   // ShowMessage(IntToStr(WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString))));
 begin
@@ -342,23 +343,33 @@ begin
   // CALCULER ALLOCATIONS FAMILIALES
   // for nb_ligne := 0 to High(tabAF[nb_colonne]) do
 
+  // find first week from DB
+  id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
+    .AsString));
+
   // initialize tab with index week 1 --> 52
-  { for nb_ligne := 0 to 52 do
+  nb_ligne := id_week;
+  nb_init := 0;
+  while nb_init < 52 do
+  begin
+    tabAF[nb_init, 0] := nb_ligne;
+    // OutputDebugString(Pchar('TabAF = ' + FloatToStr(tabAF[nb_colonne, nb_ligne])));
+    // OutputDebugString(Pchar('Colonne ' + FloatToStr(nb_colonne) + ' Ligne ' + IntToStr(nb_ligne)));
+
+    if nb_ligne = 52 then
     begin
-    tabAF[nb_colonne, nb_ligne] := nb_ligne;
-    OutputDebugString(Pchar('TabAF = ' + IntToStr(tabAF[nb_colonne,
-    nb_ligne])));
-    OutputDebugString(Pchar('Colonne ' + IntToStr(nb_colonne) + ' Ligne ' +
-    IntToStr(nb_ligne)));
+      nb_ligne := 0;
     end;
-  }
+
+    inc(nb_init);
+    inc(nb_ligne);
+  end;
+
   // calculate the week number of the query alloc
   // insert in the table in the right column
 
   // WeekOfTheYear(); delphi
   nb_ligne := 0;
-
-  //
   start_date_tmp := ibqry_alloc.FieldByName('date_deb').AsDateTime;
 
   while nb_ligne < ibqry_alloc.RecordCount do
@@ -367,9 +378,28 @@ begin
     start_date := ibqry_alloc.FieldByName('date_deb').AsDateTime;
     end_date := ibqry_alloc.FieldByName('date_fin').AsDateTime;
     // function : search week of the year with a date
-    // id_week := WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
-    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
-      .AsString));
+   id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
+
+ //   OutputDebugString(Pchar('AF ID WEEK FIRST' + IntToStr(id_week)));
+
+    for nb_init := 0 to Length(tabAF) -1  do
+      begin
+      nb_niveau := 0;
+        if tabAF[nb_init,nb_niveau] = id_week then
+        begin
+         // OutputDebugString(PChar('--- tab AF = id WEEK ---'+IntToStr(id_week)));
+
+          id_week := nb_init;
+
+        break;
+
+        end;
+
+      end;
+
+
+
+
 
     // OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
@@ -377,12 +407,12 @@ begin
 
     if niveau = 'SEC' then
     begin
-      nb_niveau := 0;
+      nb_niveau := 1;
     end;
 
     if niveau = 'SUP' then
     begin
-      nb_niveau := 1;
+      nb_niveau := 2;
     end;
 
     // SECONDAIRE | SUPERIEUR | SEC/SUP | ECTS
@@ -396,7 +426,7 @@ begin
     begin
       // OutputDebugString(Pchar('TAB AF [' + IntToStr(id_week) + ',' + IntToStr(nb_niveau) + '] PERIODES_SEMAINE ' + ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString));
       // OutputDebugString(Pchar('End date <= start date +6 ' + DateTimeToStr(end_date) + ' --- ' + DateTimeToStr(IncDay(start_date, 7))));
-      //OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
+      // OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
       tabAF[id_week, nb_niveau] := tabAF[id_week, nb_niveau] + nb_period;
 
@@ -418,14 +448,20 @@ begin
 
   end;
 
-  for nb_colonne := 0 to 3 do
-  begin // initialize tab with index week 1 --> 52
+
+  // display of information containing in the table
+
+
+  nb_period := 0;
+
+  //for nb_colonne := 0 to 3 do
+  //begin // initialize tab with index week 1 --> 52
     // start_date := EncodeDateTime(CurrentYear, 1, 1, 1, 1, 1, 000);
     // start_date := EncodeDateTime(2019, 1, 1, 1, 1, 1, 000);
     // date_deb := FormatDateTime('d mmmm yyyy',EncodeDateWeek(CurrentYear, 1));
     // find first day of the year
     date_deb := FormatDateTime('d/m/yyyy', EncodeDateWeek(CurrentYear, 1));
-//----26/09    start_date := StrToDateTime(date_deb);
+    // ----26/09    start_date := StrToDateTime(date_deb);
 
     // id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
 
@@ -440,50 +476,51 @@ begin
       end_date := IncDay(start_date_tmp, 6);
 
       nb_period_previous := nb_period;
-      nb_period := tabAF[nb_ligne, nb_colonne];
-      if nb_ligne = 0 then
-        nb_period_previous := nb_period;
+      nb_period := tabAF[nb_ligne, nb_niveau];
+//      if nb_ligne = 0 then
+//        nb_period_previous := nb_period;
 
-//     OutputDebugString(Pchar('AF nombre période précédente ' + FloatToStr(nb_period_previous)));
-//      OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
+      // OutputDebugString(Pchar('AF nombre période précédente ' + FloatToStr(nb_period_previous)));
+      // OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
 
-      if nb_period_previous = nb_period then
+{      if nb_period_previous = nb_period then
       begin
 
-         //if nb_compPeriod = 0 then
-           // start_date_tmp := start_date;
+        // if nb_compPeriod = 0 then
+        // start_date_tmp := start_date;
 
-      nb_compPeriod :=1;
+        nb_compPeriod := 1;
 
-         end_date_tmp := end_date;
+        end_date_tmp := end_date;
       end
-      else if nb_period_previous <> nb_period then
-           begin
+      else }
+     // if nb_period_previous <> nb_period then
+     // begin
 
-                 OutputDebugString(Pchar('-----------AF start_date - date fin ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' '+ FloatToStr(nb_period_previous) +' '+FloatToStr(nb_period)));
+        OutputDebugString(Pchar('---AF ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' : ' + FloatToStr(nb_period_previous) + ' ' + FloatToStr(nb_period)));
         start_date_tmp := IncDay(start_date_tmp, 7);
 
-           end;
+     // end;
 
 
-//       debug
-     // if nb_ligne = 52 then
-     // nb_ligne := 0;
-      //       Break;
-    //  if nb_ligne = 37 then
-    //  nb_ligne := 52;
+      // debug
+      // if nb_ligne = 52 then
+      // nb_ligne := 0;
+      // Break;
+      // if nb_ligne = 37 then
+      // nb_ligne := 52;
 
 
 
-//      OutputDebugString(Pchar('AF start_date - date fin ' +DateTimeToStr(start_date) + ' ' + DateTimeToStr(end_date)));
+      // OutputDebugString(Pchar('AF start_date - date fin ' +DateTimeToStr(start_date) + ' ' + DateTimeToStr(end_date)));
 
-//      OutputDebugString(Pchar('TAB AF ' + IntToStr(nb_colonne) + '/' +IntToStr(nb_ligne) + ' : ' + FloatToStr(tabAF[nb_ligne, nb_colonne])));
+      // OutputDebugString(Pchar('TAB AF ' + IntToStr(nb_colonne) + '/' +IntToStr(nb_ligne) + ' : ' + FloatToStr(tabAF[nb_ligne, nb_colonne])));
 
       start_date := IncDay(start_date, 7);
 
       inc(nb_ligne);
 
-    end;
+    //end;
   end;
 
 
@@ -583,7 +620,8 @@ procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject;
   AFieldName: string);
 var
   listOrderBy: TStringList;
-  index: integer; // not used but needed
+  index: integer;
+  // not used but needed
   iCount: integer;
 
 begin

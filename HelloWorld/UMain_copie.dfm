@@ -603,7 +603,6 @@ object FHelloWorld: TFHelloWorld
         Name = 'PmatEtud'
         ParamType = ptInput
       end>
-    Active = True
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (

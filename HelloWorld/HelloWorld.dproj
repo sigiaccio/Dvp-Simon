@@ -83,7 +83,7 @@
 			<DelphiCompile Include="$(MainSource)">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="UMain.pas">
+			<DCCReference Include="UMain_copie.pas">
 				<Form>FHelloWorld</Form>
 				<FormType>dfm</FormType>
 			</DCCReference>

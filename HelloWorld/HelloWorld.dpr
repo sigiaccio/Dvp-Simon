@@ -3,7 +3,7 @@ program HelloWorld;
 
 uses
   Vcl.Forms,
-  UMain in 'UMain.pas' {FHelloWorld},
+  UMain_copie in 'UMain_copie.pas' {FHelloWorld},
   Upopupmodal in 'Upopupmodal.pas' {popupmodal},
   lib.log in '..\..\EPFC-Apps\XE2\Lib\lib.log.pas',
   lib.windows in '..\..\EPFC-Apps\XE2\Lib\lib.windows.pas',
@@ -11,7 +11,7 @@ uses
   CalcWeekAF in 'CalcWeekAF.pas' {Form1};
 
 {$R *.res}
-  begin
+begin
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TFHelloWorld, FHelloWorld);
   Application.CreateForm(Tpopupmodal, popupmodal);
