@@ -390,13 +390,29 @@ object FHelloWorld: TFHelloWorld
     TitleButtons = False
   end
   object btnAF: TButton
-    Left = 120
-    Top = 208
+    Left = 247
+    Top = 237
     Width = 75
     Height = 25
     Caption = 'btnAF'
     TabOrder = 15
     OnClick = btnAFClick
+  end
+  object edt_search_name: TEdit
+    Left = 32
+    Top = 239
+    Width = 121
+    Height = 21
+    TabOrder = 16
+    Text = 'Search Name Student'
+  end
+  object btn_search: TButton
+    Left = 159
+    Top = 237
+    Width = 75
+    Height = 25
+    Caption = 'btn_search'
+    TabOrder = 17
   end
   object ibqry_etudiant: TIBOQuery
     EditSQL.Strings = (
