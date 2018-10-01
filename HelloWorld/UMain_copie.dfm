@@ -1,4 +1,4 @@
-﻿object FHelloWorld: TFHelloWorld
+object FHelloWorld: TFHelloWorld
   Left = 0
   Top = 0
   Caption = 'FHelloWorld'
@@ -11,6 +11,7 @@
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object lbl_firstname: TLabel
@@ -141,8 +142,8 @@
   object lbl_af_view: TLabel
     Left = 955
     Top = 36
-    Width = 109
-    Height = 13
+    Width = 174
+    Height = 120
   end
   object edt_name: TEdit
     Left = 70
@@ -422,17 +423,27 @@
     OnClick = btn_searchClick
   end
   object wdbgrd_af_view: TwwDBGrid
-    Left = 1224
-    Top = 36
-    Width = 329
-    Height = 120
+    Left = 1135
+    Top = 20
+    Width = 681
+    Height = 286
     Selected.Strings = (
-      'Date_d'#233'but'#9'18'#9'Date_d'#233'but'#9#9)
+      'dateDebut'#9'18'#9'dateDebut'#9'F'#9
+      'dateFin'#9'18'#9'dateFin'#9'F'#9
+      'secondaire'#9'10'#9'secondaire'#9'F'#9
+      'superieur'#9'10'#9'superieur'#9'F'#9
+      'ects'#9'10'#9'ects'#9'F'#9)
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
     ShowHorzScrollBar = True
     DataSource = ds_af_view
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
     TabOrder = 18
     TitleAlignment = taLeftJustify
     TitleFont.Charset = DEFAULT_CHARSET
@@ -442,6 +453,15 @@
     TitleFont.Style = []
     TitleLines = 1
     TitleButtons = False
+  end
+  object btn_clear: TButton
+    Left = 848
+    Top = 161
+    Width = 75
+    Height = 25
+    Caption = 'btn_clear'
+    TabOrder = 19
+    OnClick = btn_clearClick
   end
   object ibqry_etudiant: TIBOQuery
     Params = <
@@ -746,21 +766,38 @@
   object ds_af_view: TDataSource
     DataSet = client_dset_af_view
     Left = 880
-    Top = 32
+    Top = 88
   end
   object client_dset_af_view: TwwClientDataSet
-    Active = True
     Aggregates = <>
     Params = <>
     ValidateWithMask = True
-    Left = 872
-    Top = 112
-    Data = {
-      2E0000009619E0BD0100000018000000010000000000030000002E000B446174
-      655F64C3A962757408000800000000000000}
-    object dtmfld_dset_af_viewDate_début: TDateTimeField
+    Left = 880
+    Top = 32
+    object dtmfld_dset_af_viewdateDebut: TDateTimeField
       DisplayWidth = 18
-      FieldName = 'Date_d'#233'but'
+      FieldName = 'dateDebut'
+    end
+    object dtmfld_dset_af_viewdateFin: TDateTimeField
+      DisplayWidth = 18
+      FieldName = 'dateFin'
+    end
+    object float_field__dset_af_viewsecondaire: TFloatField
+      DisplayWidth = 10
+      FieldName = 'secondaire'
+    end
+    object float_field__dset_af_viewsuperieur: TFloatField
+      DisplayWidth = 10
+      FieldName = 'superieur'
+    end
+    object float_field__dset_af_viewects: TFloatField
+      DisplayWidth = 10
+      FieldName = 'ects'
+    end
+    object float_field__dset_af_viewsecondaireSuperieur: TFloatField
+      FieldKind = fkCalculated
+      FieldName = 'secondaireSuperieur'
+      Calculated = True
     end
   end
 end

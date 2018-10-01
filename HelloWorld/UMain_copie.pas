@@ -83,7 +83,13 @@ type
     wdbgrd_af_view: TwwDBGrid;
     ds_af_view: TDataSource;
     client_dset_af_view: TwwClientDataSet;
-    dtmfld_dset_af_viewDate_début: TDateTimeField;
+    dtmfld_dset_af_viewdateFin: TDateTimeField;
+    dtmfld_dset_af_viewdateDebut: TDateTimeField;
+    float_field__dset_af_viewsecondaire: TFloatField;
+    float_field__dset_af_viewsuperieur: TFloatField;
+    float_field__dset_af_viewects: TFloatField;
+    btn_clear: TButton;
+    float_field__dset_af_viewsecondaireSuperieur: TFloatField;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -102,6 +108,8 @@ type
     procedure btnAFClick(Sender: TObject);
     procedure edt_search_nameClick(Sender: TObject);
     procedure btn_searchClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
+    procedure btn_clearClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -488,24 +496,20 @@ begin
     begin
       if (nb_period) <> 0 then
       begin
-        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' +
-          DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' +
-          FloatToStr(nb_period_super)));
-        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
-          DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' +
-          FloatToStr(nb_period_second) + #13#9 + ' ' +
-          FloatToStr(nb_period_super);
 
-          client_dset_af_view.Create(Self);
-          client_dset_af_view.Active := True;
-          client_dset_af_view.Append;
-          client_dset_af_view.FieldByName('Date_debut').AsString := DateTimeToStr(start_date_tmp);
-          client_dset_af_view.FieldByName('Date fin').AsString := DateTimeToStr(end_date);
+        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
+        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
 
+        // create dataset to view data
+        client_dset_af_view.Append;
+        client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Datefin').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_second;
+        client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
+        client_dset_af_view.FieldByName('Ects').AsFloat := 10;
+        client_dset_af_view.Post;
 
-
-
-
+        // OutputDebugString(Pchar('Start_date_tmp :'+DateTimeToStr(start_date_tmp)));
 
         // OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
       end;
@@ -515,14 +519,20 @@ begin
     end
     else if nb_period_previous <> nb_period then
     begin
-      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' +
-        DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' +
-        FloatToStr(nb_period_super)));
-      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
-        DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' +
-        FloatToStr(nb_period_second) + #13#9 + ' ' +
-        FloatToStr(nb_period_super);
+      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
+      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
+
+        client_dset_af_view.Append;
+        client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Datefin').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_second;
+        client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
+        client_dset_af_view.FieldByName('Ects').AsFloat := 10;
+
+        client_dset_af_view.Post;
     end;
+
+
 
     start_date_tmp := IncDay(start_date_tmp, 7);
     start_date := IncDay(start_date, 7);
@@ -531,7 +541,6 @@ begin
 
     // end;
   end;
-
 
 
 
@@ -606,6 +615,11 @@ begin
     sepDate := IncDay(sepDate,7);
   }
 
+end;
+
+procedure TFHelloWorld.btn_clearClick(Sender: TObject);
+begin
+ client_dset_af_view.EmptyDataSet;
 end;
 
 procedure TFHelloWorld.btn_searchClick(Sender: TObject);
@@ -832,6 +846,12 @@ begin
   OutputDebugString(Pchar('Count_personne : ' + IntToStr(iCount)));
 
   // lbl_personne.Caption := IntToStr(iCount) + ' personnes';
+end;
+
+procedure TFHelloWorld.FormCreate(Sender: TObject);
+begin
+client_dset_af_view.CreateDataSet;
+client_dset_af_view.Active;
 end;
 
 procedure TFHelloWorld.FormShow(Sender: TObject);
