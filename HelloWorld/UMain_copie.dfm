@@ -1,4 +1,4 @@
-object FHelloWorld: TFHelloWorld
+﻿object FHelloWorld: TFHelloWorld
   Left = 0
   Top = 0
   Caption = 'FHelloWorld'
@@ -14,30 +14,30 @@ object FHelloWorld: TFHelloWorld
   PixelsPerInch = 96
   TextHeight = 13
   object lbl_firstname: TLabel
-    Left = 32
-    Top = 84
+    Left = 8
+    Top = 81
     Width = 47
     Height = 13
     Caption = 'Firstname'
   end
   object lbl_name: TLabel
-    Left = 32
-    Top = 39
+    Left = 8
+    Top = 36
     Width = 27
     Height = 13
     Caption = 'Name'
   end
   object lbl_errors_name: TLabel
-    Left = 32
-    Top = 131
+    Left = 8
+    Top = 128
     Width = 29
     Height = 13
     Caption = 'Errors'
     Visible = False
   end
   object lbl_mat_etud: TLabel
-    Left = 830
-    Top = 29
+    Left = 702
+    Top = 17
     Width = 104
     Height = 13
     Caption = 'Matricule '#233'tudiant'
@@ -50,8 +50,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_nom: TLabel
-    Left = 360
-    Top = 32
+    Left = 232
+    Top = 20
     Width = 25
     Height = 14
     Caption = 'Nom'
@@ -66,8 +66,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_prenom: TLabel
-    Left = 575
-    Top = 32
+    Left = 447
+    Top = 20
     Width = 44
     Height = 13
     Caption = 'Pr'#233'nom'
@@ -82,8 +82,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_sexe: TLabel
-    Left = 784
-    Top = 29
+    Left = 656
+    Top = 17
     Width = 28
     Height = 13
     Caption = 'Sexe'
@@ -95,8 +95,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_DATE_NAISS: TLabel
-    Left = 360
-    Top = 84
+    Left = 232
+    Top = 72
     Width = 103
     Height = 13
     Caption = 'Date de naissance'
@@ -111,8 +111,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_1: TLabel
-    Left = 512
-    Top = 84
+    Left = 384
+    Top = 72
     Width = 99
     Height = 13
     Caption = 'Ville de naissance'
@@ -125,8 +125,8 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_PAYS: TLabel
-    Left = 785
-    Top = 84
+    Left = 657
+    Top = 72
     Width = 27
     Height = 13
     Caption = 'Pays'
@@ -139,14 +139,14 @@ object FHelloWorld: TFHelloWorld
     ParentFont = False
   end
   object lbl_af_view: TLabel
-    Left = 1051
-    Top = 24
+    Left = 955
+    Top = 36
     Width = 109
     Height = 13
   end
   object edt_name: TEdit
-    Left = 94
-    Top = 39
+    Left = 70
+    Top = 36
     Width = 121
     Height = 21
     TabOrder = 0
@@ -154,16 +154,16 @@ object FHelloWorld: TFHelloWorld
     TextHint = 'Name'
   end
   object StaticText1: TStaticText
-    Left = 32
-    Top = 16
+    Left = 8
+    Top = 13
     Width = 55
     Height = 17
     Caption = 'HelloWorld'
     TabOrder = 1
   end
   object edt_firstname: TEdit
-    Left = 94
-    Top = 81
+    Left = 70
+    Top = 78
     Width = 121
     Height = 21
     TabOrder = 2
@@ -171,8 +171,8 @@ object FHelloWorld: TFHelloWorld
     TextHint = 'Firstname'
   end
   object btn_submit: TButton
-    Left = 94
-    Top = 164
+    Left = 70
+    Top = 161
     Width = 75
     Height = 25
     Caption = 'Submit'
@@ -180,8 +180,8 @@ object FHelloWorld: TFHelloWorld
     OnClick = Submit
   end
   object edt_error: TEdit
-    Left = 360
-    Top = 224
+    Left = 223
+    Top = 142
     Width = 604
     Height = 21
     Font.Charset = DEFAULT_CHARSET
@@ -258,8 +258,8 @@ object FHelloWorld: TFHelloWorld
     OnDblClick = wdbgrd1DblClick
   end
   object dbedt_MAT_ETUD: TDBEdit
-    Left = 830
-    Top = 48
+    Left = 702
+    Top = 36
     Width = 134
     Height = 21
     DataField = 'MAT_ETUD'
@@ -275,8 +275,8 @@ object FHelloWorld: TFHelloWorld
     OnChange = dbedt_MAT_ETUDChange
   end
   object dbedt_NOM: TDBEdit
-    Left = 360
-    Top = 51
+    Left = 232
+    Top = 39
     Width = 209
     Height = 21
     CharCase = ecUpperCase
@@ -294,8 +294,8 @@ object FHelloWorld: TFHelloWorld
     OnExit = dbedt_NOMExit
   end
   object dbedt_PRENOM: TDBEdit
-    Left = 575
-    Top = 51
+    Left = 447
+    Top = 39
     Width = 192
     Height = 21
     DataField = 'PRENOM'
@@ -311,8 +311,8 @@ object FHelloWorld: TFHelloWorld
     OnExit = dbedt_PRENOMExit
   end
   object cbb_SEXE: TwwDBComboBox
-    Left = 784
-    Top = 48
+    Left = 656
+    Top = 36
     Width = 40
     Height = 21
     ShowButton = True
@@ -331,15 +331,14 @@ object FHelloWorld: TFHelloWorld
     Items.Strings = (
       'M'
       'F')
-    ItemIndex = 0
     ParentFont = False
     Sorted = False
     TabOrder = 10
     UnboundDataType = wwDefault
   end
   object dbedt_DATE_NAISS: TDBEdit
-    Left = 360
-    Top = 103
+    Left = 232
+    Top = 91
     Width = 134
     Height = 21
     DataField = 'DATE_NAISS'
@@ -349,8 +348,8 @@ object FHelloWorld: TFHelloWorld
     OnExit = dbedt_DATE_NAISSExit
   end
   object dbedt_NOM_1: TDBEdit
-    Left = 512
-    Top = 103
+    Left = 384
+    Top = 91
     Width = 255
     Height = 21
     DataField = 'VILLE_NAISSANCE'
@@ -358,8 +357,8 @@ object FHelloWorld: TFHelloWorld
     TabOrder = 12
   end
   object dbedt_ID_PAYS_NATIONALITE: TDBEdit
-    Left = 785
-    Top = 103
+    Left = 657
+    Top = 91
     Width = 134
     Height = 21
     DataField = 'PAYS'
@@ -396,8 +395,8 @@ object FHelloWorld: TFHelloWorld
     TitleButtons = False
   end
   object btnAF: TButton
-    Left = 247
-    Top = 237
+    Left = 223
+    Top = 197
     Width = 75
     Height = 25
     Caption = 'btnAF'
@@ -405,8 +404,8 @@ object FHelloWorld: TFHelloWorld
     OnClick = btnAFClick
   end
   object edt_search_name: TEdit
-    Left = 32
-    Top = 239
+    Left = 8
+    Top = 199
     Width = 121
     Height = 21
     TabOrder = 16
@@ -414,14 +413,43 @@ object FHelloWorld: TFHelloWorld
     OnClick = edt_search_nameClick
   end
   object btn_search: TButton
-    Left = 159
-    Top = 237
+    Left = 135
+    Top = 197
     Width = 75
     Height = 25
     Caption = 'btn_search'
     TabOrder = 17
+    OnClick = btn_searchClick
+  end
+  object wdbgrd_af_view: TwwDBGrid
+    Left = 1224
+    Top = 36
+    Width = 329
+    Height = 120
+    Selected.Strings = (
+      'Date_d'#233'but'#9'18'#9'Date_d'#233'but'#9#9)
+    IniAttributes.Delimiter = ';;'
+    TitleColor = clBtnFace
+    FixedCols = 0
+    ShowHorzScrollBar = True
+    DataSource = ds_af_view
+    TabOrder = 18
+    TitleAlignment = taLeftJustify
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clBlack
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    TitleLines = 1
+    TitleButtons = False
   end
   object ibqry_etudiant: TIBOQuery
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'Pname_student'
+        ParamType = ptInput
+      end>
     EditSQL.Strings = (
       '')
     IB_Connection = ibdtbs_connexion
@@ -452,7 +480,8 @@ object FHelloWorld: TFHelloWorld
       'FROM ETUDIANTS etd'
       'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS'
       'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE'
-      'inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE')
+      'inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE'
+      '//where etd.nom LIKE :Pname_student')
     Left = 568
     Top = 256
     object strngfld_etudiantMAT_ETUD: TStringField
@@ -712,6 +741,26 @@ object FHelloWorld: TFHelloWorld
       ReadOnly = True
       Precision = 18
       Size = 2
+    end
+  end
+  object ds_af_view: TDataSource
+    DataSet = client_dset_af_view
+    Left = 880
+    Top = 32
+  end
+  object client_dset_af_view: TwwClientDataSet
+    Active = True
+    Aggregates = <>
+    Params = <>
+    ValidateWithMask = True
+    Left = 872
+    Top = 112
+    Data = {
+      2E0000009619E0BD0100000018000000010000000000030000002E000B446174
+      655F64C3A962757408000800000000000000}
+    object dtmfld_dset_af_viewDate_début: TDateTimeField
+      DisplayWidth = 18
+      FieldName = 'Date_d'#233'but'
     end
   end
 end

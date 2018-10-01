@@ -12,7 +12,7 @@ uses
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
   Wwdotdot, Wwdbcomb, lib.validation.field,
-  System.DateUtils;
+  System.DateUtils, IB_Grid, wwclient;
 
 type
   TFHelloWorld = class(TForm)
@@ -80,6 +80,10 @@ type
     edt_search_name: TEdit;
     btn_search: TButton;
     lbl_af_view: TLabel;
+    wdbgrd_af_view: TwwDBGrid;
+    ds_af_view: TDataSource;
+    client_dset_af_view: TwwClientDataSet;
+    dtmfld_dset_af_viewDate_début: TDateTimeField;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -97,6 +101,7 @@ type
       endDate: TStringList; period: TStringList);
     procedure btnAFClick(Sender: TObject);
     procedure edt_search_nameClick(Sender: TObject);
+    procedure btn_searchClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -483,8 +488,25 @@ begin
     begin
       if (nb_period) <> 0 then
       begin
-        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+' '+FloatToStr(nb_period_super)));
-        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 +' '+DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+#13#9+' '+FloatToStr(nb_period_super);
+        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' +
+          DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' +
+          FloatToStr(nb_period_super)));
+        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
+          DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' +
+          FloatToStr(nb_period_second) + #13#9 + ' ' +
+          FloatToStr(nb_period_super);
+
+          client_dset_af_view.Create(Self);
+          client_dset_af_view.Active := True;
+          client_dset_af_view.Append;
+          client_dset_af_view.FieldByName('Date_debut').AsString := DateTimeToStr(start_date_tmp);
+          client_dset_af_view.FieldByName('Date fin').AsString := DateTimeToStr(end_date);
+
+
+
+
+
+
         // OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
       end;
 
@@ -493,63 +515,22 @@ begin
     end
     else if nb_period_previous <> nb_period then
     begin
-        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+' '+FloatToStr(nb_period_super)));
-        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 +' '+DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+#13#9+' '+FloatToStr(nb_period_super);
+      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' +
+        DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' +
+        FloatToStr(nb_period_super)));
+      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
+        DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' +
+        FloatToStr(nb_period_second) + #13#9 + ' ' +
+        FloatToStr(nb_period_super);
     end;
 
-    //OutputDebugString(Pchar('Nbre périodes / semaine'+FloatToStr(nb_period)));
-
-
-    { if nb_period_previous = nb_period then
-      begin
-
-      // if nb_compPeriod = 0 then
-      // start_date_tmp := start_date;
-
-      nb_compPeriod := 1;
-
-      end_date_tmp := end_date;
-      end
-      else }
-    // if nb_period_previous <> nb_period then
-    // begin
-
-    // OutputDebugString(Pchar('---AF ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' : ' + FloatToStr(nb_period_previous) + ' ' +      FloatToStr(nb_period)));
     start_date_tmp := IncDay(start_date_tmp, 7);
-
-    // end;
-
-
-    // debug
-    // if nb_ligne = 52 then
-    // nb_ligne := 0;
-    // Break;
-    // if nb_ligne = 37 then
-    // nb_ligne := 52;
-
-
-
-    // OutputDebugString(Pchar('AF start_date - date fin ' +DateTimeToStr(start_date) + ' ' + DateTimeToStr(end_date)));
-
-    // OutputDebugString(Pchar('TAB AF ' + IntToStr(nb_colonne) + '/' +IntToStr(nb_ligne) + ' : ' + FloatToStr(tabAF[nb_ligne, nb_colonne])));
-
     start_date := IncDay(start_date, 7);
 
     inc(nb_ligne);
 
     // end;
   end;
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -625,6 +606,17 @@ begin
     sepDate := IncDay(sepDate,7);
   }
 
+end;
+
+procedure TFHelloWorld.btn_searchClick(Sender: TObject);
+begin
+  {
+    OutputDebugString(Pchar('TEXT EDT SEARCH NAME : ' + edt_search_name.text));
+
+    ibqry_etudiant.ParamByName('Pname_student').AsString := '%' + edt_search_name.text + '%';
+    ibqry_etudiant.Active := True;
+    ibqry_etudiant.RefreshRows;
+  }
 end;
 
 procedure TFHelloWorld.CalcWeekAF(matEtud: String; startDate: TStringList;
@@ -806,10 +798,7 @@ end;
 procedure TFHelloWorld.edt_search_nameClick(Sender: TObject);
 begin
 
-  OutputDebugString(PChar('Button click'));
-
-
-
+  OutputDebugString(Pchar('Button click'));
 
 end;
 
