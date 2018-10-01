@@ -497,13 +497,13 @@ begin
       if (nb_period) <> 0 then
       begin
 
-        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
-        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
+//        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
+//        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
 
         // create dataset to view data
         client_dset_af_view.Append;
         client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_tmp;
-        client_dset_af_view.FieldByName('Datefin').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date;
         client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_second;
         client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
         client_dset_af_view.FieldByName('Ects').AsFloat := 10;
@@ -519,12 +519,12 @@ begin
     end
     else if nb_period_previous <> nb_period then
     begin
-      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
-      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
+//      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
+//      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
 
         client_dset_af_view.Append;
         client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_tmp;
-        client_dset_af_view.FieldByName('Datefin').AsDateTime := start_date_tmp;
+        client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date;
         client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_second;
         client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
         client_dset_af_view.FieldByName('Ects').AsFloat := 10;
@@ -532,10 +532,10 @@ begin
         client_dset_af_view.Post;
     end;
 
+    OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
 
-
-    start_date_tmp := IncDay(start_date_tmp, 7);
-    start_date := IncDay(start_date, 7);
+    start_date_tmp := IncDay(start_date_tmp, 6);
+    // start_date := IncDay(start_date, 6);
 
     inc(nb_ligne);
 
