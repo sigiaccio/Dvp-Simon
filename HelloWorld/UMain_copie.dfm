@@ -138,6 +138,12 @@ object FHelloWorld: TFHelloWorld
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object lbl_af_view: TLabel
+    Left = 1051
+    Top = 24
+    Width = 109
+    Height = 13
+  end
   object edt_name: TEdit
     Left = 94
     Top = 39
@@ -404,7 +410,8 @@ object FHelloWorld: TFHelloWorld
     Width = 121
     Height = 21
     TabOrder = 16
-    Text = 'Search Name Student'
+    TextHint = 'Search Name Student'
+    OnClick = edt_search_nameClick
   end
   object btn_search: TButton
     Left = 159

@@ -79,6 +79,7 @@ type
     strngfld_allocMAT_ETUD: TStringField;
     edt_search_name: TEdit;
     btn_search: TButton;
+    lbl_af_view: TLabel;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -95,6 +96,7 @@ type
     procedure CalcWeekAF(matEtud: String; startDate: TStringList;
       endDate: TStringList; period: TStringList);
     procedure btnAFClick(Sender: TObject);
+    procedure edt_search_nameClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -465,6 +467,7 @@ begin
 
   nb_compPeriod := 0;
   nb_ligne := 0;
+  lbl_af_view.Caption := '';
 
   while nb_ligne < 51 do
   begin
@@ -481,6 +484,7 @@ begin
       if (nb_period) <> 0 then
       begin
         OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+' '+FloatToStr(nb_period_super)));
+        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 +' '+DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+#13#9+' '+FloatToStr(nb_period_super);
         // OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
       end;
 
@@ -490,6 +494,7 @@ begin
     else if nb_period_previous <> nb_period then
     begin
         OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+' '+FloatToStr(nb_period_super)));
+        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 +' '+DateTimeToStr(start_date_tmp)+' '+ DateTimeToStr(end_date)+' '+FloatToStr(nb_period_second)+#13#9+' '+FloatToStr(nb_period_super);
     end;
 
     //OutputDebugString(Pchar('Nbre périodes / semaine'+FloatToStr(nb_period)));
@@ -795,6 +800,16 @@ begin
 
   edt_error.text := return;
   edt_error.Font.Color := clRed;
+
+end;
+
+procedure TFHelloWorld.edt_search_nameClick(Sender: TObject);
+begin
+
+  OutputDebugString(PChar('Button click'));
+
+
+
 
 end;
 
