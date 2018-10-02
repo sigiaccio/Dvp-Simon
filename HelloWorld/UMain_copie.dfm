@@ -721,7 +721,9 @@ object FHelloWorld: TFHelloWorld
         '//  inner join CONTENUS_SECTIONS on (CONTENUS_SECTIONS.ID_SECTIO' +
         'N = SECTIONS.ID_SECTION)'
       'where'
-      '  INSCRIPTIONS.MAT_ETUD = :PmatEtud and'
+      '//  INSCRIPTIONS.MAT_ETUD = :PmatEtud '
+      '  INSCRIPTIONS.MAT_ETUD = 2018000700'
+      'and'
       '  INSCRIPTIONS.CODE_MOTIF_TRANSF is null'
       'order by'
       '  ORG.DATE_DEB,'
