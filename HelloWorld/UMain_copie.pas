@@ -433,7 +433,7 @@ begin
 
     // tabAF[id_week,nb_niveau] := tabAF[id_week,nb_niveau] + nb_period;
 
-    while IncDay(start_date, 7) <= end_date do
+    while IncDay(start_date, 6) <= end_date do
     begin
       // OutputDebugString(Pchar('TAB AF [' + IntToStr(id_week) + ',' + IntToStr(nb_niveau) + '] PERIODES_SEMAINE ' + ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString));
       // OutputDebugString(Pchar('End date <= start date +6 ' + DateTimeToStr(end_date) + ' --- ' + DateTimeToStr(IncDay(start_date, 7))));
@@ -470,8 +470,8 @@ begin
   // start_date := EncodeDateTime(2019, 1, 1, 1, 1, 1, 000);
   // date_deb := FormatDateTime('d mmmm yyyy',EncodeDateWeek(CurrentYear, 1));
   // find first day of the year
-  date_deb := FormatDateTime('d/m/yyyy', EncodeDateWeek(CurrentYear, 1));
-  // ----26/09    start_date := StrToDateTime(date_deb);
+      date_deb := FormatDateTime('d/m/yyyy', EncodeDateWeek(CurrentYear, 1));
+     // start_date := StrToDateTime(date_deb);
 
   // id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
 
@@ -492,13 +492,14 @@ begin
     nb_period_second := tabAF[nb_ligne, 1];
     nb_period_super := tabAF[nb_ligne, 2];
 
+    {
     if (nb_period_previous) = 0 then
     begin
       if (nb_period) <> 0 then
       begin
 
 //        OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
-//        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
+        lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
 
         // create dataset to view data
         client_dset_af_view.Append;
@@ -509,7 +510,8 @@ begin
         client_dset_af_view.FieldByName('Ects').AsFloat := 10;
         client_dset_af_view.Post;
 
-        // OutputDebugString(Pchar('Start_date_tmp :'+DateTimeToStr(start_date_tmp)));
+        OutputDebugString(Pchar('1 Start_date_tmp :'+DateTimeToStr(start_date_tmp)));
+        OutputDebugString(Pchar('1 End_date :'+DateTimeToStr(end_date)));
 
         // OutputDebugString(Pchar('AF nombre période' + FloatToStr(nb_period)));
       end;
@@ -520,22 +522,26 @@ begin
     else if nb_period_previous <> nb_period then
     begin
 //      OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
-//      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
+      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + #13#9 + ' ' + FloatToStr(nb_period_super);
 
         client_dset_af_view.Append;
         client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_tmp;
         client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date;
         client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_second;
         client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
-        client_dset_af_view.FieldByName('Ects').AsFloat := 10;
+        client_dset_af_view.FieldByName('Ects').AsFloat := 99999999;
 
         client_dset_af_view.Post;
+
+        OutputDebugString(Pchar('2 Start_date_tmp :'+DateTimeToStr(start_date_tmp)));
+        OutputDebugString(Pchar('2 End_date :'+DateTimeToStr(end_date)));
     end;
 
+    }
     OutputDebugString(Pchar('--- ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date) + ' ' + FloatToStr(nb_period_second) + ' ' + FloatToStr(nb_period_super)));
 
-    start_date_tmp := IncDay(start_date_tmp, 6);
-    // start_date := IncDay(start_date, 6);
+    start_date_tmp := IncDay(start_date_tmp, 7);
+//    start_date := IncDay(start_date, 6);
 
     inc(nb_ligne);
 

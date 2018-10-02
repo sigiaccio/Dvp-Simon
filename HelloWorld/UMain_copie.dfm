@@ -142,8 +142,8 @@ object FHelloWorld: TFHelloWorld
   object lbl_af_view: TLabel
     Left = 955
     Top = 36
-    Width = 174
-    Height = 120
+    Width = 3
+    Height = 13
   end
   object edt_name: TEdit
     Left = 70
@@ -685,6 +685,7 @@ object FHelloWorld: TFHelloWorld
       '       ORG.DATE_FIN,'
       '       UF.NB_PERIODES_STAGE,'
       '       UF.NB_PERIODES,'
+      '// CONTENUS_SECTIONS.ECTS_NBR,'
       '-- Debug Zone Start'
       '/*'
       '       ORG.NB_SEM_JJ,'
@@ -713,6 +714,12 @@ object FHelloWorld: TFHelloWorld
       '  inner join UF on (CLASSES.ID_UF = UF.ID_UF)'
       '  inner join NIVEAUX on (NIVEAUX.NIVEAU = UF.NIVEAU)'
       '  inner join ORG on (CLASSES.ID_ORG = Org.ID_ORG)'
+      
+        '//  inner join SECTIONS on (classes.ID_SECTION = SECTIONS.ID_SEC' +
+        'TION)'
+      
+        '//  inner join CONTENUS_SECTIONS on (CONTENUS_SECTIONS.ID_SECTIO' +
+        'N = SECTIONS.ID_SECTION)'
       'where'
       '  INSCRIPTIONS.MAT_ETUD = :PmatEtud and'
       '  INSCRIPTIONS.CODE_MOTIF_TRANSF is null'
@@ -787,6 +794,7 @@ object FHelloWorld: TFHelloWorld
       FieldName = 'secondaire'
     end
     object float_field__dset_af_viewsuperieur: TFloatField
+      Alignment = taCenter
       DisplayWidth = 10
       FieldName = 'superieur'
     end
