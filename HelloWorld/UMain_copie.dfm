@@ -735,7 +735,8 @@ object FHelloWorld: TFHelloWorld
       '  INSCRIPTIONS.CODE_MOTIF_TRANSF is null'
       'order by'
       '       HORAIRES.DATE_DEB,'
-      '       HORAIRES.DATE_FIN')
+      '       HORAIRES.DATE_FIN'
+      '')
     Left = 1040
     Top = 240
     object strngfld_allocDENOM_CRT: TStringField

@@ -347,22 +347,24 @@ var
   start_date, end_date, start_date_tmp, start_date_aff, end_date_tmp,
     end_date_aff: TDateTime;
   date_deb, date_fin: string;
-  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur, nb_ects: double;
+  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire,
+    nb_period_superieur, nb_ects: double;
 
   // 4 colonnes et 36 lignes
-  // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
+  // COLONNES : Secondaire | Supérieur | ECTS
   // LIGNES : semaine 1 --> 52 (52 semaines = 1 année)
   tableauAllocationsFamiliales: array [0 .. 51] of array [0 .. 3] of double;
 
   // ShowMessage(IntToStr(WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString))));
 begin
-client_dset_af_view.EmptyDataSet;
+  client_dset_af_view.EmptyDataSet;
   debug := 1;
 
   // CALCULER ALLOCATIONS FAMILIALES
   // for nb_ligne := 0 to High(tableauAllocationsFamiliales[nb_colonne]) do
 
   // find first week from DB
+  ibqry_alloc.First;
   id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
     .AsString));
 
@@ -397,8 +399,7 @@ client_dset_af_view.EmptyDataSet;
     start_date := ibqry_alloc.FieldByName('date_deb').AsDateTime;
     end_date := ibqry_alloc.FieldByName('date_fin').AsDateTime;
     // function : search week of the year with a date
-    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
-      .AsString));
+    id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
 
     // OutputDebugString(Pchar('AF ID WEEK FIRST' + IntToStr(id_week)));
     for nb_init := 0 to Length(tableauAllocationsFamiliales) - 1 do
@@ -419,14 +420,18 @@ client_dset_af_view.EmptyDataSet;
     if niveau = 'SEC' then
     begin
       nb_niveau := 1;
-    end;
-
-    if niveau = 'SUP' then
+    end
+    else if niveau = 'SUP' then
     begin
       nb_niveau := 2;
+    end
+    else
+    begin
+    // ETCS gestion du cas non présent dans la requête (colonne niveau): 3
+      nb_niveau := 3;
     end;
 
-    // SECONDAIRE | SUPERIEUR | SEC/SUP | ECTS
+       // SECONDAIRE | SUPERIEUR | SEC/SUP | ECTS
     // tableauAllocationsFamiliales[id_week][nb_niveau] := StrToInt(ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString);
 
     nb_period := ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsFloat;
@@ -443,10 +448,8 @@ client_dset_af_view.EmptyDataSet;
       tableauAllocationsFamiliales[id_week, nb_niveau] :=
         tableauAllocationsFamiliales[id_week, nb_niveau] + nb_period;
 
-            tableauAllocationsFamiliales[id_week, 3] :=
-        tableauAllocationsFamiliales[id_week, 3] + nb_ects;
-
-
+      tableauAllocationsFamiliales[id_week, 3] := tableauAllocationsFamiliales
+        [id_week, 3] + nb_ects;
 
       start_date := IncDay(start_date, 7);
 
@@ -475,7 +478,7 @@ client_dset_af_view.EmptyDataSet;
   nb_ligne := 0;
   lbl_af_view.Caption := '';
 
-  start_date_aff := start_date_tmp ;
+  start_date_aff := start_date_tmp;
 
   while nb_ligne < 51 do
   begin
@@ -484,7 +487,7 @@ client_dset_af_view.EmptyDataSet;
     end_date_aff := IncDay(start_date_tmp, 6);
 
     nb_period := tableauAllocationsFamiliales[nb_ligne, nb_niveau];
-    nb_period_next := tableauAllocationsFamiliales[nb_ligne+1, nb_niveau];
+    nb_period_next := tableauAllocationsFamiliales[nb_ligne + 1, nb_niveau];
     nb_period_secondaire := tableauAllocationsFamiliales[nb_ligne, 1];
     nb_period_superieur := tableauAllocationsFamiliales[nb_ligne, 2];
     nb_ects := tableauAllocationsFamiliales[nb_ligne, 3];
@@ -498,7 +501,8 @@ client_dset_af_view.EmptyDataSet;
 
       // OutputDebugString(Pchar('#1## ' + DateTimeToStr(start_date_aff) +' '+DateTimeToStr(end_date_aff)));
     end
-    else if (nb_period_previous <> nb_period) and (nb_period_next <> nb_period) then
+    else if (nb_period_previous <> nb_period) and (nb_period_next <> nb_period)
+    then
     begin
       OutputDebugString(Pchar('#2## ' + DateTimeToStr(start_date_aff) + ' ' +
         DateTimeToStr(end_date_aff) + ' ' + FloatToStr(nb_period)));
@@ -507,23 +511,25 @@ client_dset_af_view.EmptyDataSet;
         + FloatToStr(nb_period_secondaire) + #13#9 + ' ' +
         FloatToStr(nb_period_superieur);
 
-        // view in the GRID
+      // view in the GRID
       client_dset_af_view.Append;
       client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_aff;
       client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date_aff;
-      client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_secondaire;
-      client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_superieur;
+      client_dset_af_view.FieldByName('Secondaire').AsFloat :=
+        nb_period_secondaire;
+      client_dset_af_view.FieldByName('Superieur').AsFloat :=
+        nb_period_superieur;
       client_dset_af_view.FieldByName('Ects').AsFloat := nb_ects;
-//            client_dset_af_view.FieldByName('SecondaireSuperieur').AsFloat := nb_period_secondaire + nb_period_superieur;
+      // client_dset_af_view.FieldByName('SecondaireSuperieur').AsFloat := nb_period_secondaire + nb_period_superieur;
 
-      start_date_aff := IncDay(end_date,1);
+      start_date_aff := IncDay(end_date, 1);
       end_date_aff := end_date;
       nb_period_previous := nb_period;
 
     end;
 
     start_date_tmp := IncDay(start_date_tmp, 7);
-    //start_date_aff := IncDay(start_date_aff, 7);
+    // start_date_aff := IncDay(start_date_aff, 7);
     // start_date := IncDay(start_date, 6);
 
     inc(nb_ligne);
@@ -536,7 +542,7 @@ client_dset_af_view.EmptyDataSet;
   // tableauAllocationsFamiliales[nb_colonne, nb_ligne] := (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
   // tableauAllocationsFamiliales[0, nb_ligne] := nb_ligne;
 
- // matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
+  // matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
 
   // startDate := TStringList.Create;
   // endDate := TStringList.Create;
