@@ -378,7 +378,8 @@ object FHelloWorld: TFHelloWorld
       'DATE_FIN'#9'10'#9'DATE_FIN'#9#9
       'NB_PERIODES_STAGE'#9'10'#9'NB_PERIODES_STAGE'#9#9
       'NB_PERIODES'#9'10'#9'NB_PERIODES'#9#9
-      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE'#9#9)
+      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE'#9#9
+      'ECTS_NBR'#9'10'#9'ECTS_NBR'#9'F'#9)
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -431,7 +432,8 @@ object FHelloWorld: TFHelloWorld
       'dateFin'#9'18'#9'dateFin'#9'F'#9
       'secondaire'#9'10'#9'secondaire'#9'F'#9
       'superieur'#9'10'#9'superieur'#9'F'#9
-      'ects'#9'10'#9'ects'#9'F'#9)
+      'ects'#9'10'#9'ects'#9'F'#9
+      'secondaireSuperieur'#9'10'#9'secondaireSuperieur'#9'F'#9)
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -670,7 +672,7 @@ object FHelloWorld: TFHelloWorld
   object ibqry_alloc: TIBOQuery
     Params = <
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'PMatEtud'
         ParamType = ptInput
       end>
@@ -771,6 +773,11 @@ object FHelloWorld: TFHelloWorld
       Precision = 18
       Size = 2
     end
+    object intgrfld_allocECTS_NBR: TIntegerField
+      DisplayWidth = 10
+      FieldName = 'ECTS_NBR'
+      ReadOnly = True
+    end
   end
   object ds_af_view: TDataSource
     DataSet = client_dset_af_view
@@ -805,6 +812,7 @@ object FHelloWorld: TFHelloWorld
       FieldName = 'ects'
     end
     object float_field__dset_af_viewsecondaireSuperieur: TFloatField
+      DisplayWidth = 10
       FieldKind = fkCalculated
       FieldName = 'secondaireSuperieur'
       Calculated = True

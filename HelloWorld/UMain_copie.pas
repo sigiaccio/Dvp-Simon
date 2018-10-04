@@ -89,6 +89,7 @@ type
     float_field__dset_af_viewects: TFloatField;
     btn_clear: TButton;
     float_field__dset_af_viewsecondaireSuperieur: TFloatField;
+    intgrfld_allocECTS_NBR: TIntegerField;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -346,7 +347,7 @@ var
   start_date, end_date, start_date_tmp, start_date_aff, end_date_tmp,
     end_date_aff: TDateTime;
   date_deb, date_fin: string;
-  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur: double;
+  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur, nb_ects: double;
 
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
@@ -400,7 +401,6 @@ client_dset_af_view.EmptyDataSet;
       .AsString));
 
     // OutputDebugString(Pchar('AF ID WEEK FIRST' + IntToStr(id_week)));
-
     for nb_init := 0 to Length(tableauAllocationsFamiliales) - 1 do
     begin
       nb_niveau := 0;
@@ -430,6 +430,7 @@ client_dset_af_view.EmptyDataSet;
     // tableauAllocationsFamiliales[id_week][nb_niveau] := StrToInt(ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString);
 
     nb_period := ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsFloat;
+    nb_ects := ibqry_alloc.FieldByName('ects_nbr').AsFloat;
 
     // tableauAllocationsFamiliales[id_week,nb_niveau] := tableauAllocationsFamiliales[id_week,nb_niveau] + nb_period;
 
@@ -441,6 +442,11 @@ client_dset_af_view.EmptyDataSet;
 
       tableauAllocationsFamiliales[id_week, nb_niveau] :=
         tableauAllocationsFamiliales[id_week, nb_niveau] + nb_period;
+
+            tableauAllocationsFamiliales[id_week, 3] :=
+        tableauAllocationsFamiliales[id_week, 3] + nb_ects;
+
+
 
       start_date := IncDay(start_date, 7);
 
@@ -481,6 +487,7 @@ client_dset_af_view.EmptyDataSet;
     nb_period_next := tableauAllocationsFamiliales[nb_ligne+1, nb_niveau];
     nb_period_secondaire := tableauAllocationsFamiliales[nb_ligne, 1];
     nb_period_superieur := tableauAllocationsFamiliales[nb_ligne, 2];
+    nb_ects := tableauAllocationsFamiliales[nb_ligne, 3];
 
     // nb_period : période en cours
     // nb_period_previous : période précédente
@@ -506,7 +513,8 @@ client_dset_af_view.EmptyDataSet;
       client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date_aff;
       client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_secondaire;
       client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_superieur;
-      client_dset_af_view.FieldByName('Ects').AsFloat := 10;
+      client_dset_af_view.FieldByName('Ects').AsFloat := nb_ects;
+//            client_dset_af_view.FieldByName('SecondaireSuperieur').AsFloat := nb_period_secondaire + nb_period_superieur;
 
       start_date_aff := IncDay(end_date,1);
       end_date_aff := end_date;
