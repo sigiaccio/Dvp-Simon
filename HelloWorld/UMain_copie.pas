@@ -346,7 +346,7 @@ var
   start_date, end_date, start_date_tmp, start_date_aff, end_date_tmp,
     end_date_aff: TDateTime;
   date_deb, date_fin: string;
-  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_super: double;
+  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur: double;
 
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | Secondaire/supérieur | ECTS
@@ -355,6 +355,7 @@ var
 
   // ShowMessage(IntToStr(WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString))));
 begin
+client_dset_af_view.EmptyDataSet;
   debug := 1;
 
   // CALCULER ALLOCATIONS FAMILIALES
@@ -479,7 +480,7 @@ begin
     nb_period := tableauAllocationsFamiliales[nb_ligne, nb_niveau];
     nb_period_next := tableauAllocationsFamiliales[nb_ligne+1, nb_niveau];
     nb_period_secondaire := tableauAllocationsFamiliales[nb_ligne, 1];
-    nb_period_super := tableauAllocationsFamiliales[nb_ligne, 2];
+    nb_period_superieur := tableauAllocationsFamiliales[nb_ligne, 2];
 
     // nb_period : période en cours
     // nb_period_previous : période précédente
@@ -497,14 +498,14 @@ begin
       lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
         DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date_aff) + ' '
         + FloatToStr(nb_period_secondaire) + #13#9 + ' ' +
-        FloatToStr(nb_period_super);
+        FloatToStr(nb_period_superieur);
 
         // view in the GRID
       client_dset_af_view.Append;
       client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_aff;
       client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date_aff;
       client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_secondaire;
-      client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_super;
+      client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_superieur;
       client_dset_af_view.FieldByName('Ects').AsFloat := 10;
 
       start_date_aff := IncDay(end_date,1);
@@ -527,11 +528,7 @@ begin
   // tableauAllocationsFamiliales[nb_colonne, nb_ligne] := (DateToStr(sepDate) + ' - ' + DateToStr(IncDay(sepDate, 6)));
   // tableauAllocationsFamiliales[0, nb_ligne] := nb_ligne;
 
-  matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
-  if debug = 1 then
-  begin
-    OutputDebugString(Pchar('AF : Matricule Etudiant ' + matEtud));
-  end;
+ // matEtud := ibqry_alloc.FieldByName('mat_etud').AsString;
 
   // startDate := TStringList.Create;
   // endDate := TStringList.Create;
