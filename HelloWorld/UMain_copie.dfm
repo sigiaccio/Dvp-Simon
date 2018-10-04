@@ -372,14 +372,13 @@ object FHelloWorld: TFHelloWorld
     Width = 801
     Height = 244
     Selected.Strings = (
-      'MAT_ETUD'#9'10'#9'MAT_ETUD'
-      'DENOM_CRT'#9'20'#9'DENOM_CRT'
-      'SEC_SUP'#9'3'#9'SEC_SUP'
-      'DATE_DEB'#9'10'#9'DATE_DEB'
-      'DATE_FIN'#9'10'#9'DATE_FIN'
-      'NB_PERIODES_STAGE'#9'10'#9'NB_PERIODES_STAGE'
-      'NB_PERIODES'#9'10'#9'NB_PERIODES'
-      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE')
+      'DENOM_CRT'#9'20'#9'DENOM_CRT'#9#9
+      'SEC_SUP'#9'3'#9'SEC_SUP'#9#9
+      'DATE_DEB'#9'10'#9'DATE_DEB'#9#9
+      'DATE_FIN'#9'10'#9'DATE_FIN'#9#9
+      'NB_PERIODES_STAGE'#9'10'#9'NB_PERIODES_STAGE'#9#9
+      'NB_PERIODES'#9'10'#9'NB_PERIODES'#9#9
+      'PERIODES_SEMAINE'#9'19'#9'PERIODES_SEMAINE'#9#9)
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -671,28 +670,30 @@ object FHelloWorld: TFHelloWorld
   object ibqry_alloc: TIBOQuery
     Params = <
       item
-        DataType = ftString
-        Name = 'PmatEtud'
+        DataType = ftUnknown
+        Name = 'PMatEtud'
         ParamType = ptInput
       end>
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
-      'select inscriptions.mat_etud,'
+      'select distinct classes.NO_CLASSE,'
       '       UF.DENOM_CRT,'
       '       NIVEAUX.SEC_SUP,'
-      '       ORG.DATE_DEB,'
-      '       ORG.DATE_FIN,'
-      '       UF.NB_PERIODES_STAGE,'
-      '       UF.NB_PERIODES,'
-      '// CONTENUS_SECTIONS.ECTS_NBR,'
+      '/*       HORAIRES.DATE_DEB,'
+      '       HORAIRES.DATE_FIN,'
+      '*/'
+      '  org.DATE_DEB,'
+      '  org.date_fin,'
+      ' /*       CONTENUS_SECTIONS.ECTS_NBR,*/'
+      ''
       '-- Debug Zone Start'
-      '/*'
-      '       ORG.NB_SEM_JJ,'
-      '       ORG.NB_SEM_SD,'
+      ''
+      '--       ORG.NB_SEM_JJ,'
+      '--       ORG.NB_SEM_SD,'
       '       uf.NB_PERIODES,'
       '       uf.NB_PERIODES_STAGE,'
-      '*/'
+      ''
       '-- Debug Zone End'
       
         '-- Le case permet de calculer les p'#233'riodes semaines de la classe' +
@@ -705,7 +706,12 @@ object FHelloWorld: TFHelloWorld
       
         '            else  cast(UF.NB_PERIODES as decimal(4,2))/(ORG.NB_S' +
         'EM_JJ + ORG.NB_SEM_SD)'
-      '       end as PERIODES_SEMAINE'
+      '       end as PERIODES_SEMAINE,'
+      '       case'
+      '       WHEN niveaux.SEC_SUP = '#39'SEC'#39' then 0'
+      '            else CONTENUS_SECTIONS.ECTS_NBR'
+      '       end as ECTS_NBR'
+      ''
       'from'
       '  INSCRIPTIONS'
       
@@ -715,27 +721,21 @@ object FHelloWorld: TFHelloWorld
       '  inner join NIVEAUX on (NIVEAUX.NIVEAU = UF.NIVEAU)'
       '  inner join ORG on (CLASSES.ID_ORG = Org.ID_ORG)'
       
-        '//  inner join SECTIONS on (classes.ID_SECTION = SECTIONS.ID_SEC' +
-        'TION)'
+        '  inner join HORAIRES on (HORAIRES.NO_CLASSE = CLASSES.NO_CLASSE' +
+        ')'
       
-        '//  inner join CONTENUS_SECTIONS on (CONTENUS_SECTIONS.ID_SECTIO' +
-        'N = SECTIONS.ID_SECTION)'
+        '  inner join CONTENUS_SECTIONS on (CONTENUS_SECTIONS.ID_SECTION ' +
+        '= CLASSES.ID_SECTION AND CONTENUS_SECTIONS.ID_UF = CLASSES.ID_UF' +
+        ')'
+      ''
       'where'
-      '//  INSCRIPTIONS.MAT_ETUD = :PmatEtud '
-      '  INSCRIPTIONS.MAT_ETUD = 2018000700'
-      'and'
+      '  INSCRIPTIONS.MAT_ETUD = :PMatEtud and'
       '  INSCRIPTIONS.CODE_MOTIF_TRANSF is null'
       'order by'
-      '  ORG.DATE_DEB,'
-      '  ORG.DATE_FIN')
+      '       HORAIRES.DATE_DEB,'
+      '       HORAIRES.DATE_FIN')
     Left = 1040
     Top = 240
-    object strngfld_allocMAT_ETUD: TStringField
-      DisplayWidth = 10
-      FieldName = 'MAT_ETUD'
-      Required = True
-      Size = 10
-    end
     object strngfld_allocDENOM_CRT: TStringField
       DisplayWidth = 20
       FieldName = 'DENOM_CRT'

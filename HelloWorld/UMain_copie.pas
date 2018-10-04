@@ -76,7 +76,6 @@ type
     smlntfld_allocNB_PERIODES: TSmallintField;
     ibcdfld_allocPERIODES_SEMAINE: TIBOBCDField;
     btnAF: TButton;
-    strngfld_allocMAT_ETUD: TStringField;
     edt_search_name: TEdit;
     btn_search: TButton;
     lbl_af_view: TLabel;
@@ -723,7 +722,7 @@ begin
     // ibqry_alloc.ParamByName('PMatEtud').AsString := ibqry_etudiant.FieldByName('MAT_ETUD').AsString;
     ibqry_alloc.ParamByName('PMatEtud').AsString := dbedt_MAT_ETUD.text;
     ibqry_alloc.Refresh;
-
+    ibqry_alloc.Active := True;
   end;
 
 end;
