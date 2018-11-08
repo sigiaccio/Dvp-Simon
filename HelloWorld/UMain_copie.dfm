@@ -2,7 +2,7 @@ object FHelloWorld: TFHelloWorld
   Left = 0
   Top = 0
   Caption = 'FHelloWorld'
-  ClientHeight = 590
+  ClientHeight = 571
   ClientWidth = 1824
   Color = clWhite
   Font.Charset = DEFAULT_CHARSET
@@ -423,7 +423,7 @@ object FHelloWorld: TFHelloWorld
     OnClick = btn_searchClick
   end
   object wdbgrd_af_view: TwwDBGrid
-    Left = 1135
+    Left = 975
     Top = 20
     Width = 681
     Height = 286
@@ -463,6 +463,15 @@ object FHelloWorld: TFHelloWorld
     Caption = 'btn_clear'
     TabOrder = 19
     OnClick = btn_clearClick
+  end
+  object btn_codes_postaux: TButton
+    Left = 312
+    Top = 197
+    Width = 75
+    Height = 25
+    Caption = 'btn_codes_postaux'
+    TabOrder = 20
+    OnClick = btn_codes_postauxClick
   end
   object ibqry_etudiant: TIBOQuery
     Params = <
@@ -666,8 +675,8 @@ object FHelloWorld: TFHelloWorld
   end
   object ds_alloc: TDataSource
     DataSet = ibqry_alloc
-    Left = 1104
-    Top = 248
+    Left = 832
+    Top = 264
   end
   object ibqry_alloc: TIBOQuery
     Params = <
@@ -737,8 +746,8 @@ object FHelloWorld: TFHelloWorld
       '       HORAIRES.DATE_DEB,'
       '       HORAIRES.DATE_FIN'
       '')
-    Left = 1040
-    Top = 240
+    Left = 744
+    Top = 256
     object strngfld_allocDENOM_CRT: TStringField
       DisplayWidth = 20
       FieldName = 'DENOM_CRT'

@@ -12,7 +12,7 @@ uses
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
   Wwdotdot, Wwdbcomb, lib.validation.field,
-  System.DateUtils, IB_Grid, wwclient;
+  System.DateUtils, IB_Grid, wwclient, Unit1, codes_postaux;
 
 type
   TFHelloWorld = class(TForm)
@@ -90,6 +90,7 @@ type
     btn_clear: TButton;
     float_field__dset_af_viewsecondaireSuperieur: TFloatField;
     intgrfld_allocECTS_NBR: TIntegerField;
+    btn_codes_postaux: TButton;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -103,13 +104,13 @@ type
     procedure wdbgrd1DblClick(Sender: TObject);
     procedure dbedt_MAT_ETUDChange(Sender: TObject);
     // calculate the number of weeks for secondary and higher education for family allowances (AF)
-    procedure CalcWeekAF(matEtud: String; startDate: TStringList;
-      endDate: TStringList; period: TStringList);
+    procedure CalcWeekAF(matEtud: String; startDate: TStringList; endDate: TStringList; period: TStringList);
     procedure btnAFClick(Sender: TObject);
     procedure edt_search_nameClick(Sender: TObject);
     procedure btn_searchClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure btn_clearClick(Sender: TObject);
+    procedure btn_codes_postauxClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -133,8 +134,7 @@ begin
 
 end;
 
-function outputD(text: string; var1: string = ''; var2: string = '')
-  : string; overload;
+function outputD(text: string; var1: string = ''; var2: string = ''): string; overload;
 // function outputD(text:string,var1:string,var2:string='');  overload;
 begin
   OutputDebugString(Pchar(text + var1 + var2));
@@ -336,19 +336,20 @@ begin
 end;
 
 procedure TFHelloWorld.btnAFClick(Sender: TObject);
+const
+  nb_heures_semaines_secondaire = 17;
+  nb_heures_semaines_superieure = 13;
+
 var
-  debug, nb_diffDate, nb_colonne, nb_ligne, nb_init, nb_niveau,
-    nb_compPeriod: integer;
+  debug, nb_diffDate, nb_colonne, nb_ligne, nb_init, nb_niveau, nb_compPeriod: integer;
   matEtud, day, niveau: String;
   startDate2, endDate2, period: TStringList;
   sepDate: TDateTime;
   annee, mois, jour: word;
   id_week: integer;
-  start_date, end_date, start_date_tmp, start_date_aff, end_date_tmp,
-    end_date_aff: TDateTime;
+  start_date, end_date, start_date_tmp, start_date_aff, end_date_tmp, end_date_aff: TDateTime;
   date_deb, date_fin: string;
-  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire,
-    nb_period_superieur, nb_ects: double;
+  nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur, nb_ects: double;
 
   // 4 colonnes et 36 lignes
   // COLONNES : Secondaire | Supérieur | ECTS
@@ -365,8 +366,7 @@ begin
 
   // find first week from DB
   ibqry_alloc.First;
-  id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb')
-    .AsString));
+  id_week := WeekOfTheYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString));
 
   // initialize tab with index week 1 --> 52
   nb_ligne := id_week;
@@ -427,11 +427,11 @@ begin
     end
     else
     begin
-    // ETCS gestion du cas non présent dans la requête (colonne niveau): 3
+      // ETCS gestion du cas non présent dans la requête (colonne niveau): 3
       nb_niveau := 3;
     end;
 
-       // SECONDAIRE | SUPERIEUR | SEC/SUP | ECTS
+    // SECONDAIRE | SUPERIEUR | SEC/SUP | ECTS
     // tableauAllocationsFamiliales[id_week][nb_niveau] := StrToInt(ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsString);
 
     nb_period := ibqry_alloc.FieldByName('PERIODES_SEMAINE').AsFloat;
@@ -445,11 +445,9 @@ begin
       // OutputDebugString(Pchar('End date <= start date +6 ' + DateTimeToStr(end_date) + ' --- ' + DateTimeToStr(IncDay(start_date, 7))));
       // OutputDebugString(Pchar('ID_WEEK ' + IntToStr(id_week)));
 
-      tableauAllocationsFamiliales[id_week, nb_niveau] :=
-        tableauAllocationsFamiliales[id_week, nb_niveau] + nb_period;
+      tableauAllocationsFamiliales[id_week, nb_niveau] := tableauAllocationsFamiliales[id_week, nb_niveau] + nb_period;
 
-      tableauAllocationsFamiliales[id_week, 3] := tableauAllocationsFamiliales
-        [id_week, 3] + nb_ects;
+      tableauAllocationsFamiliales[id_week, 3] := tableauAllocationsFamiliales[id_week, 3] + nb_ects;
 
       start_date := IncDay(start_date, 7);
 
@@ -501,24 +499,32 @@ begin
 
       // OutputDebugString(Pchar('#1## ' + DateTimeToStr(start_date_aff) +' '+DateTimeToStr(end_date_aff)));
     end
-    else if (nb_period_previous <> nb_period) and (nb_period_next <> nb_period)
-    then
+    else if (nb_period_previous <> nb_period) and (nb_period_next <> nb_period) then
     begin
-      OutputDebugString(Pchar('#2## ' + DateTimeToStr(start_date_aff) + ' ' +
-        DateTimeToStr(end_date_aff) + ' ' + FloatToStr(nb_period)));
-      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' +
-        DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date_aff) + ' '
-        + FloatToStr(nb_period_secondaire) + #13#9 + ' ' +
-        FloatToStr(nb_period_superieur);
+      OutputDebugString(Pchar('#2## ' + DateTimeToStr(start_date_aff) + ' ' + DateTimeToStr(end_date_aff) + ' ' + FloatToStr(nb_period)));
+      lbl_af_view.Caption := lbl_af_view.Caption + #13#10 + ' ' + DateTimeToStr(start_date_tmp) + ' ' + DateTimeToStr(end_date_aff) + ' ' + FloatToStr(nb_period_secondaire) + #13#9 + ' ' + FloatToStr(nb_period_superieur);
 
       // view in the GRID
       client_dset_af_view.Append;
+
       client_dset_af_view.FieldByName('Datedebut').AsDateTime := start_date_aff;
       client_dset_af_view.FieldByName('Datefin').AsDateTime := end_date_aff;
-      client_dset_af_view.FieldByName('Secondaire').AsFloat :=
-        nb_period_secondaire;
-      client_dset_af_view.FieldByName('Superieur').AsFloat :=
-        nb_period_superieur;
+
+      if nb_period_secondaire <= nb_heures_semaines_secondaire then
+      begin
+        wdbgrd_af_view.Font.Color := clRed;
+        client_dset_af_view.FieldByName('Secondaire').AsFloat := nb_period_secondaire;
+      end
+      else
+      begin
+        wdbgrd_af_view.Font.Color := clGreen;
+        wdbgrd_af_view.LineColors.DataColor := clGreen;
+        // wdbgrd_af_view.Brush.Color := clBlack;
+        // wdbgrd_af_view.LineColors.DataColor := clred;
+
+      end;
+
+      client_dset_af_view.FieldByName('Superieur').AsFloat := nb_period_superieur;
       client_dset_af_view.FieldByName('Ects').AsFloat := nb_ects;
       // client_dset_af_view.FieldByName('SecondaireSuperieur').AsFloat := nb_period_secondaire + nb_period_superieur;
 
@@ -611,6 +617,16 @@ begin
   client_dset_af_view.EmptyDataSet;
 end;
 
+procedure TFHelloWorld.btn_codes_postauxClick(Sender: TObject);
+var cp : TForm_cp;
+begin
+    // open another form
+    cp := TForm_cp.Create(Self);
+    cp.ShowModal;
+    cp.Free;
+
+end;
+
 procedure TFHelloWorld.btn_searchClick(Sender: TObject);
 begin
   {
@@ -622,14 +638,12 @@ begin
   }
 end;
 
-procedure TFHelloWorld.CalcWeekAF(matEtud: String; startDate: TStringList;
-  endDate, period: TStringList);
+procedure TFHelloWorld.CalcWeekAF(matEtud: String; startDate: TStringList; endDate, period: TStringList);
 begin
   OutputDebugString(Pchar('---CalcWeekAF---'));
 end;
 
-procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject;
-  AFieldName: string);
+procedure TFHelloWorld.wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
 var
   listOrderBy: TStringList;
   index: integer;
@@ -809,21 +823,12 @@ procedure TFHelloWorld.searchSetQuery(Ordering, direction: String);
 var
   iCount: integer;
 begin
-  OutputDebugString(Pchar('----- REQ searchSetQuery - ordering - direction ' +
-    Ordering + direction));
+  OutputDebugString(Pchar('----- REQ searchSetQuery - ordering - direction ' + Ordering + direction));
 
   ibqry_etudiant.SQL.text := '';
-  ibqry_etudiant.SQL.add('SELECT MAT_ETUD' + ', etd.NOM' + ', etd.PRENOM' +
-    ', etd.SEXE' + ', etd.DATE_NAISS' + ', v.nom as ville_naissance ' +
-    ', p.nom as pays' + ', etd.ADR_RUE ' + ', etd.ADR_NO' + ', etd.ADR_BOITE' +
-    ', l.NOM as localite ' + ', l.CP' + ', etd.GSM' + ', etd.TEL' +
-    ', etd.NO_COMPTE' + ', etd.ALLOC_FAM ' + ', etd.NO_NATIONAL ' +
-    ', etd.EMAIL        ' + ', etd.DATE_CREATED  ' + ', etd.DATE_MODIFIED ' +
-    ', etd.USERNAME       ' + ', etd.MODIFIED_BY     ' +
-    'FROM ETUDIANTS etd       ' +
-    'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS ' +
-    'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE' +
-    ' inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE');
+  ibqry_etudiant.SQL.add('SELECT MAT_ETUD' + ', etd.NOM' + ', etd.PRENOM' + ', etd.SEXE' + ', etd.DATE_NAISS' + ', v.nom as ville_naissance ' + ', p.nom as pays' + ', etd.ADR_RUE ' + ', etd.ADR_NO' + ', etd.ADR_BOITE' + ', l.NOM as localite ' +
+    ', l.CP' + ', etd.GSM' + ', etd.TEL' + ', etd.NO_COMPTE' + ', etd.ALLOC_FAM ' + ', etd.NO_NATIONAL ' + ', etd.EMAIL        ' + ', etd.DATE_CREATED  ' + ', etd.DATE_MODIFIED ' + ', etd.USERNAME       ' + ', etd.MODIFIED_BY     ' +
+    'FROM ETUDIANTS etd       ' + 'inner join VILLES v on v.ID_VILLE=etd.ID_VILLE_NAISS ' + 'inner join LOCALITES l on l.ID_LOCALITE = etd.ADR_ID_LOCALITE' + ' inner join PAYS p on p.id_pays = etd.ID_PAYS_NATIONALITE');
 
   ibqry_etudiant.SQL.add(' ORDER BY ' + Ordering + ' ' + direction + ' ');
 
