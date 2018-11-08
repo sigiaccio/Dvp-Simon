@@ -3,7 +3,7 @@ object Form_cp: TForm_cp
   Top = 0
   Caption = 'Form_cp'
   ClientHeight = 719
-  ClientWidth = 1450
+  ClientWidth = 1644
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -35,7 +35,7 @@ object Form_cp: TForm_cp
     Width = 75
     Height = 25
     Caption = 'btn_localites'
-    TabOrder = 2
+    TabOrder = 6
     OnClick = btn_localitesClick
   end
   object wwDBGrid_allocFamil_update_localites: TwwDBGrid
@@ -44,15 +44,15 @@ object Form_cp: TForm_cp
     Width = 377
     Height = 497
     Selected.Strings = (
-      'ID_LOCALITE'#9'10'#9'ID_LOCALITE'#9#9
-      'CP'#9'4'#9'CP'#9#9
-      'NOM'#9'40'#9'NOM'#9#9)
+      'ID_LOCALITE'#9'10'#9'ID_LOCALITE'
+      'CP'#9'4'#9'CP'
+      'NOM'#9'40'#9'NOM')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
     ShowHorzScrollBar = True
     DataSource = ds_localite_old
-    TabOrder = 3
+    TabOrder = 2
     TitleAlignment = taLeftJustify
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -68,15 +68,15 @@ object Form_cp: TForm_cp
     Width = 377
     Height = 497
     Selected.Strings = (
-      'ID'#9'10'#9'ID'#9#9
-      'CP'#9'4'#9'CP'#9#9
-      'NOM'#9'40'#9'NOM'#9#9)
+      'ID'#9'10'#9'ID'
+      'CP'#9'4'#9'CP'
+      'NOM'#9'40'#9'NOM')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
     ShowHorzScrollBar = True
     DataSource = ds_localite_new
-    TabOrder = 4
+    TabOrder = 3
     TitleAlignment = taLeftJustify
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -91,8 +91,9 @@ object Form_cp: TForm_cp
     Top = 187
     Width = 121
     Height = 21
-    TabOrder = 5
-    Text = '1050'
+    TabOrder = 4
+    Text = '6238'
+    OnEnter = edt_cpEnter
   end
   object grp_cp3: TGroupBox
     Left = 247
@@ -100,7 +101,7 @@ object Form_cp: TForm_cp
     Width = 114
     Height = 169
     Caption = 'etudiant'
-    TabOrder = 6
+    TabOrder = 5
   end
   object grp_cp4: TGroupBox
     Left = 367
@@ -113,8 +114,12 @@ object Form_cp: TForm_cp
   object wwDBGrid_etudiant: TwwDBGrid
     Left = 774
     Top = 214
-    Width = 291
+    Width = 363
     Height = 497
+    Selected.Strings = (
+      'MAT_ETUD'#9'10'#9'MAT_ETUD'
+      'ADR_ID_LOCALITE'#9'10'#9'ADR_ID_LOCALITE'
+      'NOM'#9'40'#9'NOM')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -131,10 +136,14 @@ object Form_cp: TForm_cp
     TitleButtons = False
   end
   object wwDBGrid_anc_etudiant: TwwDBGrid
-    Left = 1071
+    Left = 1143
     Top = 214
-    Width = 320
+    Width = 418
     Height = 497
+    Selected.Strings = (
+      'MAT_ETUD'#9'10'#9'MAT ETUD'
+      'ADR_ID_LOCALITE'#9'10'#9'ADR ID LOCALITE'
+      'NOM'#9'40'#9'NOM')
     IniAttributes.Delimiter = ';;'
     TitleColor = clBtnFace
     FixedCols = 0
@@ -149,6 +158,14 @@ object Form_cp: TForm_cp
     TitleFont.Style = []
     TitleLines = 1
     TitleButtons = False
+  end
+  object btn_clear: TButton
+    Left = 216
+    Top = 183
+    Width = 75
+    Height = 25
+    Caption = 'btn_clear'
+    TabOrder = 10
   end
   object ds_localite_old: TDataSource
     DataSet = ibqry_localites_old
@@ -217,11 +234,10 @@ object Form_cp: TForm_cp
   object ibqry_etudiant: TIBOQuery
     Params = <
       item
-        DataType = ftString
+        DataType = ftUnknown
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    Active = True
     RecordCountAccurate = True
     SQL.Strings = (
       
@@ -231,18 +247,23 @@ object Form_cp: TForm_cp
       
         'inner join localites on etudiants.ADR_ID_LOCALITE = LOCALITES.ID' +
         '_LOCALITE'
-      'where LOCALITES.CP = :pcodepostal')
+      '/*where LOCALITES.CP = 1050*/'
+      'where LOCALITES.CP = :pcodepostal'
+      'order by localites.cp')
     Left = 280
     Top = 104
     object strngfld_etudiantMAT_ETUD: TStringField
+      DisplayWidth = 10
       FieldName = 'MAT_ETUD'
       Required = True
       Size = 10
     end
     object intgrfld_etudiantADR_ID_LOCALITE: TIntegerField
+      DisplayWidth = 10
       FieldName = 'ADR_ID_LOCALITE'
     end
     object strngfld_etudiantNOM: TStringField
+      DisplayWidth = 40
       FieldName = 'NOM'
       Required = True
       Size = 40
@@ -261,11 +282,10 @@ object Form_cp: TForm_cp
   object ibqry_anc_etudiant: TIBOQuery
     Params = <
       item
-        DataType = ftString
+        DataType = ftUnknown
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    Active = True
     RecordCountAccurate = True
     SQL.Strings = (
       
@@ -278,5 +298,23 @@ object Form_cp: TForm_cp
       'where LOCALITES.CP = :pcodepostal')
     Left = 400
     Top = 104
+    object strngfld_anc_etudiantMAT_ETUD: TStringField
+      DisplayLabel = 'MAT ETUD'
+      DisplayWidth = 10
+      FieldName = 'MAT_ETUD'
+      Required = True
+      Size = 10
+    end
+    object intgrfld_anc_etudiantADR_ID_LOCALITE: TIntegerField
+      DisplayLabel = 'ADR ID LOCALITE'
+      DisplayWidth = 10
+      FieldName = 'ADR_ID_LOCALITE'
+    end
+    object strngfld_anc_etudiantNOM: TStringField
+      DisplayWidth = 40
+      FieldName = 'NOM'
+      Required = True
+      Size = 40
+    end
   end
 end

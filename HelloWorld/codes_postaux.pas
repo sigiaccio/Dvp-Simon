@@ -35,7 +35,12 @@ type
     intgrfld_etudiantADR_ID_LOCALITE: TIntegerField;
     strngfld_etudiantNOM: TStringField;
     wwDBGrid_anc_etudiant: TwwDBGrid;
+    strngfld_anc_etudiantMAT_ETUD: TStringField;
+    intgrfld_anc_etudiantADR_ID_LOCALITE: TIntegerField;
+    strngfld_anc_etudiantNOM: TStringField;
+    btn_clear: TButton;
     procedure btn_localitesClick(Sender: TObject);
+    procedure edt_cpEnter(Sender: TObject);
 
   private
     { Private declarations }
@@ -64,53 +69,68 @@ begin
   ibqry_localites_old.First;
   ibqry_localites_new.First;
 
+  if edt_cp.Text = '' then
+  begin
+    ShowMessage('Le code postal ne peut pas être vide');
+  end
+  else
+  begin
+    ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+    ibqry_etudiant.Active := True;
+    wwDBGrid_etudiant.RedrawGrid;
+
+    ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+    ibqry_anc_etudiant.Active := True;
+    wwDBGrid_anc_etudiant.RedrawGrid;
+  end;
+
   for cpt_localite_old := 0 to ibqry_localites_old.RecordCount do
   begin
     id_old := ibqry_localites_old.FieldByName('ID_LOCALITE').AsString;
     cp_old := ibqry_localites_old.FieldByName('CP').AsString;
     nom_old := ibqry_localites_old.FieldByName('NOM').AsString;
 
-    if edt_cp.Text = '' then
+    if cp_old = edt_cp.Text then
     begin
-      ShowMessage('Le code postal ne peut pas être vide');
-      Break;
-    end
-    else
-    begin
-        ibqry_etudiant.ParamByName('pcodepostal').AsString := '%' + edt_cp.Text + '%';
-        ibqry_etudiant.Active := True;
-          ibqry_etudiant.RefreshRows;
+//      OutputDebugString(Pchar('OLD : ID ' + id_old + ' cp ' + cp_old + ' nom ' + nom_old));
+      inc(cpt_erreurs);
 
-      if cp_old = edt_cp.Text then
+      for cpt_localite_new := 0 to ibqry_localites_new.RecordCount do
       begin
-        OutputDebugString(Pchar('OLD : ID ' + id_old + ' cp ' + cp_old + ' nom ' + nom_old));
-        inc(cpt_erreurs);
+        id_new := ibqry_localites_new.FieldByName('ID').AsString;
+        cp_new := ibqry_localites_new.FieldByName('CP').AsString;
+        nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
 
-        for cpt_localite_new := 0 to ibqry_localites_new.RecordCount do
+        if (cp_old = cp_new) or (LowerCase(nom_new) = LowerCase(nom_old)) then
         begin
-          id_new := ibqry_localites_new.FieldByName('ID').AsString;
-          cp_new := ibqry_localites_new.FieldByName('CP').AsString;
-          nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
-
-          if cp_old = cp_new then
-          begin
-            OutputDebugString(Pchar('ID NEW ' + id_new + ' ' + cp_new + ' ' + nom_new + ' ID OLD ' + id_old));
-          end;
-
-          ibqry_localites_new.Next;
-
+          OutputDebugString(Pchar('ID NEW ' + id_new + ' ' + cp_new + ' ' + nom_new + ' ID OLD ' + id_old + ' '+ nom_old));
         end;
 
+        if (cp_new = '6238') and (cp_old = cp_new) or (LowerCase(nom_new) = LowerCase(nom_old)) then
+        begin
+          OutputDebugString(Pchar('ID NEW ' + id_new + ' ' + cp_new + ' ' + nom_new + ' ID OLD ' + id_old + ' '+ nom_old));
+        end;
+
+        ibqry_localites_new.Next;
+
       end;
-      ibqry_localites_old.Next;
+
     end;
+    ibqry_localites_old.Next;
+
   end;
 
   OutputDebugString(Pchar('Nombre d''erreurs ' + IntToStr(cpt_erreurs)));
 
+  OutputDebugString(Pchar('DB ETUDIANT COUNT --->' + IntToStr(ibqry_etudiant.RecordCount)));
+  OutputDebugString(Pchar('DB ANC ETUDIANT COUNT --->' + IntToStr(ibqry_anc_etudiant.RecordCount)));
+
 end;
 
-
-
+procedure TForm_cp.edt_cpEnter(Sender: TObject);
+begin
+  ibqry_etudiant.Close;
+  ibqry_anc_etudiant.Close;
+end;
 
 end.
