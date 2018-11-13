@@ -117,7 +117,7 @@ begin
     cp_old := ibqry_localites_old.FieldByName('CP').AsString;
     nom_old := ibqry_localites_old.FieldByName('NOM').AsString;
 
-    OutputDebugString(PChar('LOOP OLD : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+    //OutputDebugString(PChar('LOOP OLD : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
     inc(cpt_erreurs);
 
@@ -130,20 +130,24 @@ begin
       nom_new := UpperCase(nom_new);
       nom_old := UpperCase(nom_old);
 
-      // OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+      //OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
-      if (cp_new = '7100') then
+      if (cp_new = cp_old) and (cp_new = '7100') then
       begin
-        OutputDebugString(Pchar('QUERY '+nom_new));
+        if (nom_new = nom_old) then
+        begin
+        OutputDebugString(PChar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+      end
+      else
+        begin
+        OutputDebugString(PChar('DIFF NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+        end;
       end;
 
 
       {
 
-      if (cp_new = cp_old) then
-      begin
-        if (nom_new = nom_old) then
-        begin
+
 
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
           // récupérer le nom avec la majuscule au début et ancien nom pour la DB
@@ -156,15 +160,15 @@ begin
           query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
 
           OutputDebugString(pchar(query));
-
-        ibqry_localites_new.Next;
        }
+        ibqry_localites_new.Next;
+
       end;
       ibqry_localites_new.First;
 
-    end;
-    ibqry_localites_old.Next;
 
+    ibqry_localites_old.Next;
+     end;
 
 
   OutputDebugString(Pchar('Nombre d''erreurs ' + IntToStr(cpt_erreurs)));
