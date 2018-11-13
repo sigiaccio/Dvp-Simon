@@ -61,23 +61,21 @@ implementation
 procedure TForm_cp.btn_clearClick(Sender: TObject);
 begin
 
-    ibqry_localites_old.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_localites_old.Active := True;
-    wwDBGrid_localites_old.RedrawGrid;
+  ibqry_localites_old.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_localites_old.Active := True;
+  wwDBGrid_localites_old.RedrawGrid;
 
-    ibqry_localites_new.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_localites_new.Active := True;
-    wwDBGrid_localite_new.RedrawGrid;
+  ibqry_localites_new.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_localites_new.Active := True;
+  wwDBGrid_localite_new.RedrawGrid;
 
-    ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_etudiant.Active := True;
-    wwDBGrid_etudiant.RedrawGrid;
+  ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_etudiant.Active := True;
+  wwDBGrid_etudiant.RedrawGrid;
 
-    ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_anc_etudiant.Active := True;
-    wwDBGrid_anc_etudiant.RedrawGrid;
-
-
+  ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_anc_etudiant.Active := True;
+  wwDBGrid_anc_etudiant.RedrawGrid;
 
 end;
 
@@ -86,7 +84,7 @@ var
   id_old, cp_old, nom_old: String;
   id_new, cp_new, nom_new: String;
   cpt_localite_old, cpt_localite_new, cpt_erreurs: integer;
-  query : String;
+  query: String;
 
 begin
 
@@ -117,7 +115,7 @@ begin
     cp_old := ibqry_localites_old.FieldByName('CP').AsString;
     nom_old := ibqry_localites_old.FieldByName('NOM').AsString;
 
-    //OutputDebugString(PChar('LOOP OLD : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+    // OutputDebugString(PChar('LOOP OLD : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
     inc(cpt_erreurs);
 
@@ -127,50 +125,56 @@ begin
       cp_new := ibqry_localites_new.FieldByName('CP').AsString;
       nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
 
+      nom_new := StringReplace(nom_new,'é','e',[rfReplaceAll]);
+      nom_new := StringReplace(nom_new,'è','e',[rfReplaceAll]);
+      nom_new := StringReplace(nom_new,'ê','e',[rfReplaceAll]);
+
+
+
+
       nom_new := UpperCase(nom_new);
       nom_old := UpperCase(nom_old);
 
-      //OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+
+
+      // OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
       if (cp_new = cp_old) then
       begin
-     // OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+        // OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         if (nom_new = nom_old) then
         begin
-        OutputDebugString(PChar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
-      end
-      else
+          OutputDebugString(Pchar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+        end
+        else
         begin
-//        OutputDebugString(PChar('DIFF NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+          // OutputDebugString(PChar('DIFF NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         end;
       end;
-
 
       {
 
 
 
-          nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
-          // récupérer le nom avec la majuscule au début et ancien nom pour la DB
-          // nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
-          // nom_old := ibqry_localites_old.FieldByName('NOM').AsString;
+        nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
+        // récupérer le nom avec la majuscule au début et ancien nom pour la DB
+        // nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
+        // nom_old := ibqry_localites_old.FieldByName('NOM').AsString;
 
-          nom_new := QuotedStr(nom_new);
-          nom_old := QuotedStr(nom_old);
+        nom_new := QuotedStr(nom_new);
+        nom_old := QuotedStr(nom_old);
 
-          query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
+        query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
 
-          OutputDebugString(pchar(query));
-       }
-        ibqry_localites_new.Next;
+        OutputDebugString(pchar(query));
+      }
+      ibqry_localites_new.Next;
 
-      end;
-      ibqry_localites_new.First;
-
+    end;
+    ibqry_localites_new.First;
 
     ibqry_localites_old.Next;
-     end;
-
+  end;
 
   OutputDebugString(Pchar('Nombre d''erreurs ' + IntToStr(cpt_erreurs)));
 
@@ -191,22 +195,21 @@ end;
 
 procedure TForm_cp.FormCreate(Sender: TObject);
 begin
-    ibqry_localites_old.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_localites_old.Active := True;
-    wwDBGrid_localites_old.RedrawGrid;
+  ibqry_localites_old.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_localites_old.Active := True;
+  wwDBGrid_localites_old.RedrawGrid;
 
-    ibqry_localites_new.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_localites_new.Active := True;
-    wwDBGrid_localite_new.RedrawGrid;
+  ibqry_localites_new.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_localites_new.Active := True;
+  wwDBGrid_localite_new.RedrawGrid;
 
-    ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_etudiant.Active := True;
-    wwDBGrid_etudiant.RedrawGrid;
+  ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_etudiant.Active := True;
+  wwDBGrid_etudiant.RedrawGrid;
 
-    ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
-    ibqry_anc_etudiant.Active := True;
-    wwDBGrid_anc_etudiant.RedrawGrid;
-
+  ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
+  ibqry_anc_etudiant.Active := True;
+  wwDBGrid_anc_etudiant.RedrawGrid;
 
 end;
 
