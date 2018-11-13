@@ -169,6 +169,31 @@ object Form_cp: TForm_cp
     TabOrder = 10
     OnClick = btn_clearClick
   end
+  object wwDBGrid_corres: TwwDBGrid
+    Left = 792
+    Top = 8
+    Width = 320
+    Height = 120
+    Selected.Strings = (
+      'GOOD'#9'10'#9'GOOD'
+      'NOTGOOD'#9'10'#9'NOTGOOD'
+      'CP'#9'4'#9'CP'
+      'NOM'#9'40'#9'NOM')
+    IniAttributes.Delimiter = ';;'
+    TitleColor = clBtnFace
+    FixedCols = 0
+    ShowHorzScrollBar = True
+    DataSource = ds_corres
+    TabOrder = 11
+    TitleAlignment = taLeftJustify
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -11
+    TitleFont.Name = 'Tahoma'
+    TitleFont.Style = []
+    TitleLines = 1
+    TitleButtons = False
+  end
   object ibqry_localites_old: TIBOQuery
     Params = <
       item
@@ -354,8 +379,37 @@ object Form_cp: TForm_cp
       'BUFFERS=<default>'
       'SQL DIALECT=3')
     Isolation = tiCommitted
-    Left = 544
-    Top = 80
+    Left = 648
+    Top = 104
     SavedPassword = '.JuMbLe.01.4B3A132E012A154B'
+  end
+  object ibqry_corres: TIBOQuery
+    Active = True
+    IB_Connection = ibdtbs_connexion
+    RecordCountAccurate = True
+    SQL.Strings = (
+      'select good, notgood, cp, nom'
+      'from localites_correspondance')
+    Left = 544
+    Top = 112
+    object intgrfld_corresGOOD: TIntegerField
+      FieldName = 'GOOD'
+    end
+    object intgrfld_corresNOTGOOD: TIntegerField
+      FieldName = 'NOTGOOD'
+    end
+    object strngfld_corresCP: TStringField
+      FieldName = 'CP'
+      Size = 4
+    end
+    object strngfld_corresNOM: TStringField
+      FieldName = 'NOM'
+      Size = 40
+    end
+  end
+  object ds_corres: TDataSource
+    DataSet = ibqry_corres
+    Left = 544
+    Top = 40
   end
 end

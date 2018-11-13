@@ -40,6 +40,13 @@ type
     btn_clear: TButton;
     ds_localite_old: TDataSource;
     ibdtbs_connexion: TIBODatabase;
+    ibqry_corres: TIBOQuery;
+    intgrfld_corresGOOD: TIntegerField;
+    intgrfld_corresNOTGOOD: TIntegerField;
+    strngfld_corresCP: TStringField;
+    strngfld_corresNOM: TStringField;
+    wwDBGrid_corres: TwwDBGrid;
+    ds_corres: TDataSource;
     procedure btn_localitesClick(Sender: TObject);
     procedure edt_cpEnter(Sender: TObject);
     procedure btn_clearClick(Sender: TObject);
@@ -129,9 +136,6 @@ begin
       nom_new := StringReplace(nom_new,'è','e',[rfReplaceAll]);
       nom_new := StringReplace(nom_new,'ê','e',[rfReplaceAll]);
 
-
-
-
       nom_new := UpperCase(nom_new);
       nom_old := UpperCase(nom_old);
 
@@ -144,7 +148,18 @@ begin
         // OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         if (nom_new = nom_old) then
         begin
+          nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
           OutputDebugString(Pchar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+
+          ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES ('+id_new+','+ id_old+', '''+cp_new+''','''+nom_new+''') ';
+
+
+          OutputDebugString(pchar(ibqry_corres.SQL.Text));
+
+          ibqry_corres.ExecSQL;
+          ibqry_corres.CommitAction;
+
+
         end
         else
         begin
