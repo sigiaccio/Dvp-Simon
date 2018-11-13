@@ -11,6 +11,7 @@ object Form_cp: TForm_cp
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object grp_cp1: TGroupBox
@@ -30,7 +31,7 @@ object Form_cp: TForm_cp
     TabOrder = 1
   end
   object btn_localites: TButton
-    Left = 135
+    Left = 216
     Top = 183
     Width = 75
     Height = 25
@@ -38,7 +39,7 @@ object Form_cp: TForm_cp
     TabOrder = 6
     OnClick = btn_localitesClick
   end
-  object wwDBGrid_allocFamil_update_localites: TwwDBGrid
+  object wwDBGrid_localites_old: TwwDBGrid
     Left = 8
     Top = 214
     Width = 377
@@ -62,7 +63,7 @@ object Form_cp: TForm_cp
     TitleLines = 1
     TitleButtons = False
   end
-  object wwDBGrid_allocFamil_localite_new: TwwDBGrid
+  object wwDBGrid_localite_new: TwwDBGrid
     Left = 391
     Top = 214
     Width = 377
@@ -92,7 +93,7 @@ object Form_cp: TForm_cp
     Width = 121
     Height = 21
     TabOrder = 4
-    Text = '6238'
+    Text = '7100'
     OnEnter = edt_cpEnter
   end
   object grp_cp3: TGroupBox
@@ -114,7 +115,7 @@ object Form_cp: TForm_cp
   object wwDBGrid_etudiant: TwwDBGrid
     Left = 774
     Top = 214
-    Width = 363
+    Width = 438
     Height = 497
     Selected.Strings = (
       'MAT_ETUD'#9'10'#9'MAT_ETUD'
@@ -136,7 +137,7 @@ object Form_cp: TForm_cp
     TitleButtons = False
   end
   object wwDBGrid_anc_etudiant: TwwDBGrid
-    Left = 1143
+    Left = 1218
     Top = 214
     Width = 418
     Height = 497
@@ -160,28 +161,34 @@ object Form_cp: TForm_cp
     TitleButtons = False
   end
   object btn_clear: TButton
-    Left = 216
+    Left = 135
     Top = 183
     Width = 75
     Height = 25
-    Caption = 'btn_clear'
+    Caption = 'btn_update_grid'
     TabOrder = 10
-  end
-  object ds_localite_old: TDataSource
-    DataSet = ibqry_localites_old
-    Left = 32
-    Top = 40
+    OnClick = btn_clearClick
   end
   object ibqry_localites_old: TIBOQuery
+    Params = <
+      item
+        DataType = ftString
+        Name = 'pcodepostal'
+        ParamType = ptInput
+      end>
     Active = True
+    IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
       'LOCALITES.ID_LOCALITE')
     RecordCountAccurate = True
+    DataSource = ds_anc_etudiant
     SQL.Strings = (
       'select localites.ID_LOCALITE, localites.CP, localites.NOM'
       'from localites'
-      'order by localites.cp')
-    Left = 32
+      'where localites.cp = :pcodepostal'
+      'order by localites.cp'
+      '')
+    Left = 48
     Top = 104
     object intgrfld_localites_oldID_LOCALITE: TIntegerField
       DisplayWidth = 10
@@ -202,12 +209,21 @@ object Form_cp: TForm_cp
     end
   end
   object ibqry_localites_new: TIBOQuery
+    Params = <
+      item
+        DataType = ftString
+        Name = 'pcodepostal'
+        ParamType = ptInput
+      end>
     Active = True
+    IB_Connection = ibdtbs_connexion
+    KeyLinks.Strings = (
+      'LOCALITES2.ID')
     RecordCountAccurate = True
-    DataSource = ds_localite_old
     SQL.Strings = (
       'select LOCALITES2.ID, LOCALITES2.CP, LOCALITES2.NOM'
       'from LOCALITES2'
+      'where localites2.cp = :pcodepostal'
       'order by localites2.cp')
     Left = 160
     Top = 104
@@ -234,10 +250,12 @@ object Form_cp: TForm_cp
   object ibqry_etudiant: TIBOQuery
     Params = <
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
+    Active = True
+    IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
       
@@ -282,10 +300,12 @@ object Form_cp: TForm_cp
   object ibqry_anc_etudiant: TIBOQuery
     Params = <
       item
-        DataType = ftUnknown
+        DataType = ftString
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
+    Active = True
+    IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
       
@@ -316,5 +336,26 @@ object Form_cp: TForm_cp
       Required = True
       Size = 40
     end
+  end
+  object ds_localite_old: TDataSource
+    DataSet = ibqry_localites_old
+    Left = 48
+    Top = 32
+  end
+  object ibdtbs_connexion: TIBODatabase
+    CacheStatementHandles = False
+    SQLDialect = 3
+    Params.Strings = (
+      'SERVER=epfc01dev01'
+      'PROTOCOL=TCP/IP'
+      'PATH=c:\epfc1819Test.fdb'
+      'USER NAME=SYSDBA'
+      'CHARACTER SET=ISO8859_1'
+      'BUFFERS=<default>'
+      'SQL DIALECT=3')
+    Isolation = tiCommitted
+    Left = 544
+    Top = 80
+    SavedPassword = '.JuMbLe.01.4B3A132E012A154B'
   end
 end
