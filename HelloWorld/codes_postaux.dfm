@@ -170,8 +170,8 @@ object Form_cp: TForm_cp
     OnClick = btn_clearClick
   end
   object wwDBGrid_corres: TwwDBGrid
-    Left = 792
-    Top = 8
+    Left = 952
+    Top = 24
     Width = 320
     Height = 120
     Selected.Strings = (
@@ -194,13 +194,25 @@ object Form_cp: TForm_cp
     TitleLines = 1
     TitleButtons = False
   end
+  object btn_update_etudiants: TButton
+    Left = 297
+    Top = 183
+    Width = 75
+    Height = 25
+    Caption = 'btn_update_etudiants'
+    TabOrder = 12
+    OnClick = btn_update_etudiantsClick
+  end
+  object btn_anc_etudiant: TButton
+    Left = 376
+    Top = 184
+    Width = 75
+    Height = 25
+    Caption = 'btn_anc_etudiant'
+    TabOrder = 13
+    OnClick = btn_anc_etudiantClick
+  end
   object ibqry_localites_old: TIBOQuery
-    Params = <
-      item
-        DataType = ftString
-        Name = 'pcodepostal'
-        ParamType = ptInput
-      end>
     Active = True
     IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
@@ -210,7 +222,7 @@ object Form_cp: TForm_cp
     SQL.Strings = (
       'select localites.ID_LOCALITE, localites.CP, localites.NOM'
       'from localites'
-      'where localites.cp = :pcodepostal'
+      '/*where localites.cp = :pcodepostal*/'
       'order by localites.cp'
       '')
     Left = 48
@@ -234,12 +246,6 @@ object Form_cp: TForm_cp
     end
   end
   object ibqry_localites_new: TIBOQuery
-    Params = <
-      item
-        DataType = ftString
-        Name = 'pcodepostal'
-        ParamType = ptInput
-      end>
     Active = True
     IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
@@ -248,7 +254,7 @@ object Form_cp: TForm_cp
     SQL.Strings = (
       'select LOCALITES2.ID, LOCALITES2.CP, LOCALITES2.NOM'
       'from LOCALITES2'
-      'where localites2.cp = :pcodepostal'
+      '/*where localites2.cp = :pcodepostal*/'
       'order by localites2.cp')
     Left = 160
     Top = 104
@@ -273,12 +279,6 @@ object Form_cp: TForm_cp
     Top = 32
   end
   object ibqry_etudiant: TIBOQuery
-    Params = <
-      item
-        DataType = ftString
-        Name = 'pcodepostal'
-        ParamType = ptInput
-      end>
     Active = True
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
@@ -291,7 +291,7 @@ object Form_cp: TForm_cp
         'inner join localites on etudiants.ADR_ID_LOCALITE = LOCALITES.ID' +
         '_LOCALITE'
       '/*where LOCALITES.CP = 1050*/'
-      'where LOCALITES.CP = :pcodepostal'
+      '/*where LOCALITES.CP = :pcodepostal*/'
       'order by localites.cp')
     Left = 280
     Top = 104
@@ -323,12 +323,6 @@ object Form_cp: TForm_cp
     Top = 32
   end
   object ibqry_anc_etudiant: TIBOQuery
-    Params = <
-      item
-        DataType = ftString
-        Name = 'pcodepostal'
-        ParamType = ptInput
-      end>
     Active = True
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
@@ -340,7 +334,7 @@ object Form_cp: TForm_cp
       
         'inner join localites on ANC_ETUD.ADR_ID_LOCALITE = LOCALITES.ID_' +
         'LOCALITE'
-      'where LOCALITES.CP = :pcodepostal')
+      '/*where LOCALITES.CP = :pcodepostal*/')
     Left = 400
     Top = 104
     object strngfld_anc_etudiantMAT_ETUD: TStringField
@@ -379,37 +373,213 @@ object Form_cp: TForm_cp
       'BUFFERS=<default>'
       'SQL DIALECT=3')
     Isolation = tiCommitted
-    Left = 648
-    Top = 104
+    Left = 608
+    Top = 40
     SavedPassword = '.JuMbLe.01.4B3A132E012A154B'
   end
   object ibqry_corres: TIBOQuery
-    Active = True
     IB_Connection = ibdtbs_connexion
+    KeyLinks.Strings = (
+      'LOCALITES_CORRESPONDANCE.good')
     RecordCountAccurate = True
     SQL.Strings = (
       'select good, notgood, cp, nom'
       'from localites_correspondance')
-    Left = 544
+    Left = 520
     Top = 112
     object intgrfld_corresGOOD: TIntegerField
+      DisplayWidth = 10
       FieldName = 'GOOD'
     end
     object intgrfld_corresNOTGOOD: TIntegerField
+      DisplayWidth = 10
       FieldName = 'NOTGOOD'
     end
     object strngfld_corresCP: TStringField
+      DisplayWidth = 4
       FieldName = 'CP'
       Size = 4
     end
     object strngfld_corresNOM: TStringField
+      DisplayWidth = 40
       FieldName = 'NOM'
       Size = 40
     end
   end
   object ds_corres: TDataSource
     DataSet = ibqry_corres
-    Left = 544
-    Top = 40
+    Left = 520
+    Top = 32
+  end
+  object ibqry_corres_update: TIBOQuery
+    DeleteSQL.Strings = (
+      'DELETE FROM LOCALITES_CORRESPONDANCE LOCALITES_CORRESPONDANCE'
+      'WHERE'
+      'LOCALITES_CORRESPONDANCE.RDB$DB_KEY = :DB_KEY')
+    EditSQL.Strings = (
+      'UPDATE LOCALITES_CORRESPONDANCE LOCALITES_CORRESPONDANCE SET'
+      '   LOCALITES_CORRESPONDANCE.GOOD = :GOOD,'
+      '   LOCALITES_CORRESPONDANCE.NOTGOOD = :NOTGOOD,'
+      '   LOCALITES_CORRESPONDANCE.CP = :CP,'
+      '   LOCALITES_CORRESPONDANCE.NOM = :NOM'
+      'WHERE'
+      'LOCALITES_CORRESPONDANCE.RDB$DB_KEY = :DB_KEY')
+    IB_Connection = ibdtbs_connexion
+    InsertSQL.Strings = (
+      'INSERT INTO LOCALITES_CORRESPONDANCE('
+      '   GOOD,'
+      '   NOTGOOD,'
+      '   CP,'
+      '   NOM)'
+      'VALUES ('
+      '   :GOOD,'
+      '   :NOTGOOD,'
+      '   :CP,'
+      '   :NOM)')
+    KeyLinks.Strings = (
+      'LOCALITES_CORRESPONDANCE.good')
+    RecordCountAccurate = True
+    SQL.Strings = (
+      'select good, notgood, cp, nom'
+      'from localites_correspondance')
+    Left = 704
+    Top = 112
+  end
+  object ibqry_etudiant_update: TIBOQuery
+    DeleteSQL.Strings = (
+      'DELETE FROM ETUDIANTS ETUDIANTS'
+      'WHERE'
+      '   MAT_ETUD = :OLD_MAT_ETUD')
+    EditSQL.Strings = (
+      'UPDATE ETUDIANTS ETUDIANTS SET'
+      '   ETUDIANTS.MAT_ETUD = :MAT_ETUD, /*PK*/'
+      '   ETUDIANTS.NOM = :NOM,'
+      '   ETUDIANTS.PRENOM = :PRENOM,'
+      '   ETUDIANTS.NOM_SANS_CAR_SPEC = :NOM_SANS_CAR_SPEC,'
+      '   ETUDIANTS.PRENOM_SANS_CAR_SPEC = :PRENOM_SANS_CAR_SPEC,'
+      '   ETUDIANTS.SEXE = :SEXE,'
+      '   ETUDIANTS.DATE_NAISS = :DATE_NAISS,'
+      '   ETUDIANTS.ID_VILLE_NAISS = :ID_VILLE_NAISS,'
+      '   ETUDIANTS.ID_PAYS_NATIONALITE = :ID_PAYS_NATIONALITE,'
+      '   ETUDIANTS.ADR_RUE = :ADR_RUE,'
+      '   ETUDIANTS.ADR_NO = :ADR_NO,'
+      '   ETUDIANTS.ADR_BOITE = :ADR_BOITE,'
+      '   ETUDIANTS.ADR_ID_LOCALITE = :ADR_ID_LOCALITE,'
+      '   ETUDIANTS.GSM = :GSM,'
+      '   ETUDIANTS.TEL = :TEL,'
+      '   ETUDIANTS.CODE_DOC_ID = :CODE_DOC_ID,'
+      '   ETUDIANTS.DATE_VAL_CI = :DATE_VAL_CI,'
+      '   ETUDIANTS.NO_COMPTE = :NO_COMPTE,'
+      '   ETUDIANTS.ALLOC_FAM = :ALLOC_FAM,'
+      '   ETUDIANTS.NO_IBIS = :NO_IBIS,'
+      '   ETUDIANTS.NO_INSC_FOREM = :NO_INSC_FOREM,'
+      '   ETUDIANTS.NO_NATIONAL = :NO_NATIONAL,'
+      '   ETUDIANTS.NATIONALITE_PERE = :NATIONALITE_PERE,'
+      '   ETUDIANTS.NIV_ETUDES = :NIV_ETUDES,'
+      '   ETUDIANTS.SIT_EMPLOI = :SIT_EMPLOI,'
+      '   ETUDIANTS.EMAIL = :EMAIL,'
+      '   ETUDIANTS.ID_ETUDIANT = :ID_ETUDIANT,'
+      '   ETUDIANTS.ATTESTATION_STIB = :ATTESTATION_STIB,'
+      '   ETUDIANTS.TYPE_CONTRAT = :TYPE_CONTRAT,'
+      '   ETUDIANTS.TYPE_OCCUP = :TYPE_OCCUP,'
+      '   ETUDIANTS.NOTE = :NOTE,'
+      '   ETUDIANTS.DATE_CREATED = :DATE_CREATED,'
+      '   ETUDIANTS.DATE_MODIFIED = :DATE_MODIFIED,'
+      '   ETUDIANTS.USERNAME = :USERNAME,'
+      '   ETUDIANTS.PASSWORD = :PASSWORD,'
+      '   ETUDIANTS.STATUS = :STATUS,'
+      '   ETUDIANTS.DATE_SEND_USERNAME = :DATE_SEND_USERNAME,'
+      '   ETUDIANTS.NEWSLETTER = :NEWSLETTER,'
+      '   ETUDIANTS.MODIFIED_BY = :MODIFIED_BY'
+      'WHERE'
+      '   MAT_ETUD = :OLD_MAT_ETUD')
+    IB_Connection = ibdtbs_connexion
+    InsertSQL.Strings = (
+      'INSERT INTO ETUDIANTS('
+      '   MAT_ETUD, /*PK*/'
+      '   NOM,'
+      '   PRENOM,'
+      '   NOM_SANS_CAR_SPEC,'
+      '   PRENOM_SANS_CAR_SPEC,'
+      '   SEXE,'
+      '   DATE_NAISS,'
+      '   ID_VILLE_NAISS,'
+      '   ID_PAYS_NATIONALITE,'
+      '   ADR_RUE,'
+      '   ADR_NO,'
+      '   ADR_BOITE,'
+      '   ADR_ID_LOCALITE,'
+      '   GSM,'
+      '   TEL,'
+      '   CODE_DOC_ID,'
+      '   DATE_VAL_CI,'
+      '   NO_COMPTE,'
+      '   ALLOC_FAM,'
+      '   NO_IBIS,'
+      '   NO_INSC_FOREM,'
+      '   NO_NATIONAL,'
+      '   NATIONALITE_PERE,'
+      '   NIV_ETUDES,'
+      '   SIT_EMPLOI,'
+      '   EMAIL,'
+      '   ID_ETUDIANT,'
+      '   ATTESTATION_STIB,'
+      '   TYPE_CONTRAT,'
+      '   TYPE_OCCUP,'
+      '   NOTE,'
+      '   DATE_CREATED,'
+      '   DATE_MODIFIED,'
+      '   USERNAME,'
+      '   PASSWORD,'
+      '   STATUS,'
+      '   DATE_SEND_USERNAME,'
+      '   NEWSLETTER,'
+      '   MODIFIED_BY)'
+      'VALUES ('
+      '   :MAT_ETUD,'
+      '   :NOM,'
+      '   :PRENOM,'
+      '   :NOM_SANS_CAR_SPEC,'
+      '   :PRENOM_SANS_CAR_SPEC,'
+      '   :SEXE,'
+      '   :DATE_NAISS,'
+      '   :ID_VILLE_NAISS,'
+      '   :ID_PAYS_NATIONALITE,'
+      '   :ADR_RUE,'
+      '   :ADR_NO,'
+      '   :ADR_BOITE,'
+      '   :ADR_ID_LOCALITE,'
+      '   :GSM,'
+      '   :TEL,'
+      '   :CODE_DOC_ID,'
+      '   :DATE_VAL_CI,'
+      '   :NO_COMPTE,'
+      '   :ALLOC_FAM,'
+      '   :NO_IBIS,'
+      '   :NO_INSC_FOREM,'
+      '   :NO_NATIONAL,'
+      '   :NATIONALITE_PERE,'
+      '   :NIV_ETUDES,'
+      '   :SIT_EMPLOI,'
+      '   :EMAIL,'
+      '   :ID_ETUDIANT,'
+      '   :ATTESTATION_STIB,'
+      '   :TYPE_CONTRAT,'
+      '   :TYPE_OCCUP,'
+      '   :NOTE,'
+      '   :DATE_CREATED,'
+      '   :DATE_MODIFIED,'
+      '   :USERNAME,'
+      '   :PASSWORD,'
+      '   :STATUS,'
+      '   :DATE_SEND_USERNAME,'
+      '   :NEWSLETTER,'
+      '   :MODIFIED_BY)')
+    RecordCountAccurate = True
+    SQL.Strings = (
+      'select *'
+      'from etudiants')
+    Left = 816
+    Top = 112
   end
 end

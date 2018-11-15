@@ -47,10 +47,16 @@ type
     strngfld_corresNOM: TStringField;
     wwDBGrid_corres: TwwDBGrid;
     ds_corres: TDataSource;
+    btn_update_etudiants: TButton;
+    ibqry_corres_update: TIBOQuery;
+    btn_anc_etudiant: TButton;
+    ibqry_etudiant_update: TIBOQuery;
     procedure btn_localitesClick(Sender: TObject);
     procedure edt_cpEnter(Sender: TObject);
     procedure btn_clearClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure btn_update_etudiantsClick(Sender: TObject);
+    procedure btn_anc_etudiantClick(Sender: TObject);
 
   private
     { Private declarations }
@@ -64,6 +70,51 @@ var
 implementation
 
 {$R *.dfm}
+
+procedure TForm_cp.btn_anc_etudiantClick(Sender: TObject);
+var
+  cpt_localite_corres, cpt_localite_etudiant, cp_good, cp_notgood: integer;
+  query: String;
+begin
+  ibqry_corres.Active := True;
+  wwDBGrid_corres.RedrawGrid;
+
+  ibqry_corres.First;
+  ibqry_anc_etudiant.First;
+
+  OutputDebugString(PChar('ETUDIANT  '+IntToStr(  ibqry_anc_etudiant.RecordCount)));
+
+  for cpt_localite_etudiant := 0 to   ibqry_anc_etudiant.RecordCount - 1 do
+  begin
+
+    for cpt_localite_corres := 0 to ibqry_corres.RecordCount - 1 do
+    begin
+      cp_good := ibqry_corres.FieldByName('good').AsInteger;
+      cp_notgood := ibqry_corres.FieldByName('notgood').AsInteger;
+
+//      OutputDebugString(Pchar('cpt_localite_coress '+IntToStr(cpt_localite_corres)+' GOOD ' + IntToStr(cp_good) + ' NOTGOOD ' + IntToStr(cp_notgood)));
+
+      // query := 'UPDATE LOCALITES set LOCALITES.CP = ''' + IntToStr(cp_good) + ''' WHERE LOCALITES.CP = '''+IntToStr(cp_notgood)+'''';
+
+      if cp_good = 1981 then
+      begin
+
+        query := 'UPDATE ETUDIANTS set etudiants.ADR_ID_LOCALITE = ''' + IntToStr(cp_good) + ''' WHERE etudiants.ADR_ID_LOCALITE = ' + IntToStr(cp_notgood) + '';
+
+        OutputDebugString(Pchar('local '+IntToStr(cpt_localite_corres)+' etud '+IntToStr(cpt_localite_etudiant)+' '+query));
+
+        ibqry_corres_update.SQL.Text := query;
+
+        ibqry_corres_update.ExecSQL;
+        ibqry_corres_update.CommitAction;
+      end;
+
+      ibqry_corres.Next;
+    end;
+
+      ibqry_anc_etudiant.Next;
+  end;
+end;
 
 procedure TForm_cp.btn_clearClick(Sender: TObject);
 begin
@@ -91,10 +142,9 @@ var
   id_old, cp_old, nom_old: String;
   id_new, cp_new, nom_new: String;
   cpt_localite_old, cpt_localite_new, cpt_erreurs: integer;
-  query: String;
 
 begin
-
+  cpt_erreurs := 0;
   OutputDebugString(Pchar('DB LOCALITE OLD COUNT --->' + IntToStr(ibqry_localites_old.RecordCount)));
   OutputDebugString(Pchar('DB LOCALITE NEW COUNT --->' + IntToStr(ibqry_localites_new.RecordCount)));
 
@@ -132,9 +182,9 @@ begin
       cp_new := ibqry_localites_new.FieldByName('CP').AsString;
       nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
 
-      nom_new := StringReplace(nom_new,'é','e',[rfReplaceAll]);
-      nom_new := StringReplace(nom_new,'è','e',[rfReplaceAll]);
-      nom_new := StringReplace(nom_new,'ê','e',[rfReplaceAll]);
+      nom_new := StringReplace(nom_new, 'é', 'e', [rfReplaceAll]);
+      nom_new := StringReplace(nom_new, 'è', 'e', [rfReplaceAll]);
+      nom_new := StringReplace(nom_new, 'ê', 'e', [rfReplaceAll]);
 
       nom_new := UpperCase(nom_new);
       nom_old := UpperCase(nom_old);
@@ -149,16 +199,16 @@ begin
         if (nom_new = nom_old) then
         begin
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
+          nom_new := QuotedStr(nom_new);
           OutputDebugString(Pchar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
-          ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES ('+id_new+','+ id_old+', '''+cp_new+''','''+nom_new+''') ';
+          // ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES ('+id_new+','+ id_old+', '''+cp_new+''','''+nom_new+''') ';
+          ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES (' + id_new + ',' + id_old + ', ' + cp_new + ',' + nom_new + ') ';
 
-
-          OutputDebugString(pchar(ibqry_corres.SQL.Text));
+          OutputDebugString(Pchar(ibqry_corres.SQL.Text));
 
           ibqry_corres.ExecSQL;
           ibqry_corres.CommitAction;
-
 
         end
         else
@@ -168,9 +218,6 @@ begin
       end;
 
       {
-
-
-
         nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
         // récupérer le nom avec la majuscule au début et ancien nom pour la DB
         // nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
@@ -196,6 +243,53 @@ begin
   OutputDebugString(Pchar('DB ETUDIANT COUNT --->' + IntToStr(ibqry_etudiant.RecordCount)));
   OutputDebugString(Pchar('DB ANC ETUDIANT COUNT --->' + IntToStr(ibqry_anc_etudiant.RecordCount)));
 
+end;
+
+procedure TForm_cp.btn_update_etudiantsClick(Sender: TObject);
+var
+  cpt_localite_corres, cpt_localite_etudiant, cp_good, cp_notgood: integer;
+  query: String;
+begin
+  ibqry_corres.Active := True;
+  wwDBGrid_corres.RedrawGrid;
+
+  ibqry_corres.First;
+  ibqry_etudiant.First;
+
+  OutputDebugString(PChar('ETUDIANT  '+IntToStr(ibqry_etudiant.RecordCount) + ' LOCALITES '+IntToStr(ibqry_corres.RecordCount)));
+  {
+  for cpt_localite_etudiant := 0 to ibqry_etudiant.RecordCount - 1 do
+  begin
+   }
+    for cpt_localite_corres := 0 to ibqry_corres.RecordCount - 1 do
+    begin
+      cp_good := ibqry_corres.FieldByName('good').AsInteger;
+      cp_notgood := ibqry_corres.FieldByName('notgood').AsInteger;
+
+//      OutputDebugString(Pchar('cpt_localite_coress '+IntToStr(cpt_localite_corres)+' GOOD ' + IntToStr(cp_good) + ' NOTGOOD ' + IntToStr(cp_notgood)));
+
+      // query := 'UPDATE LOCALITES set LOCALITES.CP = ''' + IntToStr(cp_good) + ''' WHERE LOCALITES.CP = '''+IntToStr(cp_notgood)+'''';
+      {
+      if cp_good = 1981 then
+      begin
+       }
+        query := 'UPDATE ETUDIANTS set etudiants.ADR_ID_LOCALITE = ''' + IntToStr(cp_good) + ''' WHERE etudiants.ADR_ID_LOCALITE = ' + IntToStr(cp_notgood) + '';
+
+        OutputDebugString(Pchar('local '+IntToStr(cpt_localite_corres)+' etud '+IntToStr(cpt_localite_etudiant)+' '+query));
+
+        ibqry_etudiant_update.SQL.Text := query;
+
+        ibqry_etudiant_update.ExecSQL;
+        ibqry_etudiant_update.CommitAction;
+      {
+      end;
+       }
+      ibqry_corres.Next;
+    end;
+    {
+    ibqry_etudiant.Next;
+  end;
+   }
 end;
 
 procedure TForm_cp.edt_cpEnter(Sender: TObject);
@@ -225,6 +319,9 @@ begin
   ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
   ibqry_anc_etudiant.Active := True;
   wwDBGrid_anc_etudiant.RedrawGrid;
+
+  ibqry_corres.Active := True;
+  wwDBGrid_corres.RedrawGrid;
 
 end;
 
