@@ -103,10 +103,10 @@ begin
 
         OutputDebugString(Pchar('local '+IntToStr(cpt_localite_corres)+' etud '+IntToStr(cpt_localite_etudiant)+' '+query));
 
-        ibqry_corres_update.SQL.Text := query;
+       // ibqry_corres_update.SQL.Text := query;
 
-        ibqry_corres_update.ExecSQL;
-        ibqry_corres_update.CommitAction;
+       // ibqry_corres_update.ExecSQL;
+       // ibqry_corres_update.CommitAction;
       end;
 
       ibqry_corres.Next;
@@ -157,6 +157,7 @@ begin
   end
   else
   begin
+  {
     ibqry_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
     ibqry_etudiant.Active := True;
     wwDBGrid_etudiant.RedrawGrid;
@@ -164,6 +165,7 @@ begin
     ibqry_anc_etudiant.ParamByName('pcodepostal').AsString := edt_cp.Text;
     ibqry_anc_etudiant.Active := True;
     wwDBGrid_anc_etudiant.RedrawGrid;
+    }
   end;
 
   for cpt_localite_old := 0 to ibqry_localites_old.RecordCount - 1 do
@@ -277,10 +279,10 @@ begin
 
         OutputDebugString(Pchar('local '+IntToStr(cpt_localite_corres)+' etud '+IntToStr(cpt_localite_etudiant)+' '+query));
 
-        ibqry_etudiant_update.SQL.Text := query;
+       // ibqry_etudiant_update.SQL.Text := query;
 
-        ibqry_etudiant_update.ExecSQL;
-        ibqry_etudiant_update.CommitAction;
+       // ibqry_etudiant_update.ExecSQL;
+       // ibqry_etudiant_update.CommitAction;
       {
       end;
        }

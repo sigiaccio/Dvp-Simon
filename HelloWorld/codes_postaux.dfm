@@ -35,7 +35,7 @@ object Form_cp: TForm_cp
     Top = 183
     Width = 75
     Height = 25
-    Caption = 'btn_localites'
+    Caption = 'update correspo'
     TabOrder = 6
     OnClick = btn_localitesClick
   end
