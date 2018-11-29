@@ -165,7 +165,7 @@ object Form_cp: TForm_cp
     Top = 183
     Width = 75
     Height = 25
-    Caption = 'btn_update_grid'
+    Caption = 'update_grid'
     TabOrder = 10
     OnClick = btn_clearClick
   end
