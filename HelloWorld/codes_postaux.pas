@@ -194,9 +194,9 @@ begin
 
       // OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
-      if (cp_new = cp_old) and (cp_new = '3700')then
+      if (cp_new = cp_old) {and (cp_new = '7100') }then
       begin
-         OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+         //OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         if (nom_new = nom_old) then
         begin
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
@@ -208,8 +208,8 @@ begin
            OutputDebugString(Pchar(ibqry_corres.SQL.Text));
 
           //BEGIN TO UPDATE LOCALITE_CORRESPONDANCE !!!
-//          ibqry_corres.ExecSQL;
-//           ibqry_corres.CommitAction;
+          ibqry_corres.ExecSQL;
+           ibqry_corres.CommitAction;
           //END TO UPDATE LOCALITE_CORRESPONDANCE !!!
 
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
@@ -218,7 +218,7 @@ begin
           // nom_new := QuotedStr(nom_new);
           // nom_old := QuotedStr(nom_old);
 
-          query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
+//          query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
 
           //OutputDebugString(PChar(query));
         end
