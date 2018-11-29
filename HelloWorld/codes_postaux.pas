@@ -192,25 +192,25 @@ begin
       nom_new := UpperCase(nom_new);
       nom_old := UpperCase(nom_old);
 
-
-
       // OutputDebugString(PChar('LOOP NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
-      if (cp_new = cp_old) and (cp_new = '3700') then
+      if (cp_new = cp_old) and (cp_new = '3700')then
       begin
          OutputDebugString(PChar('NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         if (nom_new = nom_old) then
         begin
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
-          //nom_new := QuotedStr(nom_new);
-        //  OutputDebugString(PChar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+          nom_new := QuotedStr(nom_new);
+          OutputDebugString(PChar('IDEM NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
 
-          ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES (' + id_new + ',' + id_old + ', ' + cp_new + ',' + nom_new + ') ';
+          ibqry_corres.SQL.Text := 'INSERT INTO LOCALITES_CORRESPONDANCE (good, notgood, cp, nom) VALUES (' + id_new + ',' + id_old + ', ' + cp_new + ', ' + nom_new + ') ';
 
-          // OutputDebugString(Pchar(ibqry_corres.SQL.Text));
+           OutputDebugString(Pchar(ibqry_corres.SQL.Text));
 
-          // ibqry_corres.ExecSQL;
-          // ibqry_corres.CommitAction;
+          //BEGIN TO UPDATE LOCALITE_CORRESPONDANCE !!!
+//          ibqry_corres.ExecSQL;
+//           ibqry_corres.CommitAction;
+          //END TO UPDATE LOCALITE_CORRESPONDANCE !!!
 
           nom_new := ibqry_localites_new.FieldByName('NOM').AsString;
           // récupérer le nom avec la majuscule au début et ancien nom pour la DB
@@ -221,11 +221,10 @@ begin
           query := 'UPDATE LOCALITES set LOCALITES.NOM = ' + nom_new + ' WHERE LOCALITES.NOM = ' + nom_old + ' AND LOCALITES.CP = ' + cp_new + '';
 
           //OutputDebugString(PChar(query));
-
         end
         else
         begin
-           OutputDebugString(PChar('DIFF NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
+//           OutputDebugString(PChar('DIFF NEW : OLD : ' + id_old + ' ' + cp_old + ' ' + nom_old + ' NEW : ' + id_new + ' ' + cp_new + ' ' + nom_new));
         end;
       end;
 
