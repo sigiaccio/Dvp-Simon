@@ -31,7 +31,7 @@ object Form_cp: TForm_cp
     TabOrder = 1
   end
   object btn_localites: TButton
-    Left = 216
+    Left = 278
     Top = 183
     Width = 75
     Height = 25
@@ -195,7 +195,7 @@ object Form_cp: TForm_cp
     TitleButtons = False
   end
   object btn_update_etudiants: TButton
-    Left = 297
+    Left = 359
     Top = 183
     Width = 75
     Height = 25
@@ -204,8 +204,8 @@ object Form_cp: TForm_cp
     OnClick = btn_update_etudiantsClick
   end
   object btn_anc_etudiant: TButton
-    Left = 376
-    Top = 184
+    Left = 440
+    Top = 183
     Width = 75
     Height = 25
     Caption = 'btn_anc_etudiant'
@@ -213,7 +213,12 @@ object Form_cp: TForm_cp
     OnClick = btn_anc_etudiantClick
   end
   object ibqry_localites_old: TIBOQuery
-    Active = True
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'pcodepostal'
+        ParamType = ptInput
+      end>
     IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
       'LOCALITES.ID_LOCALITE')
@@ -222,7 +227,7 @@ object Form_cp: TForm_cp
     SQL.Strings = (
       'select localites.ID_LOCALITE, localites.CP, localites.NOM'
       'from localites'
-      '/*where localites.cp = :pcodepostal*/'
+      'where localites.cp = :pcodepostal'
       'order by localites.cp'
       '')
     Left = 48
@@ -246,7 +251,6 @@ object Form_cp: TForm_cp
     end
   end
   object ibqry_localites_new: TIBOQuery
-    Active = True
     IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
       'LOCALITES2.ID')
@@ -279,7 +283,12 @@ object Form_cp: TForm_cp
     Top = 32
   end
   object ibqry_etudiant: TIBOQuery
-    Active = True
+    Params = <
+      item
+        DataType = ftString
+        Name = 'pcodepostal'
+        ParamType = ptInput
+      end>
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
@@ -291,7 +300,7 @@ object Form_cp: TForm_cp
         'inner join localites on etudiants.ADR_ID_LOCALITE = LOCALITES.ID' +
         '_LOCALITE'
       '/*where LOCALITES.CP = 1050*/'
-      '/*where LOCALITES.CP = :pcodepostal*/'
+      'where LOCALITES.CP = :pcodepostal'
       'order by localites.cp')
     Left = 280
     Top = 104
@@ -323,7 +332,12 @@ object Form_cp: TForm_cp
     Top = 32
   end
   object ibqry_anc_etudiant: TIBOQuery
-    Active = True
+    Params = <
+      item
+        DataType = ftUnknown
+        Name = 'pcodepostal'
+        ParamType = ptInput
+      end>
     IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
@@ -334,7 +348,7 @@ object Form_cp: TForm_cp
       
         'inner join localites on ANC_ETUD.ADR_ID_LOCALITE = LOCALITES.ID_' +
         'LOCALITE'
-      '/*where LOCALITES.CP = :pcodepostal*/')
+      'where LOCALITES.CP = :pcodepostal')
     Left = 400
     Top = 104
     object strngfld_anc_etudiantMAT_ETUD: TStringField
