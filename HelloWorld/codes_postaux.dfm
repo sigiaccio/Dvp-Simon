@@ -36,7 +36,7 @@ object Form_cp: TForm_cp
     Width = 75
     Height = 25
     Caption = 'update correspo'
-    TabOrder = 6
+    TabOrder = 7
     OnClick = btn_localitesClick
   end
   object wwDBGrid_localites_old: TwwDBGrid
@@ -102,7 +102,7 @@ object Form_cp: TForm_cp
     Width = 114
     Height = 169
     Caption = 'etudiant'
-    TabOrder = 5
+    TabOrder = 6
   end
   object grp_cp4: TGroupBox
     Left = 367
@@ -110,7 +110,7 @@ object Form_cp: TForm_cp
     Width = 114
     Height = 169
     Caption = 'anc etud'
-    TabOrder = 7
+    TabOrder = 8
   end
   object wwDBGrid_etudiant: TwwDBGrid
     Left = 774
@@ -126,7 +126,7 @@ object Form_cp: TForm_cp
     FixedCols = 0
     ShowHorzScrollBar = True
     DataSource = ds_etudiant
-    TabOrder = 8
+    TabOrder = 9
     TitleAlignment = taLeftJustify
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -150,7 +150,7 @@ object Form_cp: TForm_cp
     FixedCols = 0
     ShowHorzScrollBar = True
     DataSource = ds_anc_etudiant
-    TabOrder = 9
+    TabOrder = 10
     TitleAlignment = taLeftJustify
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
@@ -166,7 +166,7 @@ object Form_cp: TForm_cp
     Width = 75
     Height = 25
     Caption = 'update_grid'
-    TabOrder = 10
+    TabOrder = 5
     OnClick = btn_clearClick
   end
   object wwDBGrid_corres: TwwDBGrid
