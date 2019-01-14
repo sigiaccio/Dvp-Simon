@@ -12,7 +12,7 @@ uses
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
   Wwdotdot, Wwdbcomb, lib.validation.field,
-  System.DateUtils, IB_Grid, wwclient, Unit1, codes_postaux;
+  System.DateUtils, IB_Grid, wwclient, Unit1, codes_postaux, Uvilles;
 
 type
   TFHelloWorld = class(TForm)
@@ -91,6 +91,7 @@ type
     float_field__dset_af_viewsecondaireSuperieur: TFloatField;
     intgrfld_allocECTS_NBR: TIntegerField;
     btn_codes_postaux: TButton;
+    btn_villes: TButton;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -618,13 +619,13 @@ begin
 end;
 
 procedure TFHelloWorld.btn_codes_postauxClick(Sender: TObject);
-var cp : TForm_cp;
+var ville : Tfrm_villes;
 begin
     // open another form
-    cp := TForm_cp.Create(Self);
-    cp.ShowModal;
-    cp.Free;
 
+    ville := uvilles.Tfrm_villes.Create(Self);
+    ville.ShowModal;
+    ville.Free;
 end;
 
 procedure TFHelloWorld.btn_searchClick(Sender: TObject);
