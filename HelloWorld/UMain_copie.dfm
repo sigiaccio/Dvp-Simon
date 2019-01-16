@@ -474,13 +474,13 @@ object FHelloWorld: TFHelloWorld
     OnClick = btn_codes_postauxClick
   end
   object btn_villes: TButton
-    Left = 393
+    Left = 408
     Top = 197
     Width = 75
     Height = 25
     Caption = 'btn_villes'
     TabOrder = 21
-    OnClick = btn_codes_postauxClick
+    OnClick = btn_villesClick
   end
   object ibqry_etudiant: TIBOQuery
     Params = <
@@ -715,15 +715,15 @@ object FHelloWorld: TFHelloWorld
       '       uf.NB_PERIODES_STAGE,'
       ''
       '-- Debug Zone End'
-      
+
         '-- Le case permet de calculer les p'#233'riodes semaines de la classe' +
         ' en fonction des p'#233'riodes de l'#39'UE'
       '-- ou des p'#233'riodes de stage de l'#39'UE'
       '       case'
-      
+
         '       WHEN UF.ID_TYPE_UF = 2 then cast(UF.NB_PERIODES_STAGE as ' +
         'decimal(4,2))/(ORG.NB_SEM_JJ + ORG.NB_SEM_SD)'
-      
+
         '            else  cast(UF.NB_PERIODES as decimal(4,2))/(ORG.NB_S' +
         'EM_JJ + ORG.NB_SEM_SD)'
       '       end as PERIODES_SEMAINE,'
@@ -734,16 +734,16 @@ object FHelloWorld: TFHelloWorld
       ''
       'from'
       '  INSCRIPTIONS'
-      
+
         '  inner join CLASSES on (INSCRIPTIONS.NO_CLASSE = CLASSES.NO_CLA' +
         'SSE)'
       '  inner join UF on (CLASSES.ID_UF = UF.ID_UF)'
       '  inner join NIVEAUX on (NIVEAUX.NIVEAU = UF.NIVEAU)'
       '  inner join ORG on (CLASSES.ID_ORG = Org.ID_ORG)'
-      
+
         '  inner join HORAIRES on (HORAIRES.NO_CLASSE = CLASSES.NO_CLASSE' +
         ')'
-      
+
         '  inner join CONTENUS_SECTIONS on (CONTENUS_SECTIONS.ID_SECTION ' +
         '= CLASSES.ID_SECTION AND CONTENUS_SECTIONS.ID_UF = CLASSES.ID_UF' +
         ')'

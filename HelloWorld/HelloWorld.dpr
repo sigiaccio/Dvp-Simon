@@ -10,11 +10,14 @@ uses
   lib.validation.field in 'Lib\lib.validation.field.pas',
   CalcWeekAF in 'CalcWeekAF.pas' {Form1},
   codes_postaux in 'codes_postaux.pas' {Form_cp},
-  Uvilles in 'Uvilles.pas' {frm_villes};
+  villes in 'villes.pas' {frm_villes},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 begin
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.CreateForm(TFHelloWorld, FHelloWorld);
   Application.CreateForm(Tpopupmodal, popupmodal);
   Application.CreateForm(TForm1, Form1);
@@ -23,4 +26,3 @@ begin
   //Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.
-

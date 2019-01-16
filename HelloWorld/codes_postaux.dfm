@@ -213,13 +213,6 @@ object Form_cp: TForm_cp
     OnClick = btn_anc_etudiantClick
   end
   object ibqry_localites_old: TIBOQuery
-    Params = <
-      item
-        DataType = ftUnknown
-        Name = 'pcodepostal'
-        ParamType = ptInput
-      end>
-    IB_Connection = ibdtbs_connexion
     KeyLinks.Strings = (
       'LOCALITES.ID_LOCALITE')
     RecordCountAccurate = True
@@ -251,9 +244,6 @@ object Form_cp: TForm_cp
     end
   end
   object ibqry_localites_new: TIBOQuery
-    IB_Connection = ibdtbs_connexion
-    KeyLinks.Strings = (
-      'LOCALITES2.ID')
     RecordCountAccurate = True
     SQL.Strings = (
       'select LOCALITES2.ID, LOCALITES2.CP, LOCALITES2.NOM'
@@ -289,14 +279,13 @@ object Form_cp: TForm_cp
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
-      
+
         'select ETUDIANTS.MAT_ETUD, etudiants.ADR_ID_LOCALITE, LOCALITES.' +
         'NOM'
       'from etudiants'
-      
+
         'inner join localites on etudiants.ADR_ID_LOCALITE = LOCALITES.ID' +
         '_LOCALITE'
       '/*where LOCALITES.CP = 1050*/'
@@ -338,14 +327,13 @@ object Form_cp: TForm_cp
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    IB_Connection = ibdtbs_connexion
     RecordCountAccurate = True
     SQL.Strings = (
-      
+
         'select ANC_ETUD.MAT_ETUD, ANC_ETUD.ADR_ID_LOCALITE, LOCALITES.NO' +
         'M'
       'from ANC_ETUD'
-      
+
         'inner join localites on ANC_ETUD.ADR_ID_LOCALITE = LOCALITES.ID_' +
         'LOCALITE'
       'where LOCALITES.CP = :pcodepostal')
