@@ -12,7 +12,7 @@ uses
   Vcl.DBCtrls, Datasnap.DBClient, Datasnap.Provider, Data.SqlExpr,
   IB_Components, IB_Access, Vcl.Mask, Vcl.DBGrids, IB_Controls, wwdbedit,
   Wwdotdot, Wwdbcomb, lib.validation.field,
-  System.DateUtils, IB_Grid, wwclient, Unit1, codes_postaux;
+  System.DateUtils, IB_Grid, wwclient, Unit1, codes_postaux, villes;
 
 type
   TFHelloWorld = class(TForm)
@@ -91,6 +91,7 @@ type
     float_field__dset_af_viewsecondaireSuperieur: TFloatField;
     intgrfld_allocECTS_NBR: TIntegerField;
     btn_codes_postaux: TButton;
+    btn_villes: TButton;
     procedure Submit(Sender: TObject);
     procedure wdbgrd1TitleButtonClick(Sender: TObject; AFieldName: string);
     procedure searchSetQuery(Ordering, direction: String);
@@ -111,6 +112,7 @@ type
     procedure FormCreate(Sender: TObject);
     procedure btn_clearClick(Sender: TObject);
     procedure btn_codes_postauxClick(Sender: TObject);
+    procedure btn_villesClick(Sender: TObject);
 
   private
     { Déclarations privées }
@@ -636,6 +638,15 @@ begin
     ibqry_etudiant.Active := True;
     ibqry_etudiant.RefreshRows;
   }
+end;
+
+procedure TFHelloWorld.btn_villesClick(Sender: TObject);
+var ville : Tfrm_villes;
+begin
+    // open another form
+    ville := Tfrm_villes.Create(self);
+    ville.ShowModal;
+    ville.Free;
 end;
 
 procedure TFHelloWorld.CalcWeekAF(matEtud: String; startDate: TStringList; endDate, period: TStringList);

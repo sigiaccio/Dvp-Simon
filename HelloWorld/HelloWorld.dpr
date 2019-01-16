@@ -9,15 +9,20 @@ uses
   lib.windows in '..\..\EPFC-Apps\XE2\Lib\lib.windows.pas',
   lib.validation.field in 'Lib\lib.validation.field.pas',
   CalcWeekAF in 'CalcWeekAF.pas' {Form1},
-  codes_postaux in 'codes_postaux.pas' {Form_cp};
+  codes_postaux in 'codes_postaux.pas' {Form_cp},
+  villes in 'villes.pas' {frm_villes},
+  Vcl.Themes,
+  Vcl.Styles;
 
 {$R *.res}
 begin
   Application.MainFormOnTaskbar := True;
+  TStyleManager.TrySetStyle('Amethyst Kamri');
   Application.CreateForm(TFHelloWorld, FHelloWorld);
   Application.CreateForm(Tpopupmodal, popupmodal);
   Application.CreateForm(TForm1, Form1);
   Application.CreateForm(TForm_cp, Form_cp);
+  Application.CreateForm(Tfrm_villes, frm_villes);
   //Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

@@ -156,7 +156,6 @@ object Form_cp: TForm_cp
     Top = 40
   end
   object ibqry_localites_old: TIBOQuery
-    Active = True
     KeyLinks.Strings = (
       'LOCALITES.ID_LOCALITE')
     RecordCountAccurate = True
@@ -185,7 +184,6 @@ object Form_cp: TForm_cp
     end
   end
   object ibqry_localites_new: TIBOQuery
-    Active = True
     RecordCountAccurate = True
     DataSource = ds_localite_old
     SQL.Strings = (
@@ -221,7 +219,6 @@ object Form_cp: TForm_cp
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    Active = True
     RecordCountAccurate = True
     SQL.Strings = (
       
@@ -265,7 +262,6 @@ object Form_cp: TForm_cp
         Name = 'pcodepostal'
         ParamType = ptInput
       end>
-    Active = True
     RecordCountAccurate = True
     SQL.Strings = (
       

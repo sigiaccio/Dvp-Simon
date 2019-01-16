@@ -473,6 +473,15 @@ object FHelloWorld: TFHelloWorld
     TabOrder = 20
     OnClick = btn_codes_postauxClick
   end
+  object btn_villes: TButton
+    Left = 408
+    Top = 197
+    Width = 75
+    Height = 25
+    Caption = 'btn_villes'
+    TabOrder = 21
+    OnClick = btn_villesClick
+  end
   object ibqry_etudiant: TIBOQuery
     Params = <
       item
