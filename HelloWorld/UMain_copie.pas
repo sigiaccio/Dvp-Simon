@@ -115,10 +115,10 @@ type
     procedure btn_villesClick(Sender: TObject);
 
   private
-    { Dï¿½clarations privï¿½es }
+    { Déclarations privées }
     direction: string;
   public
-    { Dï¿½clarations publiques }
+    { Déclarations publiques }
   end;
 
 var
@@ -164,20 +164,20 @@ begin
   edt_name.Hint := 'Entrez votre nom';
   edt_name.ShowHint := True;
 
-  edt_name.Hint := 'Entrez votre prï¿½nom';
+  edt_name.Hint := 'Entrez votre prénom';
   edt_name.ShowHint := True;
   // check if variable is empty or not
   if edt_name.text = '' then
   begin
-    edt_error.text := 'Le champ Name doit ï¿½tre rempli';
+    edt_error.text := 'Le champ Name doit être rempli';
     lbl_errors_name.Visible := True;
-    lbl_errors_name.Caption := 'Le champ Name doit ï¿½tre rempli';
+    lbl_errors_name.Caption := 'Le champ Name doit être rempli';
   end
   else if edt_firstname.text = '' then
   begin
-    edt_error.text := 'Le champ Firstname doit ï¿½tre rempli';
+    edt_error.text := 'Le champ Firstname doit être rempli';
     lbl_errors_name.Visible := True;
-    lbl_errors_name.Caption := 'Le champ Firstname doit ï¿½tre rempli';
+    lbl_errors_name.Caption := 'Le champ Firstname doit être rempli';
   end
   else
   begin
@@ -354,8 +354,8 @@ var
   nb_period, nb_period_previous, nb_period_next, nb_period_secondaire, nb_period_superieur, nb_ects: double;
 
   // 4 colonnes et 36 lignes
-  // COLONNES : Secondaire | Supï¿½rieur | ECTS
-  // LIGNES : semaine 1 --> 52 (52 semaines = 1 annï¿½e)
+  // COLONNES : Secondaire | Supérieur | ECTS
+  // LIGNES : semaine 1 --> 52 (52 semaines = 1 année)
   tableauAllocationsFamiliales: array [0 .. 51] of array [0 .. 3] of double;
 
   // ShowMessage(IntToStr(WeekOfYear(StrToDateTime(ibqry_alloc.FieldByName('date_deb').AsString))));
@@ -429,7 +429,7 @@ begin
     end
     else
     begin
-      // ETCS gestion du cas non prï¿½sent dans la requï¿½te (colonne niveau): 3
+      // ETCS gestion du cas non présent dans la requête (colonne niveau): 3
       nb_niveau := 3;
     end;
 
@@ -492,8 +492,8 @@ begin
     nb_period_superieur := tableauAllocationsFamiliales[nb_ligne, 2];
     nb_ects := tableauAllocationsFamiliales[nb_ligne, 3];
 
-    // nb_period : pï¿½riode en cours
-    // nb_period_previous : pï¿½riode prï¿½cï¿½dente
+    // nb_period : période en cours
+    // nb_period_previous : période précédente
 
     if nb_period_previous = nb_period then
     begin
@@ -567,7 +567,7 @@ begin
     begin
     OutputDebugString(Pchar('AF : start date ' + startDate[0]));
     OutputDebugString(Pchar('AF : start fin ' + endDate[0]));
-    OutputDebugString(Pchar('AF : pï¿½riode/semaine ' + period[0]));
+    OutputDebugString(Pchar('AF : période/semaine ' + period[0]));
     end;
 
     period.add(ibqry_alloc.FieldByName('periodes_semaine').AsString);
@@ -585,9 +585,9 @@ begin
 
   // ARRAY
   {
-    // 1ï¿½re dimension
+    // 1ère dimension
     SetLength(tableauAllocationsFamiliales, 4);
-    // 2ï¿½me dimension
+    // 2ème dimension
     SetLength(tableauAllocationsFamiliales[0], 44);
     SetLength(tableauAllocationsFamiliales[1], 36);
     SetLength(tableauAllocationsFamiliales[2], 36);
@@ -597,7 +597,7 @@ begin
 
 
 
-    // initialiser le tableau avec pï¿½riodes
+    // initialiser le tableau avec périodes
     for nb_colonne := 0 to 4 - 1 do
     for nb_ligne := 0 to 44 - 1 do
     begin
@@ -620,13 +620,13 @@ begin
 end;
 
 procedure TFHelloWorld.btn_codes_postauxClick(Sender: TObject);
-var ville : Tfrm_villes;
+var cp : TForm_cp;
 begin
     // open another form
+    cp := TForm_cp.Create(Self);
+    cp.ShowModal;
+    cp.Free;
 
-    ville := uvilles.Tfrm_villes.Create(Self);
-    ville.ShowModal;
-    ville.Free;
 end;
 
 procedure TFHelloWorld.btn_searchClick(Sender: TObject);
