@@ -314,7 +314,7 @@ object frmMain: TfrmMain
     OnClick = btnCloseClick
   end
   object Events: TListBox
-    Left = 13
+    Left = 8
     Top = 463
     Width = 662
     Height = 140
